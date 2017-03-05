@@ -63,7 +63,7 @@
 export PATH=/usr/local/bin:$PATH
 
 # path to ocr script
-source /Volumes/data/archive/tools/ocr.sh
+source ~/Code/lab/bash/ocr.sh
 
 for file in "$@"; do
   ocr $file
@@ -327,7 +327,7 @@ done</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>4728565B-D909-4ACB-9206-523C338A79AF</key>
+		<key>0D112AB3-EF35-4034-A3FD-2531FCA9CBE7</key>
 		<dict>
 			<key>from</key>
 			<string>ADDEF64E-4486-46F7-ABCA-E3FBB09CC143 - ADDEF64E-4486-46F7-ABCA-E3FBB09CC143</string>
