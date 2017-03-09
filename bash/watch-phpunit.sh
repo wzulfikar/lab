@@ -1,4 +1,4 @@
-watchphpunit () {
+watch-phpunit () {
     echo "Watching php file for test.."
 
     if [[ $1 ]]; then

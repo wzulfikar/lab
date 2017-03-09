@@ -1,11 +1,11 @@
-runcpp () {
+run-cpp () {
     FILENAME=$1
     eval "g++ -o $FILENAME $FILENAME.cpp && ./$FILENAME"
 }
 
 // `watchmedo` requires watchdog (python) 
 // → https://pythonhosted.org/watchdog
-watchcpp () {
+watch-cpp () {
     FILENAME=$1
     COMMAND="echo \ && g++ -o $FILENAME $FILENAME.cpp && ./$FILENAME"
 
