@@ -9,3 +9,4 @@ source ~/code/lab/bash/brew-switch.sh
 source ~/code/lab/bash/watch-artisan.sh
 source ~/code/lab/bash/watch-phpunit.sh
 source ~/code/lab/bash/watch-sh.sh
+source ~/code/lab/bash/qotd.sh
