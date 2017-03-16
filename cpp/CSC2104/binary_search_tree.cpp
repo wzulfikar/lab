@@ -82,6 +82,17 @@ public:
 		}
 	}
 
+	bool find (F value) {
+		Node<F>* temp = root;
+		while (temp != NULL) {
+			if (value == temp->value) {
+				return true;
+			}
+			temp = value > temp->value ? temp->right : temp->left;
+		}
+		return false;
+	}
+
 	void display (int order = 0) {
 		switch (order) {
 			case 0:
@@ -116,7 +127,15 @@ int main() {
 	tree.insert(10);
 	tree.insert(3);
 	tree.insert(7);
+	tree.insert(10);
+	tree.insert(7);
 
 	tree.display(3);
+
+	string findNode = tree.find(11) ? "Found" : "Not found";
+	cout << "\nNode 11 is " << findNode;
+
+	string findNode2 = tree.find(10) ? "Found" : "Not found";
+	cout << "\nNode 10 is " << findNode2;
 	return 0;
 }
