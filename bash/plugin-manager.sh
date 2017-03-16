@@ -3,6 +3,7 @@
 # and your plugins are now centralized here.
 source ~/code/lab/bash/ocr.sh
 source ~/code/lab/bash/code.sh
+source ~/code/lab/bash/cpp-runner.sh
 source ~/code/lab/bash/git-aliases.sh
 source ~/code/lab/bash/app-aliases.sh
 source ~/code/lab/bash/brew-switch.sh
