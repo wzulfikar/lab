@@ -1,18 +1,27 @@
-<?php 
+<?php
 
 namespace App\Traits;
 
-/**
- * use this trait in `render` method of your Exceptions/Handler.php,
- * and use below code to render the error using whoops:
- * `return $this->renderExceptionWithWhoops($e);`
- */
-trait RenderExceptionWithWhoops {
-    private function renderExceptionWithWhoops(\Exception $e)
-    {
-        $whoops = new \Whoops\Run;
-        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+use Illuminate\Http\Request;
+use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
 
-        return $whoops->handleException($e);
+trait RenderExceptionWithWhoops
+{
+    private function renderExceptionWithWhoops(Request $request, \Exception $e)
+    {
+        $handler = $request->ajax() ? new JsonResponseHandler : new PrettyPageHandler;
+        if ($editor = config('whoops.editor')) {
+            // https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md
+            $handler->setEditor('sublime');
+        }
+        
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler($handler);
+        return new \Illuminate\Http\Response(
+            $whoops->handleException($e),
+            $e->getStatusCode(),
+            $e->getHeaders()
+        );
     }
 }
