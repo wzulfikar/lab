@@ -8,12 +8,12 @@ use Whoops\Util\Misc;
 
 trait RenderExceptionWithWhoops
 {
-    private function renderExceptionWithWhoops(\Exception $e)
+    private function renderExceptionWithWhoops(\Exception $e, $editor = null)
     {
         $handler = Misc::isAjaxRequest() ? new JsonResponseHandler : new PrettyPageHandler;
-        if ($editor = config('whoops.editor')) {
+        if ($editor) {
             // https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md
-            $handler->setEditor('sublime');
+            $handler->setEditor($editor);
         }
         
         $whoops = new \Whoops\Run;
