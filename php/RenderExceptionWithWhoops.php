@@ -2,15 +2,15 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Request;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
+use Whoops\Util\Misc;
 
 trait RenderExceptionWithWhoops
 {
-    private function renderExceptionWithWhoops(Request $request, \Exception $e)
+    private function renderExceptionWithWhoops(\Exception $e)
     {
-        $handler = $request->ajax() ? new JsonResponseHandler : new PrettyPageHandler;
+        $handler = Misc::isAjaxRequest() ? new JsonResponseHandler : new PrettyPageHandler;
         if ($editor = config('whoops.editor')) {
             // https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md
             $handler->setEditor('sublime');
