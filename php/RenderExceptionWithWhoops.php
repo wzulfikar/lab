@@ -10,8 +10,9 @@ trait RenderExceptionWithWhoops
 {
     private function renderExceptionWithWhoops(\Exception $e, $editor = null)
     {
-        $handler = Misc::isAjaxRequest() ? new JsonResponseHandler : new PrettyPageHandler;
-        if ($editor) {
+        $isAjax = Misc::isAjaxRequest();
+        $handler = $isAjax ? new JsonResponseHandler : new PrettyPageHandler;
+        if (!$isAjax && $editor) {
             // https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md
             $handler->setEditor($editor);
         }
