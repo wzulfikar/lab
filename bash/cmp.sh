@@ -1,15 +1,18 @@
 #!/bin/sh
 cmp () {
+	NC='\033[0m' # no color
+	RED='\033[0;31m'
+	GREEN='\033[0;32m'
+	ORANGE='\033[0;33m'
+
 	echo "Comparing"
-	echo "→ $1"
+	echo "→ $ORANGE$1$NC"
 	echo "against"
-	echo "→ $2"
+	echo "→ $ORANGE$2$NC"
 	if [ "$1" == "$2" ]
 	then
-		printf '\033[0;32m'
-	  	echo '✔ MATCH'
+	  	echo "$GREEN✔ MATCH"
 	else
-		printf '\033[0;31m'
-		echo '✘ NOT MATCH'
+		echo "$RED✘ NOT MATCH"
 	fi
 }
