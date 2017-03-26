@@ -11,3 +11,19 @@ code () {
     	eval "cd $CODE_DIRECTORY"
   	fi
 }
+
+# edit zsh config
+alias zshconfig="sudo nano ~/.zshrc"
+
+# update zsh config
+alias zshso="source ~/.zshrc" # 
+
+# edit hosts config using sublime text
+alias hostsconfig="subl /etc/hosts"
+
+# laravel artisan
+alias artisan="php artisan" 
+
+# python alias
+alias py2=python2
+alias py3=python3
