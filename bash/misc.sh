@@ -11,11 +11,3 @@ code () {
     	eval "cd $CODE_DIRECTORY"
   	fi
 }
-
-# get length of whatever passsed in
-len () {
-	NC='\033[0m' # no color
-	GREEN='\033[0;32m'
-	ORANGE='\033[0;33m'
-	echo "Length of $ORANGE'$1'$NC is$GREEN ${#1}"
-}
