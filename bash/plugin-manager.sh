@@ -12,4 +12,5 @@ source ~/code/lab/bash/watch-phpunit.sh
 source ~/code/lab/bash/watch-sh.sh
 source ~/code/lab/bash/qotd.sh
 source ~/code/lab/bash/cmp.sh
+source ~/code/lab/bash/len.sh
 source ~/code/lab/bash/docker-snippets.sh
