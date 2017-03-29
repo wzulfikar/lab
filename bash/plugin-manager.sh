@@ -8,7 +8,7 @@ source ~/code/lab/bash/git-aliases.sh
 source ~/code/lab/bash/app-aliases.sh
 source ~/code/lab/bash/brew-switch.sh
 source ~/code/lab/bash/watch-artisan.sh
-source ~/code/lab/bash/watch-phpunit.sh
+source ~/code/lab/bash/watch-phpunit-entr.sh
 source ~/code/lab/bash/watch-sh.sh
 source ~/code/lab/bash/qotd.sh
 source ~/code/lab/bash/cmp.sh
