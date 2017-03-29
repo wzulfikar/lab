@@ -1,17 +1,16 @@
 watch-phpunit () {
-    echo "Watching php file for test.."
+    MSG='\n\033[0;33m→ Watching php files to run the test (using python watchdog)..\033[0;0m'
 
     if [[ $1 ]]; then
-      eval "watchmedo shell-command \
-          --patterns='*.php' \
-          --recursive \
-          --command='vendor/bin/phpunit $1' \
-          ."
+      COMMAND="clear && vendor/bin/phpunit $1; printf \"$MSG\""
     else
-      eval "watchmedo shell-command \
-          --patterns='*.php' \
-          --recursive \
-          --command='vendor/bin/phpunit' \
-          ."
+      COMMAND="clear && vendor/bin/phpunit; printf \"$MSG\""
     fi
+
+    eval $COMMAND
+    eval "watchmedo shell-command \
+        --patterns='*.php' \
+        --recursive \
+        --command='$COMMAND' \
+        ."
 }
