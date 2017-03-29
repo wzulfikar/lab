@@ -12,8 +12,8 @@ code () {
   	fi
 }
 
-# edit zsh config
-alias zshconfig="sudo nano ~/.zshrc"
+# edit zsh config using sublime
+alias zshconfig="subl ~/.zshrc"
 
 # update zsh config
 alias zshso="source ~/.zshrc" # 
