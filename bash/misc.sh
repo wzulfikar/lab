@@ -27,3 +27,6 @@ alias artisan="php artisan"
 # python alias
 alias py2=python2
 alias py3=python3
+
+# alias for asciinema record command
+alias rec="asciinema rec"
