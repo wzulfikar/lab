@@ -1,6 +1,6 @@
 qotd () {
 	# replace this path to your own
-	d=~/code/lab/bash/qotd-words.txt
+	d=~/code/github/lab/bash/qotd-words.txt
 
 	rand=$[($RANDOM % `wc -l $d|sed "s/[^0-9]//g"`)+1]
 	
