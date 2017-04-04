@@ -15,3 +15,4 @@ source ~/code/github/lab/bash/cmp.sh
 source ~/code/github/lab/bash/len.sh
 source ~/code/github/lab/bash/docker-snippets.sh
 source ~/code/github/lab/bash/openssl-enc-dec.sh
+source ~/code/github/lab/bash/upload.sh
