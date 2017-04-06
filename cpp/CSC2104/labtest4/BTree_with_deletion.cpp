@@ -1,5 +1,3 @@
-// source: github.com/zargit/dsa-tutorial-s17/blob/master/class5
-
 #include <iostream>
 
 using namespace std;
@@ -33,7 +31,7 @@ class BST{ // Binary Search Tree (BST)
 			}else{
 				Node<F>* temp = root;
 				while(temp!=NULL){
-					if(value < temp->value){ 
+					if(value > temp->value){ 
 					// go right, new value is greater than current tree node:w
 						if(temp->right == NULL){
 							temp->right = new Node<F>(value);
@@ -54,9 +52,9 @@ class BST{ // Binary Search Tree (BST)
 		bool find(F value){
 			Node<F>* temp = root;
 			while(temp!=NULL){
-				if(value < temp->value){ 
+				if(value > temp->value){ 
 					temp = temp->right;
-				}else if(value > temp->value){ 
+				}else if(value < temp->value){ 
 					temp = temp->left;
 				}else{
 					return true;
@@ -73,12 +71,12 @@ class BST{ // Binary Search Tree (BST)
 		}
 
 		void deleteHelper(F value, Node<F>* current, Node<F>* parent = NULL){
-			if(value > current->value){
+			if(value < current->value){
 			
 				// 'value' is smaller, going left to search further
 				deleteHelper(value, current->left, current);
 			
-			}else if(value < current->value){
+			}else if(value > current->value){
 			
 				// 'value' is bigger, going right to search further
 				deleteHelper(value, current->right, current);
