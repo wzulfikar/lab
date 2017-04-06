@@ -8,11 +8,10 @@ run-cpp () {
 watch-cpp () {
 	NC='\033[0;0m' # no color
 	GREEN='\033[0;32m'
-	ORANGE='\033[0;33m'
 
     FILENAME=$1
 
-    MSG='$ORANGE\n\n→ Watching cpp files (using entr)..$NC'
+    MSG='\n→ Watching cpp files (using entr)..$NC'
     BANNER='${GREEN}Output of $FILENAME:$NC'
 
     COMMAND="clear && g++ -o $FILENAME $FILENAME.cpp && echo '$BANNER' && ./$FILENAME"
