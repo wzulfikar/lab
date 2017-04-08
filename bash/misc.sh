@@ -27,6 +27,8 @@ alias artisan="php artisan"
 # python alias
 alias py2=python2
 alias py3=python3
+alias py=python3
+alias pyman="python3 manage.py" # for use with django
 
 # alias for asciinema record command
 alias rec="asciinema rec"
