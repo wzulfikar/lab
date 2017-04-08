@@ -18,3 +18,4 @@ source ~/code/github/lab/bash/openssl-enc-dec.sh
 source ~/code/github/lab/bash/upload.sh
 source ~/code/github/lab/bash/bitly.sh
 source ~/code/github/lab/bash/watch-py-entr.sh
+source ~/code/github/lab/bash/watch-js-entr.sh
