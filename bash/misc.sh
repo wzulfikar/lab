@@ -32,3 +32,15 @@ alias pyman="python3 manage.py" # for use with django
 
 # alias for asciinema record command
 alias rec="asciinema rec"
+
+# convert video file to gif using gifgen
+# and display osx notification once finished.
+gif () {
+	eval "gifgen $1  && terminal-notifier -title Gifgen -message \"Finished converting video to gif.\""
+}
+
+# scrape image from given url using image-scraper
+# and display osx notification once finished.
+scrape-image () {
+	eval "image-scraper $1 && terminal-notifier -title 'Image Scraper' -message \"Finished scraping images from $1\""
+}
