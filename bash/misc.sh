@@ -33,6 +33,8 @@ alias pyman="python3 manage.py" # for use with django
 # alias for asciinema record command
 alias rec="asciinema rec"
 
+alias hist=history # `history` is aliased to fc -l 1
+
 # convert video file to gif using gifgen
 # and display osx notification once finished.
 gif () {
@@ -43,4 +45,10 @@ gif () {
 # and display osx notification once finished.
 scrape-image () {
 	eval "image-scraper $1 && terminal-notifier -title 'Image Scraper' -message \"Finished scraping images from $1\""
+}
+
+# google search, from command line.
+# see: https://github.com/jarun/googler
+google () {
+	eval "googler --colors Gcdgxy $1"
 }
