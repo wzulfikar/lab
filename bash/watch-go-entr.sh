@@ -4,12 +4,10 @@ watch-go () {
 	NC='\033[0;0m' # no color
 	GREEN='\033[0;32m'
 
-    FILENAME=$1
-
     MSG='\n→ Watching go (using entr)..$NC'
-    BANNER='${GREEN}Output of $FILENAME:$NC'
+    BANNER='${GREEN}Output of \"$*\":$NC'
 
-    COMMAND="clear && echo '$BANNER' && go run $FILENAME"
+    COMMAND="clear && echo '$BANNER' && go run $*"
 
 	FILES="find . -name \*.go"
 
