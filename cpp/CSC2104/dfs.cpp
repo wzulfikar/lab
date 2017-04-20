@@ -57,9 +57,9 @@ void displayGraph() {
 }
 
 int main (){
-	generateGraph(4, 4, '#');
+	generateGraph(5, 5, '#');
 	displayGraph();
 
-	dfs(0, 0);
+	dfs(4, 0);
 	displayGraph();
 }
