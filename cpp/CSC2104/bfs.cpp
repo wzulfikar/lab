@@ -11,6 +11,12 @@ using namespace std;
 
 #include <cstdlib>
 
+void pause () {
+	// pause the loop to observe changes in graph
+	cout << "Press enter to continue ..."; 
+    cin.get(); 
+}
+
 void clear_screen()
 {
 #ifdef WINDOWS
@@ -86,9 +92,7 @@ void bfs(int sr, int sc) {
 					dist[nr][nc] = new_distance;
 					q.push(make_pair(nr, nc));
 
-					// pause the loop to observe changes in graph
-					cout << "Press enter to continue ..."; 
-				    cin.get(); 
+					pause();
 				    clear_screen();
 
 					displayGraph<int>(dist);
