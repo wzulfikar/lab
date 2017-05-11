@@ -7,7 +7,7 @@ watch-artisan () {
     MSG='→ Watching php files to run artisan command (using entr)..$NC'
 
 	FILES="find . -name \*.php -not -path './vendor/*'"
-	COMMAND="clear && php artisan $1"
+	COMMAND="clear && php artisan $@"
 
 	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG'\""
 }
