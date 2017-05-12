@@ -2,31 +2,31 @@ package main
 
 import (
 	"fmt"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"strings"
 )
 
 func do(s string) string {
-	if length := len(s); length > 10 {
-		return fmt.Sprintf("%c%d%c", s[0], length-2, s[length-1])
+	uppercased := strings.ToUpper(s)
+	lowercased := strings.ToLower(s)
+	if s == uppercased {
+		return lowercased
+	}
+	if s[0] == lowercased[0] && s[1:] == uppercased[1:] {
+		return fmt.Sprintf("%c%s", uppercased[0], lowercased[1:])
 	}
 	return s
 }
 
-func Test(t *testing.T) {
-	a := assert.New(t)
-	a.Equal("Caps", do("cAPS"))
-	a.Equal("Lock", do("Lock"))
-}
+// func Test(t *testing.T) {
+// 	a := assert.New(t)
+// 	a.Equal("Caps", do("cAPS"))
+// 	a.Equal("Lock", do("Lock"))
+// 	a.Equal("cAPSlOCK", do("cAPSlOCK"))
+// 	a.Equal("oops", do("OOPS"))
+// }
 
 func main() {
-	var n int
 	var s string
-	fmt.Scan(&n)
-	for n > 0 {
-		fmt.Scan(&s)
-		fmt.Println(do(s))
-		n--
-	}
+	fmt.Scan(&s)
+	fmt.Println(do(s))
 }

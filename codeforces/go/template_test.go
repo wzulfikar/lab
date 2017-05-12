@@ -12,8 +12,9 @@ func do(s string) string {
 	return s
 }
 
-// test the code here and comment
-// it before submitting to codeforces
+// put the test case here.
+// comment this func before
+// submitting to codeforces
 func Test(t *testing.T) {
 	a := assert.New(t)
 	a.Equal("yo", do("yo"))
