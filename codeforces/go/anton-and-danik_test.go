@@ -29,8 +29,8 @@ func do(s string) string {
 
 // http://codeforces.com/problemset/problem/734/A
 func main() {
-	var n int
 	var s string
+	var n int
 	fmt.Scan(&n, &s)
 	fmt.Println(do(s))
 }
