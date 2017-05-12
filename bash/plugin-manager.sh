@@ -20,5 +20,6 @@ source ~/code/github/lab/bash/bitly.sh
 source ~/code/github/lab/bash/watch-py-entr.sh
 source ~/code/github/lab/bash/watch-js-entr.sh
 source ~/code/github/lab/bash/watch-go-entr.sh
+source ~/code/github/lab/bash/watch-go-test-entr.sh
 source ~/code/github/lab/bash/watch-php-entr.sh
 # source ~/code/github/lab/bash/gdrive-file.sh
