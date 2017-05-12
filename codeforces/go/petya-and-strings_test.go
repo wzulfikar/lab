@@ -17,9 +17,11 @@ func do(s1, s2 string) int {
 }
 
 // func Test(t *testing.T) {
-// 	assert.Equal(t, do("aaaa", "aaaA"), 0)
-// 	assert.Equal(t, do("abs", "Abz"), -1)
-// 	assert.Equal(t, do("abcdefg", "AbCdEfF"), 1)
+//  a := assert.New(t)
+//
+// 	a.Equal( 0, do("aaaa", "aaaA"))
+// 	a.Equal(-1, do("abs", "Abz"))
+// 	a.Equal( 1, do("abcdefg", "AbCdEfF"))
 // }
 
 func main() {
