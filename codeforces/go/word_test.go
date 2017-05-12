@@ -17,11 +17,13 @@ func do(s string) string {
 // submitting to codeforces
 func Test(t *testing.T) {
 	a := assert.New(t)
-	a.Equal("yo", do("yo"))
+	a.Equal("house", do("HoUse"))
+	a.Equal("VIP", do("ViP"))
+	a.Equal("matrix", do("maTRIx"))
 }
 
+// http://codeforces.com/problemset/problem/59/A
 func main() {
-	var s string
-	fmt.Scan(&s)
-	fmt.Println(do(s))
+	var in string
+	fmt.Scan(&in)
 }
