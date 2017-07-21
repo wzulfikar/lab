@@ -52,3 +52,8 @@ scrape-image () {
 google () {
 	eval "googler --colors Gcdgxy $1"
 }
+
+# find duplicate words in file
+dupes () {
+	rev $1 | cut -f1 -d/ | rev | sort | uniq -d
+}
