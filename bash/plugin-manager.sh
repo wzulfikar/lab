@@ -22,6 +22,7 @@ source ~/code/github/lab/bash/watch-js-entr.sh
 source ~/code/github/lab/bash/watch-go-entr.sh
 source ~/code/github/lab/bash/watch-go-test-entr.sh
 source ~/code/github/lab/bash/watch-php-entr.sh
+source ~/code/github/lab/bash/watch-asm-entr.sh
 source ~/code/github/lab/bash/getlinks.sh
 source ~/code/github/lab/bash/run-asm.sh
 # source ~/code/github/lab/bash/gdrive-file.sh
