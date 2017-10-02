@@ -59,7 +59,7 @@ DECLARE
 	FROM EMPLOYEE E
     JOIN BRANCH B
     ON B.BRANCH_NUM = E.BRANCH_NUM
-	WHERE EMPNO = &input;
+	WHERE EMPNO = '&input';
 
 	employee employee_cursor%ROWTYPE;
 	EMPLOYEE_NOT_FOUND_EXCEPTION EXCEPTION;
@@ -98,7 +98,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(RPAD('Hiredate', rpad_size) || ' : ' || employee.HIREDATE);
     DBMS_OUTPUT.PUT_LINE(RPAD('Months Worked', rpad_size) || ' : ' || months_worked || ' (' || years_worked || 'yrs)');
     DBMS_OUTPUT.PUT_LINE(RPAD('Branch', rpad_size) || ' : ' || employee.BRANCH_NAME);
-	DBMS_OUTPUT.PUT_LINE(RPAD(' ', rpad_size) || '   ' || employee.BRANCH_LOCATION);
+	DBMS_OUTPUT.PUT_LINE(RPAD('Branch Loc.', rpad_size) || ' : ' || employee.BRANCH_LOCATION);
 
     -- craft header for management info
     DBMS_OUTPUT.PUT_LINE('');
