@@ -1,0 +1,1 @@
+ACCEPT eno PROMPT 'Enter employee number: '
