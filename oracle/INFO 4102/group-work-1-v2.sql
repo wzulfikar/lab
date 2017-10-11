@@ -1,15 +1,8 @@
-SET SERVEROUTPUT ON
-SET VERIFY OFF
+-- BEGINNING OF PROCEDURE AND FUNCTION DECLARATIONS
 
 /**
- * Get detail of employee 
- * by its employee number.
- *
- * Raise exception if input is not a valid number
+ * Function to get number of people managed by a manager
  */
-
-ACCEPT input PROMPT 'Enter employee number: '
-
 CREATE OR REPLACE FUNCTION getMemberCount(emp_no IN INTEGER) 
    RETURN NUMBER 
    IS memberCount NUMBER(2);
@@ -23,6 +16,9 @@ CREATE OR REPLACE FUNCTION getMemberCount(emp_no IN INTEGER)
     END;
 /
 
+/**
+ * Procedure to print management-related info (for member)
+ */
 CREATE OR REPLACE PROCEDURE displayMemberInfo(employee_name EMPLOYEE.ENAME%TYPE, member_count integer) AS
     BEGIN
     if member_count = 0 THEN
@@ -35,6 +31,9 @@ CREATE OR REPLACE PROCEDURE displayMemberInfo(employee_name EMPLOYEE.ENAME%TYPE,
     END;
 /
 
+/**
+ * Procedure to print management-related info (for manager)
+ */
 CREATE OR REPLACE PROCEDURE displayManagerInfo(employee_name EMPLOYEE.ENAME%TYPE, managerId EMPLOYEE.MGR%TYPE) AS
     BEGIN
     if managerId IS NULL THEN
@@ -45,7 +44,67 @@ CREATE OR REPLACE PROCEDURE displayManagerInfo(employee_name EMPLOYEE.ENAME%TYPE
     END;
 /
 
+/**
+ * Function to get number of people managed by a manager
+ */
+CREATE OR REPLACE FUNCTION getMemberCount(emp_no IN INTEGER) 
+   RETURN NUMBER 
+   IS memberCount NUMBER(2);
+   BEGIN 
+      SELECT COUNT(EMPNO)
+      INTO memberCount 
+      FROM EMPLOYEE
+      WHERE MGR = emp_no;
+      
+      RETURN(memberCount); 
+    END;
+/
+
+/**
+ * Procedure to print management-related info (for member)
+ */
+CREATE OR REPLACE PROCEDURE displayMemberInfo(employee_name EMPLOYEE.ENAME%TYPE, member_count integer) AS
+    BEGIN
+    if member_count = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('- ' || employee_name || ' is not manager');
+    ELSIF member_count = 1 THEN
+        DBMS_OUTPUT.PUT_LINE('- ' || employee_name || ' is managing 1 person');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('- ' || employee_name || ' is managing ' || member_count || ' person');
+    END IF;
+    END;
+/
+
+/**
+ * Procedure to print management-related info (for manager)
+ */
+CREATE OR REPLACE PROCEDURE displayManagerInfo(employee_name EMPLOYEE.ENAME%TYPE, managerId EMPLOYEE.MGR%TYPE) AS
+    BEGIN
+    if managerId IS NULL THEN
+        DBMS_OUTPUT.PUT_LINE('- ' || employee_name || ' is not being managed by anyone');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('- ' || employee_name || ' is under supervision of employee #' || managerId);
+    END IF;
+    END;
+/
+
+-------- END OF PROCEDURE AND FUNCTION DECLARATIONS -------
+
+-- BEGINNING OF ANONYMOUS BLOCK
+
+SET SERVEROUTPUT ON
+SET VERIFY OFF
+/**
+ * Get detail of employee 
+ * by its employee number.
+ *
+ * Raise exception if input is not a valid number
+ */
+
+ACCEPT input PROMPT 'Enter employee number: '
+
 DECLARE
+	-- cursor declaration
 	CURSOR employee_cursor IS
 	SELECT 
         E.EMPNO EMPNO, 
@@ -62,6 +121,8 @@ DECLARE
 	WHERE EMPNO = '&input';
 
 	employee employee_cursor%ROWTYPE;
+
+	-- declare user-defined exception
 	EMPLOYEE_NOT_FOUND_EXCEPTION EXCEPTION;
     
 	liner           varchar2(30)  := '----------------------------';    
@@ -114,13 +175,16 @@ BEGIN
 
 	CLOSE employee_cursor;
     
-    -- exception handler begins
+    -- start exception handler
     EXCEPTION
-       WHEN INVALID_NUMBER THEN
-       DBMS_OUTPUT.PUT_LINE('Oops! Something went wrong..');
-       DBMS_OUTPUT.PUT_LINE('- "' || user_input || '" is not valid employee number');
-       DBMS_OUTPUT.PUT_LINE('- ' || 'Employee number must be integer');
+       -- handle oracle exception
+       WHEN INVALID_NUMBER THEN 
+	       DBMS_OUTPUT.PUT_LINE('Oops! Something went wrong..');
+	       DBMS_OUTPUT.PUT_LINE('- "' || user_input || '" is not valid employee number');
+	       DBMS_OUTPUT.PUT_LINE('- ' || 'Employee number must be integer');
+       -- handle user-defined exception
        WHEN EMPLOYEE_NOT_FOUND_EXCEPTION THEN
-       DBMS_OUTPUT.PUT_LINE('Not found: employee with employee number ' || user_input || ' does not exist.');
+	       DBMS_OUTPUT.PUT_LINE('Not found: employee with employee number ' || user_input || ' does not exist.');
 END;
 /
+-- END OF ANONYMOUS BLOCK
