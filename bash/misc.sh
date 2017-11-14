@@ -57,3 +57,13 @@ google () {
 dupes () {
 	rev $1 | cut -f1 -d/ | rev | sort | uniq -d
 }
+
+# watch ts files and execute index.ts or `$1`
+# dependencies: nodemon, typescript, ts-node
+nodemon-ts () {
+	if [[ $1 ]]; then
+		nodemon --watch '*.ts' --exec 'ts-node --fast' $1
+	else
+		nodemon --watch '*.ts' --exec 'ts-node --fast' index.ts
+  	fi
+}
