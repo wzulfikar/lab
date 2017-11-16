@@ -9,6 +9,7 @@ source ~/code/github/lab/bash/app-aliases.sh
 source ~/code/github/lab/bash/brew-switch.sh
 source ~/code/github/lab/bash/watch-artisan-entr.sh
 source ~/code/github/lab/bash/watch-phpunit-entr.sh
+source ~/code/github/lab/bash/watch-java-entr.sh
 source ~/code/github/lab/bash/watch-sh.sh
 source ~/code/github/lab/bash/qotd.sh
 source ~/code/github/lab/bash/cmp.sh

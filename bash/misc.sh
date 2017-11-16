@@ -62,8 +62,8 @@ dupes () {
 # dependencies: nodemon, typescript, ts-node
 nodemon-ts () {
 	if [[ $1 ]]; then
-		nodemon --watch '*.ts' --exec 'ts-node --fast' $1
+		nodemon --watch '*.ts' --exec 'ts-node' $1
 	else
-		nodemon --watch '*.ts' --exec 'ts-node --fast' index.ts
+		nodemon --watch '*.ts' --exec 'ts-node' index.ts
   	fi
 }
