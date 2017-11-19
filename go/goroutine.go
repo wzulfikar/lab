@@ -6,6 +6,12 @@ import (
 	"time"
 )
 
+type task struct {
+	name          string
+	durationInSec int64
+}
+
+// function that simulates running task (using sleep)
 func worker(name string, timeInSecs int64, wg *sync.WaitGroup) {
 	defer wg.Done()
 
@@ -17,13 +23,19 @@ func worker(name string, timeInSecs int64, wg *sync.WaitGroup) {
 	fmt.Println("[FINISHED]", name)
 }
 
-type task struct {
-	name          string
-	durationInSec int64
+// function to display total execution time
+func timer() func() {
+	start := time.Now()
+	return func() {
+		fmt.Println("\nTotal execution time:", time.Since(start), "seconds")
+	}
 }
 
 func main() {
-	var startTime = time.Now()
+	// use `defer` to display total
+	// execution time when `main` finished
+	defer timer()()
+
 	var wg sync.WaitGroup
 
 	var tasks = []task{
@@ -45,6 +57,4 @@ func main() {
 	// use `wg.Wait()` so the main thread won't exit before
 	// items in WaitGroup finished.
 	wg.Wait()
-
-	fmt.Println("Total execution time:", time.Since(startTime), "seconds")
 }
