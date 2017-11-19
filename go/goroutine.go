@@ -23,16 +23,19 @@ type task struct {
 }
 
 func main() {
+	var startTime = time.Now()
 	var wg sync.WaitGroup
 
 	var tasks = []task{
-		{"Task 1 - Longer Jump", 8},
-		{"Task 2 - Short Jump", 3},
-		{"Task 3 - Long Jump", 6},
+		{"Task 1 - Longer Jump", 6},
+		{"Task 2 - Short Jump", 2},
+		{"Task 3 - Long Jump", 4},
 	}
 
 	for _, task := range tasks {
 		wg.Add(1)
+		// try remove the `go` to run our tasks without
+		// concurrency and see the diff in total execution time.
 		go worker(task.name, task.durationInSec, &wg)
 	}
 
@@ -42,4 +45,6 @@ func main() {
 	// use `wg.Wait()` so the main thread won't exit before
 	// items in WaitGroup finished.
 	wg.Wait()
+
+	fmt.Println("Total execution time:", time.Since(startTime), "seconds")
 }
