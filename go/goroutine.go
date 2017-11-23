@@ -27,7 +27,7 @@ func worker(name string, timeInSecs int64, wg *sync.WaitGroup) {
 func timer() func() {
 	start := time.Now()
 	return func() {
-		fmt.Println("\nTotal execution time:", time.Since(start), "seconds")
+		fmt.Println("\nTotal execution time:", time.Since(start))
 	}
 }
 
