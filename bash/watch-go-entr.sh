@@ -9,7 +9,7 @@ watch-go () {
 
     COMMAND="clear && echo '$BANNER' && go run $*"
 
-	FILES="find . -name \*.go"
+	FILES="ls *.go */**.go"
 
 	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }
