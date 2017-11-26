@@ -7,9 +7,14 @@ watch-go () {
     MSG='\n→ Watching go (using entr)..$NC'
     BANNER='${GREEN}Output of \"$*\":$NC'
 
-    COMMAND="clear && echo '$BANNER' && go run $*"
+    COMMAND="clear && echo '$BANNER' && go run $1"
 
-	FILES="find . -name *.go"
+	if [ -z "$2" ]; then
+		FILES="find . -name \*.go"
+	else
+		# allow passing custom directory to watch
+		FILES="ls *.go $2/*.go"
+    fi
 
 	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }
