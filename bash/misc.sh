@@ -67,3 +67,10 @@ nodemon-ts () {
 		nodemon --watch '*.ts' --exec 'ts-node' index.ts
   	fi
 }
+
+# make symlink of current directory in $GOPATH/src
+# e.g. create `$GOPATH/src/github.com/my-package`:
+# `cd ~/path-to/my-package && golink github.com/wzulfikar`
+golink() {
+	eval "ln -s $(pwd) $GOPATH/src/$1"
+}
