@@ -23,7 +23,9 @@ func worker(name string, timeInSecs int64, wg *sync.WaitGroup) {
 	fmt.Println("[FINISHED]", name)
 }
 
-// function to display total execution time
+// Function to display total execution time
+// Usage:
+// 	defer timer()()
 func timer() func() {
 	start := time.Now()
 	return func() {
