@@ -17,15 +17,15 @@ source ~/code/github/lab/bash/len.sh
 source ~/code/github/lab/bash/docker-snippets.sh
 source ~/code/github/lab/bash/openssl-enc-dec.sh
 source ~/code/github/lab/bash/upload.sh
-source ~/code/github/lab/bash/bitly.sh
+# source ~/code/github/lab/bash/bitly.sh
 source ~/code/github/lab/bash/watch-py-entr.sh
 source ~/code/github/lab/bash/watch-js-entr.sh
 source ~/code/github/lab/bash/watch-go-entr.sh
 source ~/code/github/lab/bash/watch-go-test-entr.sh
 source ~/code/github/lab/bash/watch-php-entr.sh
-source ~/code/github/lab/bash/watch-asm-entr.sh
+# source ~/code/github/lab/bash/watch-asm-entr.sh
 source ~/code/github/lab/bash/getlinks.sh
-source ~/code/github/lab/bash/run-asm.sh
+# source ~/code/github/lab/bash/run-asm.sh
 # source ~/code/github/lab/bash/gdrive-file.sh
-
+source ~/code/github/lab/bash/checkip.sh
 source ~/code/github/lab/bash/bash-runner.sh
