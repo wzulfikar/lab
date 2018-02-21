@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"time"
 
 	"github.com/fatih/color"
@@ -12,10 +13,10 @@ import (
 )
 
 func main() {
-
 	terisshortid()
 	rs_xid()
 	satoriuuid()
+	randSeqGenerator()
 }
 
 func terisshortid() {
@@ -63,6 +64,28 @@ func rs_xid() {
 	for i := 0; i < 5; i++ {
 		fmt.Printf("xid %d: %s\n", i+1, xid.New())
 	}
+}
+
+func randSeqGenerator() {
+	defer timer("randSeq")()
+	fmt.Println("\n=== Generator used: randSeq ===\n")
+
+	// seed before generating randSeq
+	rand.Seed(time.Now().UnixNano())
+
+	for i := 0; i < 5; i++ {
+		fmt.Printf("xid %d: %s\n", i+1, randSeq(11))
+	}
+}
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+
+func randSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
 
 func timer(taskName string) func() {
