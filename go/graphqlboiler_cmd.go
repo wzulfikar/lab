@@ -1,6 +1,10 @@
 package main
 
-import "github.com/wzulfikar/lab/go/graphqlboiler"
+import (
+	"os"
+
+	"github.com/wzulfikar/lab/go/graphqlboiler"
+)
 
 // sample struct
 type Person struct {
@@ -9,10 +13,17 @@ type Person struct {
 	married bool `json:"-"`
 }
 
+// Generate graphql boilerplate from given schemas
 func main() {
-	// SampleSchemaPerson
-	graphqlboiler.Boil(graphqlboiler.Tpl{
-		RootResolver: "RootResolver",
-		Schema:       Person{},
-	}, "./resolvers/")
+	schemas := []interface{}{
+		graphqlboiler.SampleSchemaPerson{},
+		Person{},
+	}
+
+	for _, schema := range schemas {
+		graphqlboiler.Boil(graphqlboiler.Tpl{
+			RootResolver: "RootResolver",
+			Schema:       schema,
+		}, os.Getenv("RESOLVERS_DIR"))
+	}
 }
