@@ -7,8 +7,6 @@
 //		RootResolver: "RootResolver",
 //		schema:       Person{},
 //	}, "./graphqlboiler/")
-//
-
 package graphqlboiler
 
 import (
@@ -42,9 +40,11 @@ func Boil(tpl Tpl, path string) {
 	fields := reflectFields(tpl.Schema)
 
 	tplResolverFields := tplResolverFields(resolverName(typeName), fields)
+	tplQueryResult := tplQueryResult(typeName, tpl.RootResolver)
 	tplSchema := tplSchema(typeName, fields)
 
 	mustWrite(path+strings.ToLower(typeName)+".go", tplResolver+tplResolverFields)
+	mustWrite(path+strings.ToLower(typeName)+"_result.go", tplQueryResult)
 	mustWrite(path+strings.ToLower(typeName)+"_schema.go", tplSchema)
 }
 
@@ -76,65 +76,4 @@ func mustWrite(filename, content string) {
 	}
 	defer file.Close()
 	fmt.Fprintf(file, content)
-}
-
-func tplResolver(typeName, RootResolver string) string {
-	return `package resolvers
-
-import (
-	"context"
-)
-
-type ` + resolverName(typeName) + ` struct {
-	rr *` + RootResolver + `
-	o  *models.` + typeName + `
-}
-
-func (rr *` + RootResolver + `) ` + typeName + `(ctx context.Context, args struct{ID graphql.ID}) (*` + resolverName(typeName) + `, err) {
-	// TODO: initialize object for resolver
-	o := &models.` + typeName + `{} 
-	return *` + resolverName(typeName) + `{rr: rr, o: o}
-}
-
-`
-}
-
-func tplResolverFields(resolverName string, fields []resolverField) string {
-	var resolvers string
-	var fldType string
-	for _, field := range fields {
-		switch field.fieldType {
-		case "uint":
-			fldType = "int32"
-		default:
-			fldType = field.fieldType
-		}
-		resolvers += `func (r *` + resolverName + `) ` + field.name + `(` + fldType + `, error) {
-	return r.o.` + field.name + `
-}
-
-`
-	}
-	return resolvers
-}
-
-func tplSchema(typeName string, fields []resolverField) string {
-	var schemaFields string
-	for _, field := range fields {
-		fldType := strings.ToUpper(field.fieldType[0:1]) + field.fieldType[1:]
-		schemaFields += fmt.Sprintf("\t%s: %s!\n", field.name, fldType)
-	}
-
-	schemaFields = strings.TrimRight(strings.TrimLeft(schemaFields, "\t"), "\n")
-
-	return `package resolvers
-
-var ` + typeName + `Schema = ` + "`" + `
-type ` + typeName + ` {
-	` + schemaFields + `
-}` + "`" + `
-
-var ` + typeName + `Query = ` + "`" + `
-` + (strings.ToLower(typeName[0:1]) + typeName[1:]) + `(id: ID!): ` + typeName + `!
-` + "`"
 }
