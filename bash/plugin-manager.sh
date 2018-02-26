@@ -12,7 +12,7 @@ source ~/code/github/lab/bash/watch-phpunit-entr.sh
 source ~/code/github/lab/bash/watch-java-entr.sh
 source ~/code/github/lab/bash/watch-sh.sh
 source ~/code/github/lab/bash/qotd.sh
-source ~/code/github/lab/bash/cmp.sh
+source ~/code/github/lab/bash/eq.sh
 source ~/code/github/lab/bash/len.sh
 source ~/code/github/lab/bash/docker-snippets.sh
 source ~/code/github/lab/bash/openssl-enc-dec.sh
