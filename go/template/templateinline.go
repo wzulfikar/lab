@@ -11,7 +11,7 @@ func main() {
 		Count    uint
 	}
 	sweaters := Inventory{"wool", 17}
-	tmpl, err := template.New("test").Parse(`    {{with $x := strings.toUpper(.Material)}}{{printf "%s" $x}}{{end}} items are made of {{.Material}}`)
+	tmpl, err := template.New("test").Parse(`{{.Count}} items are made of {{.Material}}`)
 	if err != nil {
 		panic(err)
 	}
