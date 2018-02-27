@@ -69,9 +69,16 @@ func Boil(tpl Tpl, path string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("✔ Resolver template")
 
 	tplResolverFields := tplResolverFields(resolverName, fields)
 	fmt.Println("✔ Resolver fields template")
+
+	tplMutations, err := parseTpl(templates.Mutations, data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("✔ Mutations template")
 
 	tplQueryResult, err := parseTpl(templates.QueryResult, data)
 	if err != nil {
@@ -88,6 +95,7 @@ func Boil(tpl Tpl, path string) {
 	mustWrite(path+strings.ToLower(typeName)+".go", tplResolver+tplResolverFields)
 	mustWrite(path+strings.ToLower(typeName)+"_result.go", tplQueryResult)
 	mustWrite(path+strings.ToLower(typeName)+"_schema.go", tplSchema)
+	mustWrite(path+strings.ToLower(typeName)+"_mutations.go", tplMutations)
 	fmt.Println("✔ Write templates to file")
 	fmt.Println("[DONE!]\n")
 }

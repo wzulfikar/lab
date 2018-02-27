@@ -1,7 +1,6 @@
 package templates
 
-const QueryResult = `
-package resolvers
+const QueryResult = `package resolvers
 
 import (
 	"context"

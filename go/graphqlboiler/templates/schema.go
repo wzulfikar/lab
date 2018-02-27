@@ -1,7 +1,6 @@
 package templates
 
-const Schema = `
-package resolvers
+const Schema = `package resolvers
 
 var {{.TypeName}}Schema = ` + "`" + `
 type {{.TypeName}} {
@@ -24,4 +23,8 @@ type {{.TypeName}}Result implements QueryResult {
 
 var {{.TypeName}}Query = ` + "`" + `
 {{.TypeNameLowerCase}}(id: ID!): {{.TypeName}}!
+` + "`" + `
+
+var {{.TypeName}}Mutations = ` + "`" + `
+create{{.TypeName}}(id: ID!): {{.TypeName}}!
 ` + "`"
