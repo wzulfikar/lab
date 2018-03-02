@@ -4,17 +4,16 @@ const QueryResult = `package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/volatiletech/sqlboiler/queries/qm"
-	"gitlab.com/wzulfikar/iiumtestimony/models"
-	"gitlab.com/wzulfikar/iiumtestimony/modules/graphql/app"
+	"{{.Repo}}/models"
+	"{{.Repo}}/modules/graphql/app"
 )
 
 type {{.TypeName}}ResultResolver struct {
 	totalCount int64
 	pageInfo   *app.PageInfoResolver
-	items      []*{{.TypeName}}Resolver
+	items      []*{{.ResolverName}}
 }
 
 func (r *{{.TypeName}}ResultResolver) PageInfo() *app.PageInfoResolver {
@@ -66,7 +65,7 @@ func (rr *{{.RootResolver}}) {{.ModelPlural}}(ctx context.Context, args *{{.Type
 		pageInfo:   pageInfo.Resolver(),
 	}
 	for _, row := range o {
-		result.items = append(result.items, &{{.TypeName}}Resolver{rr: rr, o: row})
+		result.items = append(result.items, &{{.ResolverName}}{rr: rr, o: row})
 	}
 
 	return result, nil
@@ -76,7 +75,7 @@ func (r *{{.TypeName}}ResultResolver) TotalCount() (int32, error) {
 	return int32(r.totalCount), nil
 }
 
-func (r *{{.TypeName}}ResultResolver) Items() ([]*{{.TypeName}}Resolver, error) {
+func (r *{{.TypeName}}ResultResolver) Items() ([]*{{.ResolverName}}, error) {
 	return r.items, nil
 }
 `

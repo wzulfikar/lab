@@ -2,14 +2,16 @@ package templates
 
 const Schema = `package resolvers
 
+var {{.TypeName}}Type = "{{.TypeName}}"
+
 var {{.TypeName}}Schema = ` + "`" + `
 type {{.TypeName}} {
 	{{.SchemaFields}}
 }
 
-input {{.TypeName}}Filter {
-	// TODO: add fields for filter 
-}
+// TODO: add fields for filter 
+// input {{.TypeName}}Filter {
+// }
 
 ` + "` + {{.TypeName}}Result" + `
 
