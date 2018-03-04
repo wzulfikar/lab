@@ -9,6 +9,13 @@ googleAnalytics = "your_google_analytics_id"
 # Set the value to true if your site include CJK (Chinese, Japanese, and Korean languages) characters
 hasCJKLanguage = false
 
+[languages]
+[languages.en]
+	weight = 1
+
+[languages.id]
+	weight = 2
+
 [taxonomies]
    tag = "tags"
    # category = "categories"
@@ -43,7 +50,7 @@ hasCJKLanguage = false
 	twitterCardImage = ""
 
 	# Add custom assets with their paths relative to the static folder
-	customCSS = []
+	customCSS = ["/css/custom.css"]
 	customJS  = []
 
 	# The variables below are optionally too and can be used to

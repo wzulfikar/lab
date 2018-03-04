@@ -932,10 +932,3 @@ a.symbol:hover {
 .page-tags ul li a:hover {
     color: #5694f1;
 }
-
-.read-time {
-	font-weight: normal;
-	color: #c2c2c2;
-	font-size: 16px;
-	display: block;
-}

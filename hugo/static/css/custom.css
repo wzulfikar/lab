@@ -1,0 +1,14 @@
+.read-time {
+	font-weight: normal;
+	color: #c2c2c2;
+	font-size: 16px;
+	display: block;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.red {
+	color: firebrick;
+}
