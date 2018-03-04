@@ -3,20 +3,22 @@ title: "Hello Hugo!"
 date: 2018-03-03T02:33:20+08:00
 tags: ["experiment"]
 draft: false
-enableToc: false
+disableToc: true
 ---
 
-This is another experiment on how/where I write things I like to write *(Duh)*.
+<p class="text-center">Another experiment on how/where I write things I like to write <i>(Duh)</i>.</p>
 
-<span>***</span>
+<p class="text-center red">***</p>
 
 So, I've been through the path of Wordpress, Tumblr, Ghost, and recently, Gitbook. Each has its own merits and drawbacks. However, I see something interesting from Hugo, that I didn't see in my previous adventures with other writing tools. 
+
+<!--more-->
 
 Before we go to Hugo, I'd like to clarify the context by telling more about what I've found in my previous writing tools, and what I'm looking for. 
 
 ## Wordpress
 
-Wordpress (https://wordpress.org) been around since [2003](https://en.wikipedia.org/wiki/WordPress) and can be seen as one of the most famous blogging tools, or CMS (Content Management System). And by being most famous, it means that people can find help and support easily. 
+Wordpress (https://wordpress.org) has been around since [2003](https://en.wikipedia.org/wiki/WordPress) and can be seen as one of the most famous blogging tools, or CMS (Content Management System). And by being most famous, it means that people can find help and support easily. 
 
 It has a good [built-in visual editor](/images/wordpress-editor.jpg) and so many [themes](https://wordpress.org/themes/) to choose from. Many things can be integrated using ready-made plugins (ie. google analytics, image gallery, e-commerce, etc.). *Good things.* 
 
@@ -65,9 +67,13 @@ Since we mentioned Jekyll, how does Hugo differ from Jekyll?
 
 Jekyll is built using Ruby (a programming language), which means that you'll need Ruby in your machine to use Jekyll. Yep, it's something *techy*. Hugo is built using Go (another programming language) that can produce a binary for multiple platform. People who developed Hugo have published it as a binary (a self executable program) that anyone can download. Hence, to use Hugo, one doesn't need to have Go programming language installed in their machine. They just need to have the Hugo binary. See more: [Hugo Quick Start](http://gohugo.io/getting-started/quick-start/).
 
-With Hugo, all my contents are stored as files (markdown files, to be specific). There's no need for database. I can write my contents offline and publish it later. And I can see my files anywhere. 
+> Hugo released its [v0.16](https://github.com/gohugoio/hugo/releases?after=v0.17) – the first Hugo release that wasn't tagged as `pre-release`, on June 2016.
 
-While I personally convinced to use Hugo (this blog itself is built using Hugo), it might not be for everyone since it involves some *techy* steps in its flow off writing contents. Nevertheless, I hope that knowing Hugo can somehow benefits you.
+With Hugo, all my contents are stored as files (markdown files, to be specific). There's no need for database. I can write my contents offline and publish it later. I can see my files anywhere, and I can use any editor I like (VIM, VSCode, SublimeText, etc).
+
+If you wonder what markdown is, it's a form of formatting similar to how you [format message in Whatsapp](https://faq.whatsapp.com/en/android/26000002/). Try writing markdown yourself here: http://markdownlivepreview.com.
+
+While I personally convinced to use Hugo (this blog itself is built using Hugo), it might not be for everyone since it involves some *techy* steps in its flow of writing contents. Nevertheless, I hope that knowing Hugo can somehow benefits you.
 
 Yup, you've reached the end of this post! And to end this, there's also a good writing platform that you may want to check out: [Medium](https://medium.com). 
 
