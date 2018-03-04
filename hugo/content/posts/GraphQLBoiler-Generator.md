@@ -6,6 +6,8 @@ draft: false
 
 This note as a continuation of my journey with Go template. Based on the knowledge of what template package can do, we'll generate a resolvers code from a given sqlboiler model struct to to satisfy graphql implementation of neelance/graphql-go.
 
+<!--more-->
+
 ## Synopsis
 
 I'm working on a project that uses MySQL as database, and wanted to have GraphQL implemented. To handle the database, we'll use SQLBoiler from [volatiletech/sqlboiler](https://github.com/volatiletech/sqlboiler) (they've very good documentation!). As for the GraphQL, we'll use [neelance/graphql-go](http://github.com/neelance/graphql-go). 
