@@ -16,7 +16,6 @@ type Person struct {
 // Generate graphql boilerplate from given schemas
 func main() {
 	schemas := []interface{}{
-		graphqlboiler.SampleSchemaPerson{},
 		Person{},
 	}
 
