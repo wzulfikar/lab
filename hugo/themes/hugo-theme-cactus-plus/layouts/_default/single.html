@@ -8,6 +8,10 @@
                     <h1>
                         {{ .Title }}
                     </h1>
+                    {{ if .Draft }}
+                    <span class="draft-indicator">DRAFT</span>
+                    <br/>
+                    {{ end }}
                     <h2 class="headline">
                     {{ .Date.Format "Jan 2, 2006 15:04" }}
                     · {{ if lt 1 .WordCount }}{{ .WordCount }} words{{ else }}{{ .WordCount }} word{{ end }}
@@ -23,12 +27,15 @@
                       </span>
                     </h2>
                 </header>
-                {{ if and .Site.Params.enableToc .Params.enableToc }}
-                  {{ if .TableOfContents }}
-                    <div id="toc">
-                      {{ .TableOfContents }}
-                    </div>
-                  {{ end }}
+                {{ if .Site.Params.enableToc }}
+                  {{ if not .Params.disableToc }}
+	                  {{ if .TableOfContents }}
+	                    <div id="toc">
+						Table of Contents:
+	                      {{ .TableOfContents }}
+	                    </div>
+	                  {{ end }}
+	              {{ end }}
                 {{ end }}
                 <section id="post-body">
                     {{ .Content }}
