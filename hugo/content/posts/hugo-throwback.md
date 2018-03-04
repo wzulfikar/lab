@@ -3,7 +3,6 @@ title: "Hugo Throwback"
 date: 2018-03-11T02:33:20+08:00
 tags: ["experiment", "go"]
 draft: true
-enableToc: false
 ---
 
 1. using hugo-theme-cactus-plus
