@@ -1,2 +1,2 @@
-hugo -d ../docs
+hugo
 echo "Done!"
