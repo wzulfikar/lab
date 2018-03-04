@@ -1,6 +1,7 @@
 ---
 title: "Hello Hugo!"
 date: 2018-03-03T02:33:20+08:00
+tags: ["experiment"]
 draft: false
 enableToc: false
 ---

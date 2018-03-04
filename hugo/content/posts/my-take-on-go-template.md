@@ -1,7 +1,8 @@
 ---
-title: "Yolo"
-date: 2018-03-03T02:33:20+08:00
+title: "My Take on Go Template"
+date: 2018-03-04T20:23:44+08:00
 draft: true
+tags: ["go", "graphql", "sqlboiler"]
 ---
 
 A Trip to Aceh 2

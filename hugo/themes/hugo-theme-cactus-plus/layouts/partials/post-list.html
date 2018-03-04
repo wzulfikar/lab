@@ -13,6 +13,7 @@
                             <h2>{{ .Summary | plainify | htmlUnescape }}</h2>
                         {{ end }}
                     {{ end }}
+                    <span class="read-time">∙ {{ .ReadingTime }} minute read</span>
                 </a>
             </li>
         {{ end }}
