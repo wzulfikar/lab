@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://wzulfikar.com/id/about/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/about/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/id/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/id/tags/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/tags/"
+                />
+  </url>
+  
+</urlset>

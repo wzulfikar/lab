@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on It&#39;s Dan :)</title>
+    <link>https://wzulfikar.com/tags/</link>
+    <description>Recent content in Tags on It&#39;s Dan :)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 03 Mar 2018 02:33:20 +0800</lastBuildDate>
+    
+	<atom:link href="https://wzulfikar.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Experiment</title>
+      <link>https://wzulfikar.com/tags/experiment/</link>
+      <pubDate>Sat, 03 Mar 2018 02:33:20 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/tags/experiment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go</title>
+      <link>https://wzulfikar.com/tags/go/</link>
+      <pubDate>Mon, 05 Mar 2018 00:21:19 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Graphql</title>
+      <link>https://wzulfikar.com/tags/graphql/</link>
+      <pubDate>Mon, 05 Mar 2018 00:21:19 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/tags/graphql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sqlboiler</title>
+      <link>https://wzulfikar.com/tags/sqlboiler/</link>
+      <pubDate>Mon, 05 Mar 2018 00:21:19 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/tags/sqlboiler/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

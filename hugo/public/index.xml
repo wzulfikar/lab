@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>It&#39;s Dan :)</title>
+    <link>https://wzulfikar.com/</link>
+    <description>Recent content on It&#39;s Dan :)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 05 Mar 2018 00:21:19 +0800</lastBuildDate>
+    
+	<atom:link href="https://wzulfikar.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GraphQL &#43; SQLBoiler Generator</title>
+      <link>https://wzulfikar.com/posts/graphqlboiler-generator/</link>
+      <pubDate>Mon, 05 Mar 2018 00:21:19 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/posts/graphqlboiler-generator/</guid>
+      <description>&lt;p&gt;This note as a continuation of my journey with Go template. Based on the knowledge of what template package can do, we&amp;rsquo;ll generate a resolvers code from a given sqlboiler model struct to to satisfy graphql implementation of neelance/graphql-go.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>My Take on Go Template</title>
+      <link>https://wzulfikar.com/posts/my-take-on-go-template/</link>
+      <pubDate>Sun, 04 Mar 2018 20:23:44 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/posts/my-take-on-go-template/</guid>
+      <description>&lt;p&gt;In programming, string interpolation is common. Using ES6 (JavaScript), string interpolation can be done like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hello Hugo!</title>
+      <link>https://wzulfikar.com/posts/hello-hugo/</link>
+      <pubDate>Sat, 03 Mar 2018 02:33:20 +0800</pubDate>
+      
+      <guid>https://wzulfikar.com/posts/hello-hugo/</guid>
+      <description>&lt;p class=&#34;text-center&#34;&gt;Another experiment on how/where I write things I like to write &lt;i&gt;(Duh)&lt;/i&gt;.&lt;/p&gt;
+
+&lt;p class=&#34;text-center red&#34;&gt;***&lt;/p&gt;
+
+&lt;p&gt;So, I&amp;rsquo;ve been through the path of Wordpress, Tumblr, Ghost, and recently, Gitbook. Each has its own merits and drawbacks. However, I see something interesting from Hugo, that I didn&amp;rsquo;t see in my previous adventures with other writing tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

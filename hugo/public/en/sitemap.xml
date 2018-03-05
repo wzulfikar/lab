@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://wzulfikar.com/posts/graphqlboiler-generator/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/posts/my-take-on-go-template/</loc>
+    <lastmod>2018-03-04T20:23:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/posts/hello-hugo/</loc>
+    <lastmod>2018-03-03T02:33:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/about/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/about/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/tags/experiment/</loc>
+    <lastmod>2018-03-03T02:33:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/tags/go/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/tags/graphql/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/posts/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/tags/sqlboiler/</loc>
+    <lastmod>2018-03-05T00:21:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzulfikar.com/tags/</loc>
+    <lastmod>2018-03-03T02:33:20+08:00</lastmod>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="id"
+                href="https://wzulfikar.com/id/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wzulfikar.com/tags/"
+                />
+  </url>
+  
+</urlset>
