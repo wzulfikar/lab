@@ -5,7 +5,7 @@ languageCode = "en"
 publishDir = "../docs"
 title = "It's Dan :)"
 theme = "hugo-theme-cactus-plus"
-googleAnalytics = "your_google_analytics_id"
+
 # Set the value to true if your site include CJK (Chinese, Japanese, and Korean languages) characters
 hasCJKLanguage = false
 
@@ -40,10 +40,11 @@ hasCJKLanguage = false
 	# Set the value to true if use description in post front matter replace content summary
 	useDescriptionReplaceSummary = false
 
-
 	enableGoogleAnalytics = true
-	enableBaiduAnalytics = false
+	googleAnalytics = "UA-XXXXXXXX-X"
+
 	# Set the value to your baidu analysis code if you want to use baidu analytics
+	enableBaiduAnalytics = false
 	baiduAnalytics = 'your_baidu_analysis_code'
 
 	enableTwitterCard = true
