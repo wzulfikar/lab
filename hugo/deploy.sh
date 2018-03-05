@@ -1,2 +1,2 @@
-hugo && cd .. && git subtree push --prefix hugo/public origin gh-pages && cd -
+hugo && git push
 echo "Done!"
