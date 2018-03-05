@@ -1,6 +1,7 @@
 ---
 title: "GraphQL + SQLBoiler Generator"
 date: 2018-03-05T00:21:19+08:00
+tags: ["go", "sqlboiler", "graphql"]
 draft: false
 ---
 
