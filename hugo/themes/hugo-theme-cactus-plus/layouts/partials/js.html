@@ -1,6 +1,13 @@
-<script src="{{ .Site.BaseURL }}js/jquery-3.3.1.min.js"></script>
-<script src="{{ .Site.BaseURL }}js/main.js"></script>
-<script src="{{ .Site.BaseURL }}js/highlight.min.js"></script>
+{{ if .Site.Params.useCDN }}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="{{ .Site.BaseURL }}js/main.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+{{ else }}
+	<script src="{{ .Site.BaseURL }}js/jquery-3.3.1.min.js"></script>
+	<script src="{{ .Site.BaseURL }}js/main.js"></script>
+	<script src="{{ .Site.BaseURL }}js/highlight.min.js"></script>
+{{ end }}
+
 <script>hljs.initHighlightingOnLoad();</script>
 
 {{ range .Site.Params.customJS }}

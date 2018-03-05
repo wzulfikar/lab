@@ -22,7 +22,11 @@
 		</style>
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
-		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/font-awesome.min.css">
+			{{ if .Site.Params.useCDN }}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+			{{ else }}
+		 	<link rel="stylesheet" href="{{ .Site.BaseURL }}css/font-awesome.min.css">
+		 	{{ end }}
 		{{ else }}
 		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/monosocialiconsfont.css">
 		{{ end }}
