@@ -44,9 +44,8 @@
             {{ if .Site.Params.enableShare }}
                 {{ partial "share.html" . }}
             {{ end }}
-
-            {{ if .Site.Params.enableDisqus }}
-                {{ if not .Params.disableDisqus }}
+            {{ if and .Site.Params.enableDisqus }}
+        		{{ if not .Params.disableDisqus }}
                 	{{ partial "disqus.html" . }}
                 {{ end }}
             {{ end }}

@@ -7,7 +7,7 @@
     {{ .Content }}
 
     {{ if .Site.Params.enableDisqus }}
-        {{ if ne .Params.disabledisqus "true" }}
+        {{ if not .Params.disableDisqus }}
             {{ partial "disqus.html" . }}
         {{ end }}
     {{ end }}
