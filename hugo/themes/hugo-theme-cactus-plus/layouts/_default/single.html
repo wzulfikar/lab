@@ -46,7 +46,9 @@
             {{ end }}
 
             {{ if .Site.Params.enableDisqus }}
-                {{ partial "disqus.html" . }}
+                {{ if not .Params.disableDisqus }}
+                	{{ partial "disqus.html" . }}
+                {{ end }}
             {{ end }}
 
             {{ if .Site.Params.showLatestPosts }}

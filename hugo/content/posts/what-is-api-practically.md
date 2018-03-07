@@ -1,5 +1,5 @@
 ---
-title: "What is API, Practically."
+title: "Practically, what is an API?"
 date: 2018-03-06T16:31:04+08:00
 tags: ["tech", "programming"]
 draft: true
@@ -21,3 +21,4 @@ draft: true
 3. difference between api and sdk
 4. sample api: rest, graphql
 5. commonly used in IT (tech, programming)
+6. ref: https://medium.freecodecamp.org/what-is-an-api-in-english-please-b880a3214a82
