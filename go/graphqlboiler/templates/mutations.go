@@ -9,7 +9,7 @@ import (
 	"{{.Repo}}/models"
 )
 
-func (rr *{{.RootResolver}}) Create{{.TypeName}}(ctx context.Context, args struct{ID graphql.ID}) (*{{.ResolverName}}, error) {
+func (rr *{{.RootResolver}}) Create{{.TypeName}}(ctx context.Context, args struct{ ID graphql.ID }) (*{{.ResolverName}}, error) {
 	
 	panic("TODO: handle Create{{.TypeName}} mutation")
 	

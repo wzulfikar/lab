@@ -12,14 +12,12 @@
 		{{ .Hugo.Generator }}
 		<title>{{ if .IsHome }}{{ .Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
 		<link rel="shortcut icon" href="{{ .Site.BaseURL }}images/favicon.ico">
+		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/style.min.css">
+		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/highlight.min.css">
 		
-		<style type="text/css">
-		{{ readFile "themes/hugo-theme-cactus-plus/static/css/style.min.css" | safeCSS }}
-		{{ readFile "themes/hugo-theme-cactus-plus/static/css/highlight.min.css" | safeCSS }}
 		{{ range .Site.Params.customCSS }}
-			{{ readFile (print "static/" .) | safeCSS }}
+		<link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
 		{{ end }}
-		</style>
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
 			{{ if .Site.Params.useCDN }}

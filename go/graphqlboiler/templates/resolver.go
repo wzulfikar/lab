@@ -19,7 +19,7 @@ type {{.ResolverName}} struct {
 	o  *models.{{.TypeName}}
 }
 
-func (rr *{{.RootResolver}}) {{.TypeName}}(ctx context.Context, args struct{ID graphql.ID}) (*{{.ResolverName}}, error) {
+func (rr *{{.RootResolver}}) {{.TypeName}}(ctx context.Context, args struct{ ID graphql.ID }) (*{{.ResolverName}}, error) {
 	id, err := strconv.Atoi(string(args.ID))
 	if err != nil {
 		return nil, errors.New("Failed to get ID of {{.TypeName}}")
