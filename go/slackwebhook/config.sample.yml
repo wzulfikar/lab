@@ -3,3 +3,7 @@ channels:
   - "#test"
 origins:
   - "localhost"
+
+# Recaptcha secret (optional).
+# Get it from https://www.google.com/recaptcha/admin
+recaptcha_key: "aasdflkj232oi234lkj"

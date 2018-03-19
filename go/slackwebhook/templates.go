@@ -9,7 +9,7 @@ func templateFormSubmitted(redirect string) string {
 <html>
 Form submitted!
 <br/>
-<a href="` + redirect + `">→ Back to site</a>
+<a href="` + redirect + `">← Back to site</a>
 </html>
 `
 }
@@ -17,7 +17,7 @@ Form submitted!
 func templateFormError(err, site string) string {
 	backToSite := ""
 	if site != "" {
-		backToSite = `<br/><a href="` + site + `">→ Back to site</a>`
+		backToSite = `<br/><a href="` + site + `">← Back to site</a>`
 	}
 	return `
 <html>
