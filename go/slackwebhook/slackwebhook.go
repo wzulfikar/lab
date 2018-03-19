@@ -159,6 +159,9 @@ func (wh *webhook) handlePayload(w http.ResponseWriter, r *http.Request) {
 			payload.Channel = strings.Join(v, "")
 
 		// slack attachment
+		case "pretext":
+			pretext := strings.Join(v, "")
+			attachment.PreText = &pretext
 		case "attachmentcolor":
 			color := strings.Join(v, "")
 			attachment.Color = &color
