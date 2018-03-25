@@ -1,6 +1,8 @@
+/*
 h2[id]:before {
     content: '# ';
 }
+*/
 
 .read-time {
 	font-weight: normal;
@@ -55,4 +57,10 @@ a[href^="https://play.golang.org/"]:after,
 a[href^="https://repl.it/repls/"]:after,
 a[href^="https://codesandbox.io/s/"]:after {
 	content: " ▸";
+}
+
+p.figure-text {
+	line-height: 1;
+    text-align: center;
+    font-style: italic;
 }

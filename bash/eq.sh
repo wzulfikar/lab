@@ -5,15 +5,12 @@ eq () {
 	GREEN='\033[0;32m'
 	ORANGE='\033[0;33m'
 
-
 	if [ "$1" = "$2" ]
 	then
-		echo "${GREEN}[IT EQUALS!]${NC}\n"
-		IS_EQUAL_TEXT="${GREEN}▍IS EQUAL TO"
+		echo "${GREEN}[✔ IT EQUALS!]${NC}"
+		echo "▍$1"
 	else
-		echo "${RED}[NOT EQUALS!]${NC}\n"
-		IS_EQUAL_TEXT="${RED}▍IS NOT EQUAL TO"
+		echo "${RED}[✘ NOT EQUALS!]${NC}"
+		echo "▍$1\n${NC}▍$2"
 	fi
-
-	echo "▍$1\n$IS_EQUAL_TEXT\n${NC}▍$2"
 }
