@@ -8,9 +8,11 @@ draft: false
 ### What is Kubernetes?
 
 ![kubernetes logo](/images/kubernetes_logo-sm.png#featured)
-<p class="figure-text"><i>*Kubernetes Logo</i></p>
+<p class="figure-text"><i>*Kubernetes Logo.</i></p>
 
 Dealing with lot of applications that are containerized (ie. via docker) and installed across regions can cause headache; from restarting containers, deploying to multiple nodes, scaling, etc. Kubernetes is a tool to help us deal with such situation by putting those containers in a _cluster_.
+
+<!--more-->
 
 ### Kubernetes Cluster, Nodes, Deployments, and Pods
 
