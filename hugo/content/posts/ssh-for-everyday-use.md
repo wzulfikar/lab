@@ -38,6 +38,8 @@ common error:
 - reset host (remove from known_host): `ssh-keygen -R {hostname}`, ie. `ssh-keygen -R server.mydomain.com`
 
 
+https://blogs.oracle.com/pranav/how-to-send-message-to-users-logged-on-to-a-unix-terminal
+
 <p class="text-center">***</p>
 
 *Outline:*
@@ -47,3 +49,4 @@ common error:
 2. securing private key with password
 3. adding public key to authorized_keys
 4. revoking private key
+5. 
