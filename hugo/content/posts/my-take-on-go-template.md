@@ -3,6 +3,7 @@ title: "My Take on Go Template"
 date: 2018-03-04T20:23:44+08:00
 draft: false
 tags: ["go"]
+disableToc: true
 ---
 
 In programming, string interpolation is common. Using ES6 (JavaScript), string interpolation can be done like this:
@@ -40,6 +41,8 @@ Nice to meet you!
 When we see above text, we may have thought of the word *"template"*, because it has a placeholder-like formatting (the use of `{{ }}`). Go provides a built-in package, [`text/template`](https://golang.org/pkg/text/template/) and [`html/template`](https://golang.org/pkg/html/template/), to deal with this template related operations.
 
 ## Enter: Go Template
+
+![gopher](/images/gopher-head-sm.png#featured) 
 
 Let's start with a sample code:
 

@@ -5,6 +5,9 @@ tags: [""]
 draft: true
 ---
 
+![time machine logo](/images/time-machine-mac-icon-sm.png#featured)
+<p class="text-center"><i>*Time Machine Logo</i></p>
+
 `TODO: write content` 
 
 

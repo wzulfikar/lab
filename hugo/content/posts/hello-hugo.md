@@ -8,7 +8,10 @@ disableToc: true
 
 <p class="text-center">Another experiment on how/where I write things I like to write <i>(Duh)</i>.</p>
 
+![gohugo](/images/hugo-logo.png#featured) 
+
 <p class="text-center red">***</p>
+
 
 So, I've been through the path of Wordpress, Tumblr, Ghost, and recently, Gitbook. Each has its own merits and drawbacks. However, I see something interesting from Hugo, that I didn't see in my previous adventures with other writing tools. 
 
@@ -56,9 +59,6 @@ There's something off with Gitbook tho. It's meant for publishing book. While wh
 
 ## Hello Hugo! 
 
-![Gopher mascot](/images/gopher-head.png "Gopher mascot")
-**The Go gopher: an iconic mascot of Go project.*
-
 Hugo (http://gohugo.io) takes different approach compared to other tools we've discussed. It's a static site generator, something like [Jekyll](https://jekyllrb.com). 
 
 Static site generator basically means that Hugo will takes your contents and build a static site from it. Since it's static, you can host your site at no cost in platforms like [GitHub](https://github.com), [Gitlab](https://gitlab.com), [Netlify](https://www.netlify.com), [surge.sh](https://surge.sh), etc.
@@ -78,3 +78,7 @@ While I personally convinced to use Hugo (this blog itself is built using Hugo),
 Yup, you've reached the end of this post! And to end this, there's also a good writing platform that you may want to check out: [Medium](https://medium.com). 
 
 ***Till next. See ya!***
+
+![Gopher mascot](/images/gopher-head.png#featured "Gopher mascot")
+<p class="text-center">**The Go gopher: an iconic mascot of Go project.*</p>
+

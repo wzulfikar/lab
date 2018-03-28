@@ -8,6 +8,8 @@ disableToc: true
 
 ## What is Bettercap?
 
+![bettercap logo](/images/bettercap/bettercap-logo-sm.png#featured)
+
 If you are into networking tools for ARP spoof, sniffing, and other MITM-like utilities, you've probably heard about ettercap[^1]. Bettercap, which *sounds* similar to ettercap, is a networking tool like ettercap. Some people like to relate the name "Bettercap" as _better ettercap_.
 
 <!--more-->
@@ -85,7 +87,7 @@ That's it, a short demonstration on how we utilize Bettercap HTTP proxy module t
 
 Knowing how easy to do this should give us more awareness when using random proxy in internet. Just like what we've demonstrated here, yeah, the proxy providers can easily do funky stuffs as we browse the internet. *Unless you really trust, don't use them to browse your confidential informations.*
 
-I'll probably write another post about Bettercap to demonstrate other . But in the meantime, take your time exploring [Bettercap wiki](https://github.com/bettercap/bettercap/wiki) and see for yourself what it's capable of.
+I'd like to write one or two more posts to demonstrate other Bettercap features. But in the meantime, take your time exploring [Bettercap wiki](https://github.com/bettercap/bettercap/wiki) and see for yourself what it's capable of.
 
 ***Till next. See ya!***
 
