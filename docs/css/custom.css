@@ -62,5 +62,13 @@ a[href^="https://codesandbox.io/s/"]:after {
 p.figure-text {
 	line-height: 1;
     text-align: center;
-    font-style: italic;
+    font-size: small;
+}
+
+img[src$='#featured']
+{
+	max-height: 100px;
+    width: auto;
+    display: block;
+    margin: auto;
 }
