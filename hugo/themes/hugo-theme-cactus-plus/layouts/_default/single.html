@@ -44,7 +44,7 @@
             {{ if .Site.Params.enableShare }}
                 {{ partial "share.html" . }}
             {{ end }}
-            {{ if and .Site.Params.enableDisqus }}
+            {{ if .Site.Params.enableDisqus }}
         		{{ if not .Params.disableDisqus }}
                 	{{ partial "disqus.html" . }}
                 {{ end }}
@@ -60,5 +60,11 @@
         </section>
 
         {{ partial "js.html" . }}
+
+        {{ if not .Draft }}
+	        {{ if .Params.publishAt }}
+	        	{{ partial "publish-at-js.html" . }}
+	        {{ end }}
+        {{ end }}
     </body>
 </html>

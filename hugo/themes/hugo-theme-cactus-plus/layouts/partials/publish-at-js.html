@@ -1,0 +1,16 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+<script>
+var publishAt = moment('{{ .Params.publishAt }}');
+if (publishAt.isAfter()) {
+	var timeToPublish = publishAt.fromNow();
+	var timeHuman = publishAt.format('dddd, MMMM D, YYYY –– [at] h:mm a');
+	var newBody = [
+		'<b><i>Thank for coming here!</i></b>',
+		'However, the content of this post is scheduled to be available on ',
+		'<b>'+ timeHuman+ '</b>.',
+		'<br/>Please come again later :)',
+		'<i>time to publish: '+timeToPublish+'.</i>',
+	];
+	$('#post-body').html('<p>'+newBody.join('<br/>')+'</p>');
+}
+</script>
