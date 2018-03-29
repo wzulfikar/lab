@@ -1,8 +1,9 @@
 ---
 title: "PPI-IIUM Producation 2018: Finding Passion in University"
 date: 2018-03-27T20:00:34+08:00
-tags: ["social", "xp"]
-draft: true
+publishAt: 2018-03-30T20:00:00+08:00
+tags: ["xp", "reflection"]
+draft: false
 disableToc: true
 ---
 
@@ -12,7 +13,7 @@ Earlier this week, I received an invitation from Persatuan Pelajar Indonesia (PP
 
 The name "Producation" is an acronym for "Professional Education". In a nutshell, it's a sharing session to help improve participants' understanding of professionalism. There will be four speakers for the event, each with different topic to share. The topic I'll be sharing is titled "Finding Passion in University". That's it, finding your passion, while you're in university –– of course, it's not about whether you're passionate with the university itself.
 
-While waiting for the day of the event to come, I kind of thinking to prepare the things that I'd like to share by drafting it here and publishing it after the event. There'll be only 15 minutes slot for each session; wouldn't be nice if I missed a thing to share just because I didn't prepare. I'm not calling myself professional, but I've around 5 years experience working with professionals –– mostly in IT companies, and I'd like to share what I've learnt from them. 
+While waiting for the day of the event to come, I kind of thinking to prepare the things that I'd like to share by drafting it here and publishing it after the event. There'll be only 15 minutes slot for each session; wouldn't be nice if I missed a thing to share just because I didn't prepare. I'm not calling myself professional, but I've around 5 years experience working with professionals –– mostly in IT companies, and I'd like to share what I've learnt from them. If you're interested to the Google Slides used during the event (sharing session), you can find it at the end of this post.
 
 ### 1. Skolafund
 
@@ -55,4 +56,7 @@ Not everyone in university study what he/she genuinely want to study. Some becam
 
 Take a time for yourself, read your current situation and use it for your benefit: find what you can relate to yourself. Once you've your findings, go for it. If you find yourself fighting for it, that is, you might have found your passion.
 
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vT7biNAKKUWk1EpFNFZsE-8Xd41iuZqOkY0uYUSeLYawhbxPAefWDjRC9OQvjucVerHCvPYE2BShpzq/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="350" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<br/>
 ***Till next. See ya!***
