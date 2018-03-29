@@ -90,7 +90,7 @@ Dealing with lot of applications that are containerized (ie. via docker) and ins
                     
                     <h2 class="headline">
                     Mar 21, 2018 23:13
-                    · 1310 words
+                    · 1312 words
                     · 7 minute read
                       <span class="tags">
                       
@@ -242,7 +242,7 @@ kubectl apply -f https://git.io/weave-kube-1.6
 
 <p class="text-center">***</p>
 
-<p>The core part of above steps is that we did <code>kubeadm init</code> in <code>vm1</code> to make it as cluster master, and then run <code>kubeadm join ...</code> from other machines to make it join the cluster.</p>
+<p><em>The two important parts to create Kubernetes cluster from above steps is that we did <code>kubeadm init</code> in <code>vm1</code> to make it as cluster master, and then <code>kubeadm join ...</code> from other machines to join the cluster.</em></p>
 
 <p>Now that we&rsquo;ve a cluster master and joined the other two machines to our cluster master, we can verify if it&rsquo;s reflected in our list nodes by executing this command in cluster master: <code>kubectl get nodes</code></p>
 
@@ -333,6 +333,23 @@ kubectl get pods
 
             
             
+        		
+                	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wzulfikar-com'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+                
+            
 
             
 
@@ -393,6 +410,11 @@ kubectl get pods
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="/js/main.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+
+
 
 
 <script>hljs.initHighlightingOnLoad();</script>
