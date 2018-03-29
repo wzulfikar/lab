@@ -114,7 +114,7 @@ kubeadm join --token token.abc.def {server_ip}:6443 --discovery-token-ca-cert-ha
 
 <p class="text-center">***</p>
 
-The core part of above steps is that we did `kubeadm init` in `vm1` to make it as cluster master, and then run `kubeadm join ...` from other machines to make it join the cluster.
+*The two important parts to create Kubernetes cluster from above steps is that we did `kubeadm init` in `vm1` to make it as cluster master, and then `kubeadm join ...` from other machines to join the cluster.*
 
 Now that we've a cluster master and joined the other two machines to our cluster master, we can verify if it's reflected in our list nodes by executing this command in cluster master: `kubectl get nodes`
 
