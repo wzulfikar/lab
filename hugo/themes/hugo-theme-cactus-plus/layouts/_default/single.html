@@ -6,7 +6,7 @@
             <article>
                 <header>
                     <h1>
-                        {{ .Title }}
+                        {{ .Title | markdownify }}
                     </h1>
                     {{ if .Draft }}
                     <span class="draft-indicator--inverted">DRAFT</span>

@@ -5,7 +5,7 @@
             <li>
                 <aside class="dates">{{ .Date.Format "Jan 2" }}</aside>
                 <a href='{{ .Permalink }}'>
-                    {{ .Title }} 
+                    {{ .Title | markdownify }} 
                     {{ if .Draft }}<span class="draft-indicator">DRAFT</span>{{ end }}
                     {{ if .Site.Params.enableSummary }}
                         {{ if .Site.Params.useDescriptionReplaceSummary }}
