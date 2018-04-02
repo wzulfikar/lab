@@ -1,6 +1,6 @@
 // Watch for new file in WORKDIR and run alpr.
 // USAGE:
-// WORKDIR=/Volumes/data/playground/plates COUNTRY=eu go run binding.go
+// WORKDIR=/Volumes/data/playground/plates COUNTRY=eu go run watchbinding.go
 package main
 
 import (
@@ -18,7 +18,7 @@ func main() {
 		if err := recover(); err != nil {
 			fmt.Errorf("panic: %v", err)
 			time.Sleep(2 * time.Second)
-			// loop()
+			loop()
 		}
 	}()
 	loop()

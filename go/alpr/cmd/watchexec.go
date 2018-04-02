@@ -1,6 +1,6 @@
 // Watch for new file in WORKDIR and run alpr.
 // USAGE:
-// WORKDIR=/Volumes/data/playground/plates COUNTRY=eu go run alprexec.go
+// WORKDIR=/Volumes/data/playground/plates COUNTRY=eu go run watchexec.go
 package main
 
 import (

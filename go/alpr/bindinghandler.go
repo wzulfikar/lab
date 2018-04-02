@@ -24,17 +24,19 @@ func NewBindingHandler(country, config, runtimeDir string) *BindingHandler {
 	return &BindingHandler{country, config, runtimeDir, processedImagesPath, alpr}
 }
 
+// TODO:
+// figure out cgo panic when `RecognizeByFilePath` is run in routine:
+// "terminating with uncaught exception of type std::out_of_range: vector"
 func (h *BindingHandler) Handle(imagePath string) {
-	h.handle(imagePath)
-}
-
-func (h *BindingHandler) handle(imagePath string) {
-	alprResult, err := h.Alpr.RecognizeByFilePath(imagePath)
+	r, err := h.Alpr.RecognizeByFilePath(imagePath)
 	if err != nil {
 		fmt.Println("alprResultErr:", err)
 		return
 	}
+	go h.handleResult(imagePath, &r)
+}
 
+func (h *BindingHandler) handleResult(imagePath string, alprResult *openalpr.AlprResults) {
 	var plates []string
 	minConfidence := float32(85.0)
 	hit := "HIT"
@@ -62,8 +64,7 @@ func (h *BindingHandler) handle(imagePath string) {
 	processedImage := fmt.Sprintf("%s-%s__%s", ts, hit, imageFile)
 
 	processedPath := fmt.Sprintf("%s/%s/%s", path, h.ProcessedImagesPath, processedImage)
-	err = os.Rename(imagePath, processedPath)
-	if err != nil {
+	if err := os.Rename(imagePath, processedPath); err != nil {
 		log.Println("moveProcessedImageErr:", err)
 	}
 }
