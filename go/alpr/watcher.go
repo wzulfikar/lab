@@ -32,10 +32,8 @@ func Watch(path string, handler AlprHandlerInterface) error {
 			case event := <-watcher.Events:
 				// log.Println("event:", event.Name, event.Op)
 				if event.Op == event.Op&fsnotify.Create && event.Name != ".DS_Store" {
-					go func(imagePath string) {
-						log.Println("new file:", imagePath)
-						handler.Handle(imagePath)
-					}(event.Name)
+					log.Println("new file:", event.Name)
+					handler.Handle(event.Name)
 				}
 			case err := <-watcher.Errors:
 				log.Fatal("watcher.Errors", err)

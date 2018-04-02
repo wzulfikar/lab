@@ -24,6 +24,10 @@ func NewExecHandler(adjustStdout bool, country, processedImagesPath string) *Exe
 }
 
 func (h *ExecHandler) Handle(imagePath string) {
+	go h.handle(imagePath)
+}
+
+func (h *ExecHandler) handle(imagePath string) {
 	alprResult := &alprResult{}
 	if err := alprResult.exec(imagePath, h.AdjustStdout, "-c", h.Country); err != nil {
 		fmt.Println(err)
