@@ -6,8 +6,6 @@ import (
 	"log"
 	"os"
 	"sync"
-
-	"github.com/wzulfikar/lab/go/getty"
 )
 
 func main() {
@@ -42,7 +40,12 @@ func main() {
 		wg.Add(1)
 		imageUrl := baseurl + scanner.Text()
 		log.Println("Downloading", imageUrl)
-		go getty.GetAsync(imageUrl, "", workdir, &wg)
+		go func() {
+			defer wg.Done()
+			if err := Get(url, filename, dir); err != nil {
+				log.Println(err)
+			}
+		}()
 	}
 
 	if err := scanner.Err(); err != nil {
