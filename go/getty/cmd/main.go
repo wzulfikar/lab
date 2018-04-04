@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 )
 
 func main() {
@@ -17,6 +18,9 @@ func main() {
 		fmt.Println("Usage: getty [baseurl]")
 		return
 	}
+
+	start := time.Now()
+	defer log.Printf("[DONE] Files downloaded: %d. Time elapsed: %s", fileCount, time.Since(start))
 
 	if workdir == "" {
 		workdir = "gettyimages"
@@ -53,5 +57,4 @@ func main() {
 	}
 
 	wg.Wait()
-	log.Println("Files downloaded:", fileCount)
 }

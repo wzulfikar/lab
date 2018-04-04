@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -40,6 +41,8 @@ func Scrape(targetUrl, selector, dir string) []string {
 
 	var wg sync.WaitGroup
 
+	// pass non-empty SKIP_FILE to skip scraping image files
+	var skipFile = os.Getenv("SKIP_FILE")
 	var images []string
 
 	// Find the review items
@@ -56,6 +59,11 @@ func Scrape(targetUrl, selector, dir string) []string {
 		}
 
 		file := filepath.Base(src)
+
+		if skipFile != "" && file == skipFile {
+			fmt.Println("File skipped:", src)
+			return
+		}
 
 		filename := file
 		if text, ok := s.Attr("title"); ok {
