@@ -23,7 +23,7 @@ func main() {
 	defer func() func() {
 		start := time.Now()
 		return func() {
-			fmt.Printf("[DONE] Files walked: %d\n", fileCount)
+			log.Println("[DONE] Files walked:", fileCount)
 			fmt.Println("Time elapsed:", time.Since(start))
 		}
 	}()()
@@ -34,7 +34,7 @@ func main() {
 		log.Printf("Processing file #%d: %s\n", fileCount, f.Name())
 
 		if f.IsDir() || f.Name() == ".DS_Store" {
-			fmt.Println("Not processing dir:", f.Name())
+			log.Println("[SKIP]", f.Name())
 		} else if concurrency == 0 {
 			handle(path)
 		} else if concurrency > 0 {
@@ -66,13 +66,13 @@ func handle(path string) {
 
 func execCmd(cmd string, args []string) {
 	cmdString := cmd + " " + strings.Join(args, " ")
-	log.Println("[START] " + cmdString)
+	log.Println("[START]", cmdString)
 
 	b, err := exec.Command(cmd, args...).Output()
 	if err != nil {
 		log.Println(errors.Wrap(err, "exec output"))
 	}
-	fmt.Println(b)
+	fmt.Printf("%s\n", b)
 }
 
 func mv(from, to string) {
