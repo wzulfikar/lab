@@ -19,14 +19,15 @@ func urlOk(url string) bool {
 	return resp.StatusCode == http.StatusOK
 }
 
-func GetAsync(dir, url string, wg *sync.WaitGroup) {
+func GetAsync(url, filename, dir string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	if err := get(dir, url); err != nil {
+	if err := Get(url, filename, dir); err != nil {
 		log.Println(err)
 	}
 }
 
-func Get(dir, url string) error {
+// infer name of file from url if filename is empty string ("")
+func Get(url, filename, dir string) error {
 	if !urlOk(url) {
 		return fmt.Errorf("[NOT FOUND] %s", url)
 	}
@@ -42,8 +43,11 @@ func Get(dir, url string) error {
 		return fmt.Errorf("bad status: %s", resp.Status)
 	}
 
-	file := filepath.Base(url)
-	out, err := os.Create(filepath.Join(dir, file))
+	if filename == "" {
+		filename = filepath.Base(url)
+	}
+
+	out, err := os.Create(filepath.Join(dir, filename))
 	if err != nil {
 		return err
 	}

@@ -42,7 +42,7 @@ func main() {
 		wg.Add(1)
 		imageUrl := baseurl + scanner.Text()
 		log.Println("Downloading", imageUrl)
-		go getty.GetAsync(workdir, imageUrl, &wg)
+		go getty.GetAsync(imageUrl, "", workdir, &wg)
 	}
 
 	if err := scanner.Err(); err != nil {
