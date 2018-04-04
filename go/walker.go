@@ -15,7 +15,9 @@ import (
 // walk dir recursively and run command
 func main() {
 	dir := os.Getenv("WALK_DIR")
-	concurrency := 5
+
+	const concurrency = 10 // change to 0 to run without concurrency
+	sem := make(chan bool, concurrency)
 
 	fileCount := 0
 	defer func() func() {
@@ -28,30 +30,38 @@ func main() {
 
 	_ = filepath.Walk(dir, func(path string, f os.FileInfo, err error) error {
 		fileCount++
+
+		log.Printf("Processing file #%d: %s\n", fileCount, f.Name())
+
 		if f.IsDir() || f.Name() == ".DS_Store" {
 			fmt.Println("Not processing dir:", f.Name())
 		} else if concurrency == 0 {
 			handle(path)
 		} else if concurrency > 0 {
-			sem := make(chan bool, concurrency)
 			sem <- true
 			go func(path string) {
 				defer func() { <-sem }()
 				handle(path)
 			}(path)
-			for i := 0; i < cap(sem); i++ {
-				sem <- true
-			}
 		}
 		return err
 	})
+
+	if concurrency > 0 {
+		for i := 0; i < cap(sem); i++ {
+			sem <- true
+		}
+	}
 }
 
 // adjust your code here
 func handle(path string) {
-	// sample code: remove single quote from all files
-	newPath := strings.Replace(path, "'", "", -1)
-	mv(path, newPath)
+	cmd := "python3"
+	args := []string{
+		"/Volumes/data/playground/face-postgre/face-add.py",
+		path,
+	}
+	execCmd(cmd, args)
 }
 
 func execCmd(cmd string, args []string) {
