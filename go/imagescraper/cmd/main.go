@@ -7,13 +7,10 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/wzulfikar/lab/go/imagescraper"
 )
-
-// <div class="card__thumbnail">
-//     <img src="http://www.iium.edu.my/imagecache/staff_small/9999999/3760.jpg" alt="Mohamed Ridza Wahiddin" title="Mohamed Ridza Wahiddin">
-// </div>
 
 // scraper file:///Users/strawhat/Desktop/Faculties.webarchive ".card__thumbnail img"
 // output: {image title|alt}_{filename}.jpg
@@ -28,31 +25,37 @@ func main() {
 	dir := os.Args[3]
 
 	countImages := 0
-	defer fmt.Println("[DONE] Images scraped:", countImages)
+	defer func() func() {
+		start := time.Now()
+		return func() {
+			fmt.Printf("[DONE] Images scraped: %d\n", countImages)
+			fmt.Println("Time elapsed:", time.Since(start))
+		}
+	}()()
 
 	if newUrl, from, to, pageOk := getUrlPage(url); pageOk {
 		var wg sync.WaitGroup
 		for i := from; i <= to; i++ {
 			wg.Add(1)
-			go func(i int, countImages *int) {
+			go func(i int) {
 				targetUrl := newUrl + strconv.Itoa(i)
 				fmt.Printf("[START] %s\n", targetUrl)
 
 				images := imagescraper.Scrape(targetUrl, selector, dir)
 
-				*countImages += len(images)
+				countImages += len(images)
 
 				fmt.Println("[DONE]", targetUrl)
 				wg.Done()
-			}(i, &countImages)
+			}(i)
 		}
 		wg.Wait()
 		return
 	}
 
 	fmt.Println("Scraping images from", url)
-	_ = imagescraper.Scrape(url, selector, dir)
-	countImages++
+	images := imagescraper.Scrape(url, selector, dir)
+	countImages = len(images)
 }
 
 func getUrlPage(url string) (string, int, int, bool) {
