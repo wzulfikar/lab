@@ -49,12 +49,9 @@ func main() {
 
 // adjust your code here
 func handle(path string) {
-	cmd := "python3"
-	args := []string{
-		"/Volumes/data/playground/face-postgre/face-add.py",
-		path,
-	}
-	execCmd(cmd, args)
+	// sample code: remove single quote from all files
+	newPath := strings.Replace(path, "'", "", -1)
+	mv(path, newPath)
 }
 
 func execCmd(cmd string, args []string) {
