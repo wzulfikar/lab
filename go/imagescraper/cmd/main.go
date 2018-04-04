@@ -27,27 +27,32 @@ func main() {
 	selector := os.Args[2]
 	dir := os.Args[3]
 
-	defer fmt.Println("Done ✔")
+	countImages := 0
+	defer fmt.Println("[DONE] Images scraped:", countImages)
 
 	if newUrl, from, to, pageOk := getUrlPage(url); pageOk {
 		var wg sync.WaitGroup
 		for i := from; i <= to; i++ {
 			wg.Add(1)
-			go func(i int) {
+			go func(i int, countImages *int) {
 				targetUrl := newUrl + strconv.Itoa(i)
 				fmt.Printf("[START] %s\n", targetUrl)
 
-				imagescraper.Scrape(targetUrl, selector, dir)
-				fmt.Println("[DONE] %d\n", url)
+				images := imagescraper.Scrape(targetUrl, selector, dir)
+
+				*countImages += len(images)
+
+				fmt.Println("[DONE]", targetUrl)
 				wg.Done()
-			}(i)
+			}(i, &countImages)
 		}
 		wg.Wait()
 		return
 	}
 
 	fmt.Println("Scraping images from", url)
-	imagescraper.Scrape(url, selector, dir)
+	_ = imagescraper.Scrape(url, selector, dir)
+	countImages++
 }
 
 func getUrlPage(url string) (string, int, int, bool) {

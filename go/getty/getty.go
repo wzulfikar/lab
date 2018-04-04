@@ -17,7 +17,7 @@ func urlOk(url string) bool {
 		log.Println("urlOkErr:", err)
 		return false
 	}
-
+	resp.Body.Close()
 	return resp.StatusCode == http.StatusOK
 }
 
