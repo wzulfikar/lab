@@ -5,29 +5,27 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sync"
 	"time"
+
+	"github.com/wzulfikar/lab/go/getty"
 )
 
 func main() {
-	workdir := os.Getenv("WORKDIR")
-	wordlist := os.Getenv("WORDLIST")
-
-	baseurl := os.Args[1]
-	if len(os.Args) < 1 {
-		fmt.Println("Usage: getty [baseurl]")
+	if len(os.Args) < 3 {
+		fmt.Println("Usage: getty [wordlist] [dir]")
 		return
 	}
 
-	start := time.Now()
-	defer log.Printf("[DONE] Files downloaded: %d. Time elapsed: %s", fileCount, time.Since(start))
+	wordlist := os.Args[1]
+	dir := os.Args[2]
 
-	if workdir == "" {
-		workdir = "gettyimages"
-	}
-	if wordlist == "" {
-		wordlist = "gettyimages.txt"
-	}
+	fileCount := 0 // change to mutex and pass to getasync
+	defer func() func() {
+		start := time.Now()
+		return func() {
+			log.Printf("[DONE] Files downloaded: %d. Time elapsed: %s", fileCount, time.Since(start))
+		}
+	}()()
 
 	file, err := os.Open(wordlist)
 	if err != nil {
@@ -35,26 +33,23 @@ func main() {
 	}
 	defer file.Close()
 
-	var wg sync.WaitGroup
+	baseurl := os.Getenv("BASEURL")
 
-	fileCount := 0 // change to mutex and pass to getasync
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		fileCount++
-		wg.Add(1)
-		imageUrl := baseurl + scanner.Text()
-		log.Println("Downloading", imageUrl)
-		go func() {
-			defer wg.Done()
-			if err := Get(url, filename, dir); err != nil {
-				log.Println(err)
-			}
-		}()
+
+		url := baseurl + scanner.Text() + ".jpeg"
+		log.Println("[START]", url)
+
+		if err := getty.Get(url, "", dir); err != nil {
+			log.Println(err)
+		} else {
+			log.Println("[DONE]", url)
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-
-	wg.Wait()
 }
