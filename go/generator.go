@@ -30,7 +30,7 @@ func write(b *bytes.Buffer, file string) {
 }
 
 func generate(b *bytes.Buffer) {
-	generateID(b, 10, 18, 1, 9999)
+	generateID(b, 10, 18, 3, 9999)
 }
 
 func generateID(b *bytes.Buffer, fromYear, toYear, semesterCount, studentCount int) {
