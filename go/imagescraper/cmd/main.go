@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/wzulfikar/lab/go/imagescraper"
@@ -24,6 +23,7 @@ func main() {
 	selector := os.Args[2]
 	dir := os.Args[3]
 
+	const scraperConcurrency = 5
 	countImages := 0
 	defer func() func() {
 		start := time.Now()
@@ -34,27 +34,32 @@ func main() {
 	}()()
 
 	if newUrl, from, to, pageOk := getUrlPage(url); pageOk {
-		var wg sync.WaitGroup
+		concurrency := 5
+		sem := make(chan bool, concurrency)
+
 		for i := from; i <= to; i++ {
-			wg.Add(1)
+			sem <- true
 			go func(i int) {
+				defer func() { <-sem }()
+
 				targetUrl := newUrl + strconv.Itoa(i)
 				fmt.Printf("[START] %s\n", targetUrl)
 
-				images := imagescraper.Scrape(targetUrl, selector, dir)
+				images := imagescraper.Scrape(targetUrl, selector, dir, scraperConcurrency)
 
 				countImages += len(images)
 
 				fmt.Println("[DONE]", targetUrl)
-				wg.Done()
 			}(i)
 		}
-		wg.Wait()
+		for i := 0; i < cap(sem); i++ {
+			sem <- true
+		}
 		return
 	}
 
 	fmt.Println("Scraping images from", url)
-	images := imagescraper.Scrape(url, selector, dir)
+	images := imagescraper.Scrape(url, selector, dir, scraperConcurrency)
 	countImages = len(images)
 }
 

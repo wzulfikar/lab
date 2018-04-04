@@ -9,14 +9,13 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/pkg/errors"
 	"github.com/wzulfikar/lab/go/getty"
 )
 
-func Scrape(targetUrl, selector, dir string) []string {
+func Scrape(targetUrl, selector, dir string, concurrency int) []string {
 	res, err := http.Get(targetUrl)
 	if err != nil {
 		log.Fatal(err)
@@ -39,11 +38,11 @@ func Scrape(targetUrl, selector, dir string) []string {
 		log.Fatal(err)
 	}
 
-	var wg sync.WaitGroup
-
 	// pass non-empty SKIP_FILE to skip scraping image files
 	var skipFile = os.Getenv("SKIP_FILE")
 	var images []string
+
+	sem := make(chan bool, concurrency)
 
 	// Find the review items
 	doc.Find(selector).Each(func(i int, s *goquery.Selection) {
@@ -73,9 +72,10 @@ func Scrape(targetUrl, selector, dir string) []string {
 		}
 		filename = strings.Replace(filename, " ", "_", -1)
 
-		wg.Add(1)
+		sem <- true
 		go func(src, filename, dir string) {
-			defer wg.Done()
+			defer func() { <-sem }()
+
 			if err := getty.Get(src, filename, dir); err != nil {
 				log.Printf("Failed to download image from %s: %v\n", src, err)
 				return
@@ -85,6 +85,8 @@ func Scrape(targetUrl, selector, dir string) []string {
 		}(src, filename, dir)
 	})
 
-	wg.Wait()
+	for i := 0; i < cap(sem); i++ {
+		sem <- true
+	}
 	return images
 }
