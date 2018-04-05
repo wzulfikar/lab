@@ -13,7 +13,7 @@ docker-compose up -d
 python3 db.py
 
 # adding face to db:
-# this will extract face encodings from 
+# this will extract face encodings (numpy.ndarray) from 
 # given image and store the encodings in postgres db.
 python3 face-add.py ./lfw/Barrack_Obama_0001.jpg
 

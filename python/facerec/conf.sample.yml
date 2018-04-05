@@ -1,0 +1,12 @@
+frame:
+  flip:
+    horizontal: false
+    vertical: false
+
+# db config (postgres) for python facerec
+postgres:
+  user: user
+  pass: pass
+  host: localhost
+  port: 5434
+  db: db

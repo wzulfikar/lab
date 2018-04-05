@@ -10,6 +10,7 @@ import dlib
 import numpy
 import postgresql
 import face_recognition
+from datetime import datetime
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -29,25 +30,15 @@ if len(sys.argv) < 3:
 if not os.path.exists("./.faces"):
 	os.mkdir("./.faces")
 
-# Create a HOG face detector using the built-in dlib class
-face_detector = dlib.get_frontal_face_detector()
-
-# Initialize some variables
-default_name = "Unknown"
-face_locations = []
-face_encodings = []
-face_names = []
-process_this_frame = True
-
 class facerec:
 	def __init__(self, config: str):
-		self.dbconf = yaml.safe_load(open(config))
+		self.conf = yaml.safe_load(open(config))
 		self.db = postgresql.open('pq://{}:{}@{}:{}/{}'.format(
-			self.dbconf['user'],
-			self.dbconf['pass'],
-			self.dbconf['host'],
-			self.dbconf['port'],
-			self.dbconf['db']))
+			self.conf['postgres']['user'],
+			self.conf['postgres']['pass'],
+			self.conf['postgres']['host'],
+			self.conf['postgres']['port'],
+			self.conf['postgres']['db']))
 
 	def findface(self, enc: numpy.ndarray) -> list:
 		query = "SELECT file, split_part(p.name,' ',1) as name FROM vectors  v left outer join profiles p on v.profile_id = p.id ORDER BY " + \
@@ -68,19 +59,43 @@ frvideo = facerecvideo(sys.argv[1])
 print("- Using video at "+frvideo.info)
 
 fr = facerec(sys.argv[2])
-print("- Using DB at {}:{}/{}".format(fr.dbconf['host'], fr.dbconf['port'], fr.dbconf['db']))
+print("- Using DB at {}:{}/{}".format(fr.conf['postgres']['host'], fr.conf['postgres']['port'], fr.conf['postgres']['db']))
 
-
-print("setting up facerec..")
+print("- configuring variables..")
 FONT = cv2.FONT_HERSHEY_DUPLEX
 FONT_SCALE = 0.5
 FONT_THICKNESS = 1
 RECT_COLOR = (0, 0, 255) # red
+
+WINDOW_NAME = 'Video source: {}'.format(frvideo.info)
+UP_SINCE = "[FACEREC] UP SINCE {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+# Create a HOG face detector using the built-in dlib class
+face_detector = dlib.get_frontal_face_detector()
+
+# Initialize some variables
+default_name = "Unknown"
+face_locations = []
+face_encodings = []
+face_names = []
+process_this_frame = True
 print("facerec is activated")
+print(UP_SINCE)
 
 while True:
 	# Grab a single frame of video
 	ret, frame = frvideo.capture.read()
+
+	if fr.conf["frame"]["flip"]["horizontal"]:
+		frame = cv2.flip(frame, 0)
+	if fr.conf["frame"]["flip"]["vertical"]:
+		frame = cv2.flip(frame, 1)
+
+	# using constants from opencv3 (depends on what's installed)
+	frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT) 
+	frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH) 
+	cv2.putText(frame, UP_SINCE, (10, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
+	cv2.putText(frame, "Press q to quit", (int(frameWidth) - 110, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
 
 	# Resize frame of video to 1/4 size for faster face recognition processing
 	small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -130,7 +145,7 @@ while True:
 		cv2.putText(frame, name, (left + 6, bottom - 6), FONT, FONT_SCALE, (255, 255, 255), FONT_THICKNESS)
 
 	# Display the resulting image
-	cv2.imshow('Video source: '+frvideo.info, frame)
+	cv2.imshow(WINDOW_NAME, frame)
 
 	# Hit 'q' on the keyboard to quit!
 	if cv2.waitKey(1) & 0xFF == ord('q'):
