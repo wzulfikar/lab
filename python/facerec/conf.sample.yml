@@ -3,6 +3,9 @@ frame:
     horizontal: false
     vertical: false
 
+# where to store screenshots
+storage: ./screenshots
+
 # db config (postgres) for python facerec
 postgres:
   user: user

@@ -65,7 +65,11 @@ print("- configuring variables..")
 FONT = cv2.FONT_HERSHEY_DUPLEX
 FONT_SCALE = 0.5
 FONT_THICKNESS = 1
-RECT_COLOR = (0, 0, 255) # red
+
+RGB_WHITE = (255, 255, 255)
+RGB_LIME = (0, 255, 0)
+RGB_RED = (0, 0, 255)
+RECT_COLOR = RGB_RED # red
 
 WINDOW_NAME = 'Video source: {}'.format(frvideo.info)
 UP_SINCE = "[FACEREC] UP SINCE {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -74,11 +78,18 @@ UP_SINCE = "[FACEREC] UP SINCE {}".format(datetime.now().strftime('%Y-%m-%d %H:%
 face_detector = dlib.get_frontal_face_detector()
 
 # Initialize some variables
+storage = fr.conf["storage"]
 default_name = "Unknown"
 face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
+runtimeFlipH = False
+runtimeFlipV = False
+tempFramesDuration = 6
+tempFrames = {
+	"screenshots": tempFramesDuration,
+}
 print("facerec is activated")
 print(UP_SINCE)
 
@@ -86,17 +97,17 @@ while True:
 	# Grab a single frame of video
 	ret, frame = frvideo.capture.read()
 
-	if fr.conf["frame"]["flip"]["horizontal"]:
+	if fr.conf["frame"]["flip"]["horizontal"] or runtimeFlipH:
 		frame = cv2.flip(frame, 0)
-	if fr.conf["frame"]["flip"]["vertical"]:
+	if fr.conf["frame"]["flip"]["vertical"] or runtimeFlipV:
 		frame = cv2.flip(frame, 1)
 
 	# using constants from opencv3 (depends on what's installed)
 	frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT) 
 	frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH) 
 	cv2.putText(frame, UP_SINCE, (10, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
-	cv2.putText(frame, "Press q to quit", (int(frameWidth) - 110, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
-
+	cv2.putText(frame, "q: quit, s: screenshot, v or h: flip", (int(frameWidth) - 230, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
+	
 	# Resize frame of video to 1/4 size for faster face recognition processing
 	small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -144,12 +155,29 @@ while True:
 		cv2.rectangle(frame, (left, bottom - 25), (right, bottom), RECT_COLOR, cv2.FILLED)
 		cv2.putText(frame, name, (left + 6, bottom - 6), FONT, FONT_SCALE, (255, 255, 255), FONT_THICKNESS)
 
+	# Display temporary frames
+	if tempFrames["screenshots"] < tempFramesDuration:
+		cv2.rectangle(frame, (0, 0), (int(frameWidth), int(frameHeight)), RGB_LIME, 4)
+		cv2.putText(frame, "Screenshot saved!", (int(frameWidth) - 125, int(frameHeight) - 30), FONT, FONT_SCALE - 0.1, RGB_LIME, FONT_THICKNESS)
+		tempFrames["screenshots"] += 1
+
 	# Display the resulting image
 	cv2.imshow(WINDOW_NAME, frame)
 
+	c = cv2.waitKey(1)
 	# Hit 'q' on the keyboard to quit!
-	if cv2.waitKey(1) & 0xFF == ord('q'):
+	if c == ord('q'):
 		break
+	elif c == ord('h'):
+		runtimeFlipH = not runtimeFlipH
+	elif c == ord('v'):
+		runtimeFlipV = not runtimeFlipV
+	elif c == ord('s'):
+		now = datetime.now()
+		filename = '{}/{}_{}.jpg'.format(storage, now.strftime('%Y-%m-%d_%H%M%S'), now.microsecond)
+		cv2.imwrite(filename, frame)
+		tempFrames["screenshots"] = 0
+		print('[SAVED] {}'.format(filename))
 
 # Release handle to the webcam
 frvideo.capture.release()

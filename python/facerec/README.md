@@ -15,7 +15,7 @@ python3 db.py
 # adding face to db:
 # this will extract face encodings (numpy.ndarray) from 
 # given image and store the encodings in postgres db.
-python3 face-add.py ./lfw/Barrack_Obama_0001.jpg
+python3 face-add.py ./lfw/Barack_Obama_0001.jpg
 
 # activate webcam
 python3 facerec.py 0 ./postgres.sample.yml
