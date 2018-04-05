@@ -8,13 +8,11 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 // walk dir recursively and run command
 func main() {
-	dir := os.Getenv("WALK_DIR")
+	dir := os.Getenv("WALKER_DIR")
 
 	const concurrency = 10 // change to 0 to run without concurrency
 	sem := make(chan bool, concurrency)
@@ -29,20 +27,23 @@ func main() {
 	}()()
 
 	_ = filepath.Walk(dir, func(path string, f os.FileInfo, err error) error {
-		fileCount++
+		if err != nil {
+			fmt.Println("filepath error:", err)
+		} else {
+			fileCount++
+			log.Printf("Processing file #%d: %s\n", fileCount, f.Name())
 
-		log.Printf("Processing file #%d: %s\n", fileCount, f.Name())
-
-		if f.IsDir() || f.Name() == ".DS_Store" {
-			log.Println("[SKIP]", f.Name())
-		} else if concurrency == 0 {
-			handle(path)
-		} else if concurrency > 0 {
-			sem <- true
-			go func(path string) {
-				defer func() { <-sem }()
+			if f.IsDir() || f.Name() == ".DS_Store" {
+				log.Println("[SKIP]", f.Name())
+			} else if concurrency == 0 {
 				handle(path)
-			}(path)
+			} else if concurrency > 0 {
+				sem <- true
+				go func(path string) {
+					defer func() { <-sem }()
+					handle(path)
+				}(path)
+			}
 		}
 		return err
 	})
@@ -70,7 +71,7 @@ func execCmd(cmd string, args []string) {
 
 	b, err := exec.Command(cmd, args...).Output()
 	if err != nil {
-		log.Println(errors.Wrap(err, "exec output"))
+		log.Println("exec output error:", err)
 	}
 	fmt.Printf("%s\n", b)
 }
