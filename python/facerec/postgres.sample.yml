@@ -1,0 +1,6 @@
+# db config (postgres) for python facerec
+user: user
+pass: pass
+host: localhost
+port: 5434
+db: db
