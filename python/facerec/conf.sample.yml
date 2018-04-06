@@ -4,6 +4,7 @@ window:
 
 # frame configuration
 frame:
+  recordonstart: false
   flip:
     horizontal: false
     vertical: false

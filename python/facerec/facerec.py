@@ -32,7 +32,7 @@ if not os.path.exists("./.faces"):
     os.mkdir("./.faces")
 
 
-class facerec:
+class FacerecPG:
 
     def __init__(self, config: str):
         self.conf = yaml.safe_load(open(config))
@@ -57,7 +57,7 @@ class facerec:
         return self.db.query(query)
 
 
-class facerecvideo:
+class FacerecVideo:
 
     def __init__(self, source: str):
         if source.isdigit():
@@ -68,10 +68,10 @@ class facerecvideo:
                 source), "<{}>".format(source)
 
 
-frvideo = facerecvideo(sys.argv[1])
+frvideo = FacerecVideo(sys.argv[1])
 print("- using video at " + frvideo.info)
 
-fr = facerec(sys.argv[2])
+fr = FacerecPG(sys.argv[2])
 print("- using DB at {}:{}/{}".format(fr.conf['postgres'][
       'host'], fr.conf['postgres']['port'], fr.conf['postgres']['db']))
 
@@ -86,25 +86,30 @@ RGB_RED = (0, 0, 255)
 RECT_COLOR = RGB_RED  # red
 
 # feedback duration in frames
-DEFAULT_FEEDBACK_DURATION = 6
+DEFAULT_FEEDBACK_DURATION = 7
 
 DEFAULT_FACE_LABEL = "Unknown"
 
 WINDOW_NAME = 'Video source: {}'.format(frvideo.info)
 UP_SINCE = "[FACEREC] UP SINCE {}".format(
     datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-KEY_HINTS = "q: quit, s: screenshot, v or h: flip"
+KEY_HINTS = "q: quit, r: record, s: screenshot, v or h: flip"
 
 # Create a HOG face detector using the built-in dlib class
 face_detector = dlib.get_frontal_face_detector()
 
 storage = {
     "screenshots": '{}/screenshots'.format(fr.conf["storage"]),
+    "recordings": '{}/recordings'.format(fr.conf["storage"]),
 }
 for key, path in storage.items():
     if not os.path.exists(path):
         print("- creating '{}' storage at {}".format(key, path))
         os.makedirs(path)
+
+# using constants from opencv3 (depends on what's installed)
+frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH)
 
 face_locations = []
 face_encodings = []
@@ -124,26 +129,78 @@ feedbacks = {
         'text': "Screenshot saved!",
         'color': RGB_LIME,
         'flashcolor': RGB_LIME,
-    }
+    },
+    'recordingstarted': {
+        'duration': 0,
+        'text': "Recording started",
+        'color': RGB_LIME,
+        'flashcolor': None,
+    },
+    'recordingstopped': {
+        'duration': 0,
+        'text': "Recording stopped",
+        'color': RGB_RED,
+        'flashcolor': None,
+    },
 }
+
+
+class Recorder:
+
+    def __init__(self, framesize: (int, int), storagepath: str, start: bool):
+        self.writer = None
+        self.isrecording = start
+        self.storagepath = storagepath
+        self.frameheight = framesize[0]
+        self.framewidth = framesize[1]
+
+        if self.isrecording:
+            self.record()
+
+    def close(self) -> bool:
+        if self.writer is None:
+            return None
+
+        self.writer.release()
+        return True
+
+    def record(self):
+        now = datetime.now()
+        self.writer = cv2.VideoWriter(
+            '{}/{}.avi'.format(
+                self.storagepath,
+                now.strftime('%Y-%m-%d_%H%M%S')),
+            cv2.VideoWriter_fourcc(*"X264"),
+            20.0,
+            (self.framewidth, self.frameheight))
+
+
+rc = Recorder((int(frameHeight),
+               int(frameWidth)),
+              storage['recordings'],
+              fr.conf['frame']['recordonstart'])
+print("- recording status: {}".format(rc.isrecording))
+
 if not fr.conf["window"]["enabled"]:
     print("- activating facerec without window")
+else:
+    print("- configuring window")
+    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
 
 print("facerec is activated")
 print(UP_SINCE)
 
-while True:
+while frvideo.capture.isOpened():
     # Grab a single frame of video
     ret, frame = frvideo.capture.read()
+    if not ret:
+        continue
 
     if fr.conf["frame"]["flip"]["horizontal"] or runtimeFlipH:
         frame = cv2.flip(frame, 0)
     if fr.conf["frame"]["flip"]["vertical"] or runtimeFlipV:
         frame = cv2.flip(frame, 1)
 
-    # using constants from opencv3 (depends on what's installed)
-    frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH)
     cv2.putText(frame,
                 UP_SINCE,
                 (10, int(frameHeight) - 10),
@@ -151,7 +208,14 @@ while True:
                 FONT_SCALE - 0.1,
                 (255, 255, 255),
                 FONT_THICKNESS)
-    keyHintsAxis = (int(frameWidth) - 230, int(frameHeight) - 10)
+
+    ret, baseline = cv2.getTextSize(
+        KEY_HINTS,
+        FONT,
+        FONT_SCALE - 0.1,
+        FONT_THICKNESS)
+    textWidth = ret[0] + 6
+    keyHintsAxis = (int(frameWidth) - textWidth, int(frameHeight) - 10)
     cv2.putText(frame,
                 KEY_HINTS,
                 keyHintsAxis,
@@ -238,6 +302,17 @@ while True:
                         FONT_THICKNESS)
             f['duration'] -= 1
 
+    if rc.writer is not None and rc.isrecording:
+        x, y = keyHintsAxis
+        cv2.putText(frame,
+                    '[R]',
+                    (x - 23, y + 1),
+                    FONT,
+                    FONT_SCALE - 0.1,
+                    RGB_RED,
+                    FONT_THICKNESS)
+        rc.writer.write(frame)
+
     # Display the resulting image in window
     if fr.conf["window"]["enabled"]:
         cv2.imshow(WINDOW_NAME, frame)
@@ -249,10 +324,24 @@ while True:
             feedbacks['demoalert']['duration'] = DEFAULT_FEEDBACK_DURATION
         else:
             break
+
     elif c == ord('h'):
         runtimeFlipH = not runtimeFlipH
+
     elif c == ord('v'):
         runtimeFlipV = not runtimeFlipV
+
+    elif c == ord('r'):
+        rc.isrecording = not rc.isrecording
+        if rc.isrecording:
+            rc.record()
+            feedbacks['recordingstarted'][
+                'duration'] = DEFAULT_FEEDBACK_DURATION
+        else:
+            feedbacks['recordingstopped'][
+                'duration'] = DEFAULT_FEEDBACK_DURATION
+        print('[RECORDING] {}'.format(rc.isrecording))
+
     elif c == ord('s'):
         now = datetime.now()
         filename = '{}/{}_{}.jpg'.format(
@@ -263,6 +352,12 @@ while True:
         feedbacks['screenshots']['duration'] = DEFAULT_FEEDBACK_DURATION
         print('[SAVED] {}'.format(filename))
 
+print("Exit routine started..")
+
+if rc.close() is not None:
+    print("- stopping recorder")
+
+print("- stopping video capture")
 # Release handle to the webcam
 frvideo.capture.release()
 cv2.destroyAllWindows()
