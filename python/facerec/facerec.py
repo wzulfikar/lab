@@ -69,13 +69,13 @@ class facerecvideo:
 
 
 frvideo = facerecvideo(sys.argv[1])
-print("- Using video at " + frvideo.info)
+print("- using video at " + frvideo.info)
 
 fr = facerec(sys.argv[2])
-print("- Using DB at {}:{}/{}".format(fr.conf['postgres'][
+print("- using DB at {}:{}/{}".format(fr.conf['postgres'][
       'host'], fr.conf['postgres']['port'], fr.conf['postgres']['db']))
 
-print("- configuring variables..")
+print("- configuring environment..")
 FONT = cv2.FONT_HERSHEY_DUPLEX
 FONT_SCALE = 0.5
 FONT_THICKNESS = 1
@@ -88,18 +88,24 @@ RECT_COLOR = RGB_RED  # red
 # feedback duration in frames
 DEFAULT_FEEDBACK_DURATION = 6
 
+DEFAULT_FACE_LABEL = "Unknown"
+
 WINDOW_NAME = 'Video source: {}'.format(frvideo.info)
 UP_SINCE = "[FACEREC] UP SINCE {}".format(
     datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 KEY_HINTS = "q: quit, s: screenshot, v or h: flip"
+
 # Create a HOG face detector using the built-in dlib class
 face_detector = dlib.get_frontal_face_detector()
 
-# Initialize some variables
 storage = {
     "screenshots": '{}/screenshots'.format(fr.conf["storage"]),
 }
-default_name = "Unknown"
+for key, path in storage.items():
+    if not os.path.exists(path):
+        print("- creating '{}' storage at {}".format(key, path))
+        os.makedirs(path)
+
 face_locations = []
 face_encodings = []
 face_names = []
@@ -173,7 +179,7 @@ while True:
             # See if the face is a match for the known face(s) in db
             rows = fr.findfaces(face_encoding, 1)
             if len(rows) == 0:
-                name = default_name
+                name = DEFAULT_FACE_LABEL
             else:
                 file, profilename = rows[0]
                 if profilename:
