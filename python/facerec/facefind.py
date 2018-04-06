@@ -12,9 +12,9 @@ if len(sys.argv) < 2:
 if not os.path.exists("./.faces"):
     os.mkdir("./.faces")
 
-print "Connecting to DB.."
+print("Connecting to DB..")
 db = postgresql.open('pq://user:pass@localhost:5434/db')
-print "DB connected"
+print("DB connected")
 
 # Create a HOG face detector using the built-in dlib class
 face_detector = dlib.get_frontal_face_detector()
@@ -50,6 +50,23 @@ def facerec(file_name):
         else:
             print("No encodings")
 
-# Take the image file name from the command line
-file_name = sys.argv[1]
-facerec(file_name)
+
+# Take the image(s) path from the command line
+path = sys.argv[1]
+
+if os.path.isfile(path):
+    print("Processing single file:", path)
+    facerec(path)
+else:
+    print("Processing directory:", path)
+    for root, dirs, files in os.walk(path):
+        path = root.split(os.sep)
+        for file in files:
+            _, ext = os.path.splitext(file)
+            if ext.lower() not in ['.jpg', '.jpeg']:
+                print("[SKIP]", file)
+                continue
+
+            filepath = os.path.join(root, file)
+            print("Image found: ", filepath)
+            facerec(filepath)
