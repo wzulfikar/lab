@@ -11,7 +11,7 @@ if len(sys.argv) < 2:
     exit(1)
 
 
-def faceadd(db, face_detector, file_name):
+def faceadd(db, face_detector, file_name, profile_id=None):
 
     # Load the image
     image = cv2.imread(file_name)
@@ -40,11 +40,20 @@ def faceadd(db, face_detector, file_name):
         encodings = face_recognition.face_encodings(crop)
 
         if len(encodings) > 0:
-            query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
-                file_name,
-                ','.join(str(s) for s in encodings[0][0:63]),
-                ','.join(str(s) for s in encodings[0][64:127]),
-            )
+            if profile_id is None:
+                query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
+                    file_name,
+                    ','.join(str(s) for s in encodings[0][0:63]),
+                    ','.join(str(s) for s in encodings[0][64:127]),
+                )
+            else:
+                print("Adding face for profile ID:", profile_id)
+                query = "INSERT INTO vectors (profile_id, file, vec_low, vec_high) VALUES ({}, '{}', CUBE(array[{}]), CUBE(array[{}]))".format(
+                    profile_id,
+                    file_name,
+                    ','.join(str(s) for s in encodings[0][0:63]),
+                    ','.join(str(s) for s in encodings[0][64:127]),
+                )
             try:
                 db.execute(query)
             except:
@@ -60,7 +69,7 @@ path = sys.argv[1]
 
 start = time.time()
 if not os.path.exists(path):
-    print("Path doesn't exist:", path)
+    print("Path doesn't exist!", path)
     exit(1)
 
 # Create a HOG face detector using the built-in dlib class
@@ -69,8 +78,13 @@ db = postgresql.open('pq://user:pass@localhost:5434/db')
 filecount = 0
 
 if os.path.isfile(path):
+    filecount += 1
     print("Processing single file:", path)
-    faceadd(db, face_detector, path)
+    if len(sys.argv) > 2:
+        profile_id = sys.argv[2]
+        faceadd(db, face_detector, path, profile_id)
+    else:
+        faceadd(db, face_detector, path)
 else:
     print("Processing directory:", path)
     for root, dirs, files in os.walk(path):
