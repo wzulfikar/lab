@@ -1,10 +1,21 @@
+window: 
+  enabled: true
+  demomode: false # set true to disable quit from window (only quit from console)
+
+# frame configuration
 frame:
   flip:
     horizontal: false
     vertical: false
 
-# where to store screenshots
-storage: ./screenshots
+# server config (TODO)
+server: 
+  enabled: false
+  host: localhost
+  port: 8888
+
+# where to store screenshots, video, etc
+storage: ./storage
 
 # db config (postgres) for python facerec
 postgres:

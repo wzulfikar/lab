@@ -1,4 +1,4 @@
-# a mashup of facerec_from_webcam_faster.py 
+# a mashup of facerec_from_webcam_faster.py
 # from https://github.com/ageitgey/face_recognition
 # and `face-postgre` from https://github.com/vearutop/face-postgre
 
@@ -19,47 +19,61 @@ from datetime import datetime
 
 # PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
 # OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
-# specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
+# specific demo. If you have trouble installing it, try any of the other
+# demos that don't require it instead.
 
 if len(sys.argv) < 3:
-	print("USAGE : facerec <source> <dbconfig>")
-	print("SAMPLE: facerec 0 ./postgresql.sample.yml")
-	print("        facerec http://example.com/axis-cgi/mjpg/video.cgi?camera=3 ./postgresql.sample.yml")
-	exit(1)
+    print("USAGE : facerec <deviceid|mjpegurl|file> <configfile>")
+    print("SAMPLE: facerec 0 ./conf.sample.yml")
+    print("        facerec http://example.com/axis-cgi/mjpg/video.cgi?camera=3 ./conf.sample.yml")
+    exit(1)
 
 if not os.path.exists("./.faces"):
-	os.mkdir("./.faces")
+    os.mkdir("./.faces")
+
 
 class facerec:
-	def __init__(self, config: str):
-		self.conf = yaml.safe_load(open(config))
-		self.db = postgresql.open('pq://{}:{}@{}:{}/{}'.format(
-			self.conf['postgres']['user'],
-			self.conf['postgres']['pass'],
-			self.conf['postgres']['host'],
-			self.conf['postgres']['port'],
-			self.conf['postgres']['db']))
 
-	def findface(self, enc: numpy.ndarray) -> list:
-		query = "SELECT file, split_part(p.name,' ',1) as name FROM vectors  v left outer join profiles p on v.profile_id = p.id ORDER BY " + \
-				"(CUBE(array[{}]) <-> vec_low) + (CUBE(array[{}]) <-> vec_high) ASC LIMIT 1".format(
-			','.join(str(s) for s in enc[0:63]),
-			','.join(str(s) for s in enc[64:127]),
-		)
-		return self.db.query(query)
+    def __init__(self, config: str):
+        self.conf = yaml.safe_load(open(config))
+        self.db = postgresql.open('pq://{}:{}@{}:{}/{}'.format(
+            self.conf['postgres']['user'],
+            self.conf['postgres']['pass'],
+            self.conf['postgres']['host'],
+            self.conf['postgres']['port'],
+            self.conf['postgres']['db']))
+
+    def findfaces(self, enc: numpy.ndarray, limit: int) -> list:
+        query = "SELECT file, split_part(p.name,' ',1) as name \
+                FROM vectors  v \
+                LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
+                ORDER BY " + \
+                "(CUBE(array[{}]) <-> vec_low) + (CUBE(array[{}]) <-> vec_high) \
+                ASC LIMIT {}".format(
+                    ','.join(str(s) for s in enc[0:63]),
+                    ','.join(str(s) for s in enc[64:127]),
+                    limit,
+                )
+        return self.db.query(query)
+
 
 class facerecvideo:
-	def __init__(self, source: str):
-		if source.isdigit():
-			self.capture, self.info = cv2.VideoCapture(int(0)), "<device {}>".format(source)
-		else:
-			self.capture, self.info = cv2.VideoCapture(source), "<{}>".format(source)
+
+    def __init__(self, source: str):
+        if source.isdigit():
+            self.capture, self.info = cv2.VideoCapture(
+                int(0)), "<device {}>".format(source)
+        else:
+            self.capture, self.info = cv2.VideoCapture(
+                source), "<{}>".format(source)
+
 
 frvideo = facerecvideo(sys.argv[1])
-print("- Using video at "+frvideo.info)
+print("- Using video at " + frvideo.info)
 
 fr = facerec(sys.argv[2])
-print("- Using DB at {}:{}/{}".format(fr.conf['postgres']['host'], fr.conf['postgres']['port'], fr.conf['postgres']['db']))
+print("- Using DB at {}:{}/{}".format(fr.conf['postgres'][
+      'host'], fr.conf['postgres']['port'], fr.conf['postgres']['db']))
 
 print("- configuring variables..")
 FONT = cv2.FONT_HERSHEY_DUPLEX
@@ -69,16 +83,22 @@ FONT_THICKNESS = 1
 RGB_WHITE = (255, 255, 255)
 RGB_LIME = (0, 255, 0)
 RGB_RED = (0, 0, 255)
-RECT_COLOR = RGB_RED # red
+RECT_COLOR = RGB_RED  # red
+
+# feedback duration in frames
+DEFAULT_FEEDBACK_DURATION = 6
 
 WINDOW_NAME = 'Video source: {}'.format(frvideo.info)
-UP_SINCE = "[FACEREC] UP SINCE {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
+UP_SINCE = "[FACEREC] UP SINCE {}".format(
+    datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+KEY_HINTS = "q: quit, s: screenshot, v or h: flip"
 # Create a HOG face detector using the built-in dlib class
 face_detector = dlib.get_frontal_face_detector()
 
 # Initialize some variables
-storage = fr.conf["storage"]
+storage = {
+    "screenshots": '{}/screenshots'.format(fr.conf["storage"]),
+}
 default_name = "Unknown"
 face_locations = []
 face_encodings = []
@@ -86,98 +106,156 @@ face_names = []
 process_this_frame = True
 runtimeFlipH = False
 runtimeFlipV = False
-tempFramesDuration = 6
-tempFrames = {
-	"screenshots": tempFramesDuration,
+feedbacks = {
+    'demoalert': {
+        'duration': 0,
+        'text': "Demo mode is enabled: press ctrl+c in console to quit",
+        'color': RGB_RED,
+        'flashcolor': None,
+    },
+    'screenshots': {
+        'duration': 0,
+        'text': "Screenshot saved!",
+        'color': RGB_LIME,
+        'flashcolor': RGB_LIME,
+    }
 }
+if not fr.conf["window"]["enabled"]:
+    print("- activating facerec without window")
+
 print("facerec is activated")
 print(UP_SINCE)
 
 while True:
-	# Grab a single frame of video
-	ret, frame = frvideo.capture.read()
+    # Grab a single frame of video
+    ret, frame = frvideo.capture.read()
 
-	if fr.conf["frame"]["flip"]["horizontal"] or runtimeFlipH:
-		frame = cv2.flip(frame, 0)
-	if fr.conf["frame"]["flip"]["vertical"] or runtimeFlipV:
-		frame = cv2.flip(frame, 1)
+    if fr.conf["frame"]["flip"]["horizontal"] or runtimeFlipH:
+        frame = cv2.flip(frame, 0)
+    if fr.conf["frame"]["flip"]["vertical"] or runtimeFlipV:
+        frame = cv2.flip(frame, 1)
 
-	# using constants from opencv3 (depends on what's installed)
-	frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT) 
-	frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH) 
-	cv2.putText(frame, UP_SINCE, (10, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
-	cv2.putText(frame, "q: quit, s: screenshot, v or h: flip", (int(frameWidth) - 230, int(frameHeight) - 10), FONT, FONT_SCALE - 0.1, (255, 255, 255), FONT_THICKNESS)
-	
-	# Resize frame of video to 1/4 size for faster face recognition processing
-	small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    # using constants from opencv3 (depends on what's installed)
+    frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    cv2.putText(frame,
+                UP_SINCE,
+                (10, int(frameHeight) - 10),
+                FONT,
+                FONT_SCALE - 0.1,
+                (255, 255, 255),
+                FONT_THICKNESS)
+    keyHintsAxis = (int(frameWidth) - 230, int(frameHeight) - 10)
+    cv2.putText(frame,
+                KEY_HINTS,
+                keyHintsAxis,
+                FONT,
+                FONT_SCALE - 0.1,
+                (255, 255, 255),
+                FONT_THICKNESS)
 
-	# Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-	rgb_small_frame = small_frame[:, :, ::-1]
+    # Resize frame of video to 1/4 size for faster face recognition processing
+    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-	# Only process every other frame of video to save time
-	if process_this_frame:
-		# Find all the faces and face encodings in the current frame of video
-		face_locations = face_recognition.face_locations(rgb_small_frame)
-		face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+    # Convert the image from BGR color (which OpenCV uses) to RGB color (which
+    # face_recognition uses)
+    rgb_small_frame = small_frame[:, :, ::-1]
 
-		face_names = []
-		for face_encoding in face_encodings:
-			# See if the face is a match for the known face(s) in db
-			rows = fr.findface(face_encoding)
-			if len(rows) == 0:
-				name = default_name
-			else:			
-				file, profilename = rows[0]
-				if profilename:
-					name = profilename
-				else:
-					filename = os.path.basename(file)
-					name = os.path.splitext(filename)[0]
-					name = name.replace("_", " ").replace("-", " ")
-		
-			face_names.append(name)
-			print("face detected: "+name)
+    # Only process every other frame of video to save time
+    if process_this_frame:
+        # Find all the faces and face encodings in the current frame of video
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(
+            rgb_small_frame, face_locations)
 
-	process_this_frame = not process_this_frame
+        face_names = []
+        for face_encoding in face_encodings:
+            # See if the face is a match for the known face(s) in db
+            rows = fr.findfaces(face_encoding, 1)
+            if len(rows) == 0:
+                name = default_name
+            else:
+                file, profilename = rows[0]
+                if profilename:
+                    name = profilename
+                else:
+                    filename = os.path.basename(file)
+                    name = os.path.splitext(filename)[0]
+                    name = name.replace("_", " ").replace("-", " ")
 
-	# Display the results
-	for (top, right, bottom, left), name in zip(face_locations, face_names):
-		# Scale back up face locations since the frame we detected in was scaled to 1/4 size
-		top *= 4
-		right *= 4
-		bottom *= 4
-		left *= 4
+            face_names.append(name)
+            print("face detected: " + name)
 
-		# Draw a box around the face
-		cv2.rectangle(frame, (left, top), (right, bottom), RECT_COLOR, 2)
+    process_this_frame = not process_this_frame
 
-		# Draw a label with a name below the face
-		cv2.rectangle(frame, (left, bottom - 25), (right, bottom), RECT_COLOR, cv2.FILLED)
-		cv2.putText(frame, name, (left + 6, bottom - 6), FONT, FONT_SCALE, (255, 255, 255), FONT_THICKNESS)
+    # Display the results
+    for (top, right, bottom, left), name in zip(face_locations, face_names):
+        # Scale back up face locations since the frame we detected in was
+        # scaled to 1/4 size
+        top *= 4
+        right *= 4
+        bottom *= 4
+        left *= 4
 
-	# Display temporary frames
-	if tempFrames["screenshots"] < tempFramesDuration:
-		cv2.rectangle(frame, (0, 0), (int(frameWidth), int(frameHeight)), RGB_LIME, 4)
-		cv2.putText(frame, "Screenshot saved!", (int(frameWidth) - 125, int(frameHeight) - 30), FONT, FONT_SCALE - 0.1, RGB_LIME, FONT_THICKNESS)
-		tempFrames["screenshots"] += 1
+        # Draw a box around the face
+        cv2.rectangle(frame, (left, top), (right, bottom), RECT_COLOR, 2)
 
-	# Display the resulting image
-	cv2.imshow(WINDOW_NAME, frame)
+        # Draw a label with a name below the face
+        cv2.rectangle(frame, (left, bottom - 25),
+                      (right, bottom), RECT_COLOR, cv2.FILLED)
+        cv2.putText(frame, name, (left + 6, bottom - 6), FONT,
+                    FONT_SCALE, (255, 255, 255), FONT_THICKNESS)
 
-	c = cv2.waitKey(1)
-	# Hit 'q' on the keyboard to quit!
-	if c == ord('q'):
-		break
-	elif c == ord('h'):
-		runtimeFlipH = not runtimeFlipH
-	elif c == ord('v'):
-		runtimeFlipV = not runtimeFlipV
-	elif c == ord('s'):
-		now = datetime.now()
-		filename = '{}/{}_{}.jpg'.format(storage, now.strftime('%Y-%m-%d_%H%M%S'), now.microsecond)
-		cv2.imwrite(filename, frame)
-		tempFrames["screenshots"] = 0
-		print('[SAVED] {}'.format(filename))
+    # Display feedback frames
+    for i, f in feedbacks.items():
+        if f['duration']:
+            if f['flashcolor']:
+                cv2.rectangle(frame,
+                              (0, 0),
+                              (int(frameWidth), int(frameHeight)),
+                              f['flashcolor'],
+                              4)
+            scale = FONT_SCALE - 0.1
+            ret, baseline = cv2.getTextSize(
+                f['text'],
+                FONT,
+                scale,
+                FONT_THICKNESS)
+            textWidth = ret[0] + 6
+            axis = (int(frameWidth) - textWidth, int(frameHeight) - 30)
+            cv2.putText(frame,
+                        f['text'],
+                        axis,
+                        FONT,
+                        scale,
+                        f['color'],
+                        FONT_THICKNESS)
+            f['duration'] -= 1
+
+    # Display the resulting image in window
+    if fr.conf["window"]["enabled"]:
+        cv2.imshow(WINDOW_NAME, frame)
+
+    c = cv2.waitKey(1)
+    # Hit 'q' on the keyboard to quit!
+    if c == ord('q'):
+        if fr.conf['window']['enabled'] and fr.conf['window']['demomode']:
+            feedbacks['demoalert']['duration'] = DEFAULT_FEEDBACK_DURATION
+        else:
+            break
+    elif c == ord('h'):
+        runtimeFlipH = not runtimeFlipH
+    elif c == ord('v'):
+        runtimeFlipV = not runtimeFlipV
+    elif c == ord('s'):
+        now = datetime.now()
+        filename = '{}/{}_{}.jpg'.format(
+            storage["screenshots"],
+            now.strftime('%Y-%m-%d_%H%M%S'),
+            now.microsecond)
+        cv2.imwrite(filename, frame)
+        feedbacks['screenshots']['duration'] = DEFAULT_FEEDBACK_DURATION
+        print('[SAVED] {}'.format(filename))
 
 # Release handle to the webcam
 frvideo.capture.release()
