@@ -40,7 +40,7 @@ def faceadd(db, face_detector, file_name):
         encodings = face_recognition.face_encodings(crop)
 
         if len(encodings) > 0:
-            query = "INSERT INTO vectors2 (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
+            query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                 file_name,
                 ','.join(str(s) for s in encodings[0][0:63]),
                 ','.join(str(s) for s in encodings[0][64:127]),
@@ -66,13 +66,13 @@ if not os.path.exists(path):
 # Create a HOG face detector using the built-in dlib class
 face_detector = dlib.get_frontal_face_detector()
 db = postgresql.open('pq://user:pass@localhost:5434/db')
+filecount = 0
 
 if os.path.isfile(path):
     print("Processing single file:", path)
     faceadd(db, face_detector, path)
 else:
     print("Processing directory:", path)
-    filecount = 0
     for root, dirs, files in os.walk(path):
         path = root.split(os.sep)
         for file in files:
