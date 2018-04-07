@@ -29,25 +29,25 @@ def facelabel(img, name, rect, rect_color=(0, 0, 255)):
 
     cv2.rectangle(img,
                   (left, top),
-                  (right, bottom),
+                  (right, bottom + 10),
                   rect_color,
-                  1)
+                  2)
     # Draw a label with a name below the face
     cv2.rectangle(img,
-                  (left, bottom - 25),
-                  (right, bottom),
+                  (left, bottom - 15),
+                  (right, bottom + 10),
                   rect_color,
                   cv2.FILLED)
     cv2.putText(img, name,
-                (rect.left() + 6, rect.bottom() - 6),
+                (rect.left() + 6, rect.bottom() + 5),
                 cv2.FONT_HERSHEY_DUPLEX,
-                0.5,
+                0.6,
                 (255, 255, 255),
                 1)
 
 
 def findface(db, enc) -> list:
-    query = "SELECT file, split_part(p.name,' ',1) as name \
+    query = "SELECT file, p.name as name, p.id as profile_id \
             FROM vectors  v \
             LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
             ORDER BY " + \
@@ -100,7 +100,7 @@ def facerec(file_name):
 
                 facelabel(img, 'F.{}: {}'.format(i + 1, name), face_rect)
         else:
-            facelabel(img, "F.{}".format(i + 1),
+            facelabel(img, "F.{}: Unknown".format(i + 1),
                       face_rect,
                       (0, 100, 255))
 

@@ -41,13 +41,14 @@ def faceadd(db, face_detector, file_name, profile_id=None):
 
         if len(encodings) > 0:
             if profile_id is None:
+                print("- Adding face with no profile ID")
                 query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                     file_name,
                     ','.join(str(s) for s in encodings[0][0:63]),
                     ','.join(str(s) for s in encodings[0][64:127]),
                 )
             else:
-                print("Adding face for profile ID:", profile_id)
+                print("- Adding face for profile ID:", profile_id)
                 query = "INSERT INTO vectors (profile_id, file, vec_low, vec_high) VALUES ({}, '{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                     profile_id,
                     file_name,
@@ -77,14 +78,14 @@ face_detector = dlib.get_frontal_face_detector()
 db = postgresql.open('pq://user:pass@localhost:5434/db')
 filecount = 0
 
+profile_id = None
+if len(sys.argv) > 2:
+    profile_id = sys.argv[2]
+
 if os.path.isfile(path):
     filecount += 1
     print("Processing single file:", path)
-    if len(sys.argv) > 2:
-        profile_id = sys.argv[2]
-        faceadd(db, face_detector, path, profile_id)
-    else:
-        faceadd(db, face_detector, path)
+    faceadd(db, face_detector, path, profile_id)
 else:
     print("Processing directory:", path)
     for root, dirs, files in os.walk(path):
@@ -97,7 +98,7 @@ else:
 
             filepath = os.path.join(root, file)
             print("[FOUND] ", filepath)
-            if faceadd(db, face_detector, filepath) is not False:
+            if faceadd(db, face_detector, filepath, profile_id) is not False:
                 filecount += 1
                 print("[DONE] File #{} added: {}".format(filecount, filepath))
 
