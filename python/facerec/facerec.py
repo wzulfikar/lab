@@ -44,7 +44,7 @@ class FacerecPG:
             self.conf['postgres']['db']))
 
     def findfaces(self, enc: numpy.ndarray, limit: int) -> list:
-        query = "SELECT file, split_part(p.name,' ',1) as name \
+        query = "SELECT file, p.id as profile_id, p.name as name \
                 FROM vectors  v \
                 LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
                 ORDER BY " + \
@@ -245,7 +245,7 @@ while frvideo.capture.isOpened():
             if len(rows) == 0:
                 name = DEFAULT_FACE_LABEL
             else:
-                file, profilename = rows[0]
+                file, profile_id, profilename = rows[0]
                 if profilename:
                     name = profilename
                 else:
@@ -253,8 +253,12 @@ while frvideo.capture.isOpened():
                     name = os.path.splitext(filename)[0]
                     name = name.replace("_", " ").replace("-", " ")
 
+            print("[PROFILE {}] face detected: {}, file: {}".format(
+                profile_id, name, file))
+
+            if len(name) > 16:
+                name = name[0:16:] + '..'
             face_names.append(name)
-            print("face detected: " + name)
 
     process_this_frame = not process_this_frame
 
