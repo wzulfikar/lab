@@ -7,7 +7,7 @@ import postgresql
 import face_recognition
 
 if len(sys.argv) < 2:
-    print("Usage: facefind <image>")
+    print("Usage: facefind <image> --addlabel")
     exit(1)
 
 if not os.path.exists("./.faces"):
@@ -59,7 +59,14 @@ def findface(db, enc) -> list:
     return db.query(query)
 
 
-def facerec(file_name):
+def facerec(file_name, addlabel=False):
+    path = os.path.dirname(file_name)
+    imgname, ext = os.path.splitext(os.path.basename(file_name))
+
+    facerecfaces = path + '/.facerec-faces'
+    if not os.path.exists(facerecfaces):
+        os.makedirs(facerecfaces)
+
     # Load the image
     img = cv2.imread(file_name)
 
@@ -76,21 +83,23 @@ def facerec(file_name):
         print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i + 1, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
         crop = img[face_rect.top():face_rect.bottom(),
-                   face_rect.left():face_rect.right()]
+                   face_rect.left(): face_rect.right()]
+
+        label = 'F.{} - {}'.format(i + 1, 'Unknown')
+        rect_color = (0, 0, 255)
 
         encodings = face_recognition.face_encodings(crop)
         if len(encodings) > 0:
             query = "SELECT file, split_part(p.name,' ',1) as name \
                         FROM vectors  v \
                         LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
-                        ORDER BY " + \
-                    "(CUBE(array[{}]) <-> vec_low) + (CUBE(array[{}]) <-> vec_high) ASC LIMIT 1".format(
-                        ','.join(str(s) for s in encodings[0][0:63]),
-                        ','.join(str(s) for s in encodings[0][64:127]),
-                    )
+                        ORDER BY " + "(CUBE(array[{}]) <-> vec_low) + (CUBE(array[{}]) <-> vec_high) ASC LIMIT 1".format(
+                    ','.join(str(s) for s in encodings[0][0:63]),
+                    ','.join(str(s) for s in encodings[0][64:127]),
+            )
             rows = db.query(query)
             if len(rows) > 0:
-                print(rows)
+                print(' ', rows)
                 file, profilename = rows[0]
                 if profilename:
                     name = profilename
@@ -98,15 +107,19 @@ def facerec(file_name):
                     filename, ext = os.path.splitext(os.path.basename(file))
                     name = filename.replace("_", " ").replace("-", " ")
 
-                facelabel(img, 'F.{}: {}'.format(i + 1, name), face_rect)
+                label = label.replace('Unknown', name)
         else:
-            facelabel(img, "F.{}: Unknown".format(i + 1),
-                      face_rect,
-                      (0, 100, 255))
+            print("  Face #{} has no encodings".format(i + 1)),
+            rect_color = (0, 100, 255)
 
-        filename, ext = os.path.splitext(os.path.basename(file_name))
-        labeled_file = file_name.replace(ext, '_labeled{}'.format(ext))
-        cv2.imwrite(labeled_file, img)
+        cv2.imwrite('{}/{}{}'.format(facerecfaces,
+                                     imgname + '-' + label, ext), crop)
+        facelabel(img, label, face_rect, rect_color)
+        filename = os.path.splitext(os.path.basename(file_name))[0]
+
+        if addlabel:
+            cv2.imwrite('{}/{}_labeled{}'.format(path, filename, ext), img)
+
 
 # Take the image(s) path from the command line
 path = sys.argv[1]
@@ -114,19 +127,28 @@ if not os.path.exists(path):
     print("Path doesn't exist!", path)
     exit(1)
 
+addlabel = None
+if len(sys.argv) > 2 and sys.argv[2] == '--addlabel':
+    addlabel = True
+
 if os.path.isfile(path):
     print("Processing one file:", path)
-    facerec(path)
+    facerec(path, addlabel)
 else:
     print("Processing directory:", path)
     for root, dirs, files in os.walk(path):
         path = root.split(os.sep)
+
+        currentdir = os.path.basename(root)
+        if len(currentdir) > 1 and currentdir == '.':
+            print("[SKIP] hidden directory:", currentdir)
+
         for file in files:
             _, ext = os.path.splitext(file)
-            if ext.lower() not in ['.jpg', '.jpeg']:
+            if ext.lower() not in ['.jpg', '.jpeg', '.png']:
                 print("[SKIP]", file)
                 continue
 
             filepath = os.path.join(root, file)
             print("Image found: ", filepath)
-            facerec(filepath)
+            facerec(filepath, addlabel)
