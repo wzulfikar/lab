@@ -59,7 +59,7 @@ def findface(db, enc) -> list:
     return db.query(query)
 
 
-def facerec(file_name, addlabel=False):
+def facerec(file_name, addlabel=None):
     path = os.path.dirname(file_name)
     imgname, ext = os.path.splitext(os.path.basename(file_name))
 
@@ -85,12 +85,12 @@ def facerec(file_name, addlabel=False):
         crop = img[face_rect.top():face_rect.bottom(),
                    face_rect.left(): face_rect.right()]
 
-        label = 'F.{} - {}'.format(i + 1, 'Unknown')
+        label = 'F.{}-{}'.format(i + 1, 'Unknown')
         rect_color = (0, 0, 255)
 
         encodings = face_recognition.face_encodings(crop)
         if len(encodings) > 0:
-            query = "SELECT file, split_part(p.name,' ',1) as name \
+            query = "SELECT file, p.name as name \
                         FROM vectors  v \
                         LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
                         ORDER BY " + "(CUBE(array[{}]) <-> vec_low) + (CUBE(array[{}]) <-> vec_high) ASC LIMIT 1".format(
@@ -107,17 +107,20 @@ def facerec(file_name, addlabel=False):
                     filename, ext = os.path.splitext(os.path.basename(file))
                     name = filename.replace("_", " ").replace("-", " ")
 
-                label = label.replace('Unknown', name)
+                label = label.replace('Unknown', name.replace(' ', '_'))
         else:
             print("  Face #{} has no encodings".format(i + 1)),
             rect_color = (0, 100, 255)
 
         cv2.imwrite('{}/{}{}'.format(facerecfaces,
                                      imgname + '-' + label, ext), crop)
-        facelabel(img, label, face_rect, rect_color)
         filename = os.path.splitext(os.path.basename(file_name))[0]
 
         if addlabel:
+            if len(label) > 16:
+                label = label[0:16:] + '..'
+            print("- Adding face-label to image")
+            facelabel(img, label.replace('_', ' '), face_rect, rect_color)
             cv2.imwrite('{}/{}_labeled{}'.format(path, filename, ext), img)
 
 
@@ -129,6 +132,7 @@ if not os.path.exists(path):
 
 addlabel = None
 if len(sys.argv) > 2 and sys.argv[2] == '--addlabel':
+    print("addlabel option has been enabled")
     addlabel = True
 
 if os.path.isfile(path):
