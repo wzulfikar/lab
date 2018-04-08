@@ -33,22 +33,23 @@ def faceadd(db, face_detector, file_name, profile_id=None):
     for i, face_rect in enumerate(detected_faces):
         # Detected faces are returned as an object with the coordinates
         # of the top, left, right and bottom edges
-        print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i, face_rect.left(), face_rect.top(),
+        print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i + 1, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
         crop = image[face_rect.top():face_rect.bottom(),
                      face_rect.left():face_rect.right()]
         encodings = face_recognition.face_encodings(crop)
 
-        if len(encodings) > 0:
-            if profile_id is None:
-                print("- Adding face with no profile ID")
+        if not len(encodings):
+            print("  [SKIP] face has no encodings")
+        else:
+            print("- Adding face for profile <{}>".format(profile_id))
+            if not profile_id:
                 query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                     file_name,
                     ','.join(str(s) for s in encodings[0][0:63]),
                     ','.join(str(s) for s in encodings[0][64:127]),
                 )
             else:
-                print("- Adding face for profile ID:", profile_id)
                 query = "INSERT INTO vectors (profile_id, file, vec_low, vec_high) VALUES ({}, '{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                     profile_id,
                     file_name,

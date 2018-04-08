@@ -82,8 +82,8 @@ def facerec(file_name, addlabel=None):
         # of the top, left, right and bottom edges
         print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i + 1, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
-        crop = img[face_rect.top():face_rect.bottom(),
-                   face_rect.left(): face_rect.right()]
+        crop = img[face_rect.top() - 10:face_rect.bottom() + 10,
+                   face_rect.left() - 10: face_rect.right() + 10]
 
         label = 'F.{}-{}'.format(i + 1, 'Unknown')
         rect_color = (0, 0, 255)
@@ -109,7 +109,7 @@ def facerec(file_name, addlabel=None):
 
                 label = label.replace('Unknown', name.replace(' ', '_'))
         else:
-            print("  Face #{} has no encodings".format(i + 1)),
+            print("  [SKIP] face has no encodings".format(i + 1)),
             rect_color = (0, 100, 255)
 
         cv2.imwrite('{}/{}{}'.format(facerecfaces,
