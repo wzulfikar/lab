@@ -68,6 +68,17 @@ class FacerecVideo:
                 source), "<{}>".format(source)
 
 
+def adjustmaxsize(video_capture, maxwh, currentwidth, currentheight):
+    if maxwh != "":
+        w, h = maxwh.split(',')
+        if float(w) < currentwidth:
+            print("- adjusting max width to:", w)
+            video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, int(w))
+        if float(h) < currentheight:
+            print("- adjusting max height to:", h)
+            video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, int(h))
+
+
 frvideo = FacerecVideo(sys.argv[1])
 print("- using video at " + frvideo.info)
 
@@ -186,6 +197,11 @@ if not fr.conf["window"]["enabled"]:
 else:
     print("- configuring window")
     cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+    print("- current width x height:", frameWidth, frameHeight)
+    adjustmaxsize(frvideo.capture,
+                  fr.conf['frame']['maxsize'],
+                  frameWidth,
+                  frameHeight)
 
 print("facerec is activated")
 print(UP_SINCE)
