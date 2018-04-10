@@ -79,8 +79,9 @@ def adjust_frame_size(video_capture, minwh, maxwh) -> ((int, int), str):
     if maxwh != "":
         w, h = maxwh.split(',')
         max_w, max_h = int(w), int(h)
-    if min_w > max_w or min_h > max_h:
-        return "error: conflict in min and max size"
+
+    if (maxwh != "" and minwh != "") and (min_w > max_w or min_h > max_h):
+        return ((0, 0), "error: conflict in min and max size")
 
     currentwidth = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
     currentheight = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
@@ -102,7 +103,7 @@ def adjust_frame_size(video_capture, minwh, maxwh) -> ((int, int), str):
             video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, min_w)
 
         if min_h > currentheight:
-            print("- adjusting min height to:", max_h)
+            print("- adjusting min height to:", min_h)
             video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, min_h)
 
     return (currentwidth, currentheight), None
@@ -241,7 +242,8 @@ else:
     if err is not None:
         print("Failed to adjust frame size:", err)
         exit(1)
-    frameWidth, frameHeight = currentwh
+    else:
+        frameWidth, frameHeight = currentwh
 
 print("facerec is activated")
 print(UP_SINCE)

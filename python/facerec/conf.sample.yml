@@ -4,18 +4,18 @@ window:
 
 # frame configuration
 frame:
-  maxsize: 720,480 # optional: set frame max size (w,h)
-  minsize: 720,480 # optional: set frame min size (w,h)
+  # maxsize: 720,480 # optional: set frame max size (w,h)
+  # minsize: 720,480 # optional: set frame min size (w,h)
   recordonstart: false
   flip:
     horizontal: false
     vertical: false
 
 # server config (TODO)
-server: 
-  enabled: false
-  host: localhost
-  port: 8888
+# server: 
+#   enabled: false
+#   host: localhost
+#   port: 8888
 
 # where to store screenshots, video, etc
 storage: ./storage
