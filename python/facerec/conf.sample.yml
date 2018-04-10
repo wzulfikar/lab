@@ -4,7 +4,8 @@ window:
 
 # frame configuration
 frame:
-  maxsize: 640,480 # optional: set frame max size (w,h)
+  maxsize: 720,480 # optional: set frame max size (w,h)
+  minsize: 720,480 # optional: set frame min size (w,h)
   recordonstart: false
   flip:
     horizontal: false

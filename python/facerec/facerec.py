@@ -68,15 +68,42 @@ class FacerecVideo:
                 source), "<{}>".format(source)
 
 
-def adjustmaxsize(video_capture, maxwh, currentwidth, currentheight):
+def adjust_frame_size(video_capture, minwh, maxwh) -> ((int, int), str):
+    max_w, max_h, min_w, min_h = 0, 0, 0, 0
+
+    if minwh != "":
+        w, h = minwh.split(',')
+        min_w, min_h = int(w), int(h)
     if maxwh != "":
         w, h = maxwh.split(',')
-        if float(w) < currentwidth:
-            print("- adjusting max width to:", w)
-            video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, int(w))
-        if float(h) < currentheight:
-            print("- adjusting max height to:", h)
-            video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, int(h))
+        max_w, max_h = int(w), int(h)
+    if min_w > max_w or min_h > max_h:
+        return "error: conflict in min and max size"
+
+    currentwidth = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    currentheight = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+    if max_w > 0 and max_h > 0:
+        if max_w < currentwidth:
+            print("- adjusting max width to:", max_w)
+            currentwidth = float(max_w)
+            video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, max_w)
+
+        if max_h < currentheight:
+            print("- adjusting max height to:", max_h)
+            currentheight = float(max_h)
+            video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, max_h)
+
+    if min_w > 0 and min_h > 0:
+        if min_w > currentwidth:
+            print("- adjusting min width to:", min_w)
+            video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, min_w)
+
+        if min_h > currentheight:
+            print("- adjusting min height to:", max_h)
+            video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, min_h)
+
+    return (currentwidth, currentheight), None
 
 
 frvideo = FacerecVideo(sys.argv[1])
@@ -196,12 +223,18 @@ if not fr.conf["window"]["enabled"]:
     print("- activating facerec without window")
 else:
     print("- configuring window")
-    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
     print("- current width x height:", frameWidth, frameHeight)
-    adjustmaxsize(frvideo.capture,
-                  fr.conf['frame']['maxsize'],
-                  frameWidth,
-                  frameHeight)
+    minsize, maxsize = "", ""
+    if 'minsize' in fr.conf['frame']:
+        minsize = fr.conf['frame']['minsize']
+    if 'maxsize' in fr.conf['frame']:
+        maxsize = fr.conf['frame']['maxsize']
+
+    currentwh, err = adjust_frame_size(frvideo.capture, minsize, maxsize)
+    if err is not None:
+        print("Failed to adjust frame size:", err)
+        exit(1)
+    frameWidth, frameHeight = currentwh
 
 print("facerec is activated")
 print(UP_SINCE)
