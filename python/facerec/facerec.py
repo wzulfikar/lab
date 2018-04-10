@@ -6,6 +6,7 @@ import os
 import cv2
 import sys
 import yaml
+import time
 import dlib
 import numpy
 import postgresql
@@ -15,7 +16,8 @@ from datetime import datetime
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
 #   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
-#   2. Only detect faces in every other frame of video.
+# 2. Only detect faces in every other frame of video (calculate using
+# `fps_counter`).
 
 # PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
 # OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
@@ -148,11 +150,12 @@ for key, path in storage.items():
 # using constants from opencv3 (depends on what's installed)
 frameHeight = frvideo.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
 frameWidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+device_fps = frvideo.capture.get(cv2.CAP_PROP_FPS)
+print("- video capture fps:", device_fps)
 
 face_locations = []
 face_encodings = []
 face_names = []
-process_this_frame = True
 runtimeFlipH = False
 runtimeFlipV = False
 feedbacks = {
@@ -185,15 +188,16 @@ feedbacks = {
 
 class Recorder:
 
-    def __init__(self, framesize: (int, int), storagepath: str, start: bool):
+    def __init__(self, video_capture, storagepath: str, start: bool):
         self.writer = None
         self.isrecording = start
         self.storagepath = storagepath
-        self.frameheight = framesize[0]
-        self.framewidth = framesize[1]
+        self.framewidth = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+        self.frameheight = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.fps = int(video_capture.get(cv2.CAP_PROP_FPS))
 
         if self.isrecording:
-            self.record()
+            self.record(self.fps)
 
     def close(self) -> bool:
         if self.writer is None:
@@ -202,19 +206,22 @@ class Recorder:
         self.writer.release()
         return True
 
-    def record(self):
+    def record(self, fps: int = None):
+        if fps is None:
+            fps = self.fps
+
+        print("[RECORDING] recording video at", fps, "fps")
         now = datetime.now()
         self.writer = cv2.VideoWriter(
             '{}/{}.avi'.format(
                 self.storagepath,
                 now.strftime('%Y-%m-%d_%H%M%S')),
             cv2.VideoWriter_fourcc(*"X264"),
-            20.0,
-            (self.framewidth, self.frameheight))
+            fps,
+            (int(self.framewidth), int(self.frameheight)))
 
 
-rc = Recorder((int(frameHeight),
-               int(frameWidth)),
+rc = Recorder(frvideo.capture,
               storage['recordings'],
               fr.conf['frame']['recordonstart'])
 print("- recording status: {}".format(rc.isrecording))
@@ -239,6 +246,9 @@ else:
 print("facerec is activated")
 print(UP_SINCE)
 
+fps_time = time.time()
+fps_counter = 0
+fps_current = 0
 while frvideo.capture.isOpened():
     # Grab a single frame of video
     ret, frame = frvideo.capture.read()
@@ -257,6 +267,23 @@ while frvideo.capture.isOpened():
                 FONT_SCALE - 0.1,
                 (255, 255, 255),
                 FONT_THICKNESS)
+
+    if fps_current > 0:
+        cv2.putText(frame,
+                    "{0:.1f} fps".format(fps_current),
+                    (10, int(frameHeight) - 25),
+                    FONT,
+                    FONT_SCALE - 0.1,
+                    (255, 255, 255),
+                    FONT_THICKNESS)
+    else:
+        cv2.putText(frame,
+                    "calculating fps..".format(fps_current),
+                    (10, int(frameHeight) - 25),
+                    FONT,
+                    FONT_SCALE - 0.1,
+                    (255, 255, 255),
+                    FONT_THICKNESS)
 
     ret, baseline = cv2.getTextSize(
         KEY_HINTS,
@@ -280,8 +307,10 @@ while frvideo.capture.isOpened():
     # face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
 
-    # Only process every other frame of video to save time
-    if process_this_frame:
+    # only run thru face recognition pipeline for every 4 frames
+    process_face_rec = fps_counter % 4 == 0
+
+    if process_face_rec:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(
@@ -308,8 +337,6 @@ while frvideo.capture.isOpened():
             if len(name) > 16:
                 name = name[0:16:] + '..'
             face_names.append(name)
-
-    process_this_frame = not process_this_frame
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
@@ -366,11 +393,21 @@ while frvideo.capture.isOpened():
                     FONT_THICKNESS)
         rc.writer.write(frame)
 
+    c = cv2.waitKey(1)
+
     # Display the resulting image in window
     if fr.conf["window"]["enabled"]:
         cv2.imshow(WINDOW_NAME, frame)
+        fps_counter += 1
 
-    c = cv2.waitKey(1)
+    # update `fps_current`
+    if fps_counter == 20:
+        seconds = time.time() - fps_time
+        fps_time = time.time()
+        fps_current = fps_counter / seconds
+        fps_counter = 0
+        print("- current fps:", fps_current)
+
     # Hit 'q' on the keyboard to quit!
     if c == ord('q'):
         if fr.conf['window']['enabled'] and fr.conf['window']['demomode']:
@@ -387,7 +424,8 @@ while frvideo.capture.isOpened():
     elif c == ord('r'):
         rc.isrecording = not rc.isrecording
         if rc.isrecording:
-            rc.record()
+            fps_record_adjustment = 2
+            rc.record(int(fps_current) + fps_record_adjustment)
             feedbacks['recordingstarted'][
                 'duration'] = DEFAULT_FEEDBACK_DURATION
         else:
