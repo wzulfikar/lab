@@ -38,7 +38,7 @@ print("  [{} {}]".format(add[0], add[1]))
 print()
 
 mul = tf.matmul(a, b)
-print("- multiplication of Tensor & NumpyArray (a * b):")
+print("- multiplication (dot product) of Tensor `a` & NumpyArray `b`:")
 print("  a * b = [{} {}]".format(mul[0], mul[1]))
 print("""
   calculation steps:
