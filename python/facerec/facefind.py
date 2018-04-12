@@ -2,7 +2,6 @@ import os
 import cv2
 import sys
 import dlib
-import numpy
 import postgresql
 import face_recognition
 

@@ -6,16 +6,15 @@ PyYAML == 3.12
 
 # faceadd.py: 2
 # facefind.py: 4
-# facerec.py: 9
+# facerec.py: 10
 dlib == 19.10.0
 
 # faceadd.py: 4
-# facefind.py: 7
-# facerec.py: 12
+# facefind.py: 6
+# facerec.py: 13
 face_recognition == 1.2.2
 
-# facefind.py: 5
-# facerec.py: 10
+# facerec.py: 11
 numpy == 1.14.2
 
 # faceadd.py: 3
@@ -25,6 +24,7 @@ opencv_python == 3.4.0.12
 
 # db.py: 1
 # faceadd.py: 6
-# facefind.py: 6
-# facerec.py: 11
+# facedb.py: 2
+# facefind.py: 5
+# facerec.py: 12
 py_postgresql == 1.2.1
