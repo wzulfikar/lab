@@ -7,9 +7,8 @@ watch-py2 () {
     FILENAME=$1
 
     MSG='\n→ Watching python (using entr)..$NC'
-    BANNER='${GREEN}Output of $FILENAME:$NC'
-
-    COMMAND="clear && echo '$BANNER' && python3 $FILENAME "
+    BIN="python2"
+    COMMAND="clear && echo '${GREEN}Output of ‘$@’:$NC' && $BIN $@"
 
 	FILES="find . -name \*.py"
 
@@ -23,9 +22,8 @@ watch-py3 () {
     FILENAME=$1
 
     MSG='\n→ Watching python (using entr)..$NC'
-    BANNER='${GREEN}Output of $FILENAME:$NC'
-
-    COMMAND="clear && echo '$BANNER' && python3 $FILENAME "
+    BIN="python3"
+    COMMAND="clear && echo '${GREEN}Output of ‘$@’:$NC' && $BIN $@"
 
 	FILES="find . -name \*.py"
 
