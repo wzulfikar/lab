@@ -4,14 +4,22 @@ import sys
 import wave
 import time
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
 from websocket import create_connection
 
+# import matplotlib.pyplot as plt
+import numpy as np
+import wave
+import sys
 
-def ws_stream_wav(url: str,
+from wav_visdom import WavVisdom
+
+
+def ws_stream_wav(url: str,  # websocket connection
                   wav_file: str,
                   result: dict,
-                  delay: float = 0.)-> (int, float):
+                  plot: False)-> (int, float):
     print("using websocket to stream wav file:")
     print("- file:", wav_file)
     print("- endpoint:", url)
@@ -22,11 +30,17 @@ def ws_stream_wav(url: str,
                   either frames_sent or duration_sent is not found')
             exit(1)
 
+    plotter = WavVisdom() if plot else None
+
     ws = create_connection(url)
 
     wf = wave.open(wav_file, 'r')
     nframes = wf.getnframes()
+
+    # frame rate, also referred as sampling rate (or sample rate),
+    # is the number of samples of audio carried per second.
     framerate = wf.getframerate()
+
     sampwidth = wf.getsampwidth()
     channels = wf.getnchannels()
 
@@ -54,16 +68,35 @@ def ws_stream_wav(url: str,
 
     frames_sent = 0
 
-    # send n of frames worth 20ms of audio
-    rate = fpms * 20
-    print("→ sending {} frames per iteration;".format(rate))
+    # send ms worth of frames in each packet
+    ms_per_frame = 20
+    rate = fpms * ms_per_frame
+    print("→ sending {} frames ({}ms) per iteration:".format(rate,
+                                                             ms_per_frame))
+
+    # adjust this if you get stuttering voice
+    # during playback (ie. via pyaudio)
+    stream_wait_ms_adjust = 0.01
+    stream_wait_ms = (ms_per_frame / 1000) - stream_wait_ms_adjust
+    print('- stream wait (ms):', stream_wait_ms)
+
     while(frames_sent < nframes):
         if frames_sent + rate > nframes:
             rate = nframes - frames_sent
 
         waveData = wf.readframes(rate)
         frames_sent += rate
+
+        # send the audio binary and sleep after
+        # ms_per_frame to mimic streaming process
         ws.send_binary(waveData)
+        time.sleep(stream_wait_ms)
+
+        if plotter is not None:
+            plotter.draw(waveData,
+                         framerate,
+                         frames_sent,
+                         nframes)
 
         progress = int(frames_sent / nframes * 100)
         print('  frame {} of {} ({}%)'.format(
@@ -76,9 +109,7 @@ def ws_stream_wav(url: str,
             result['frames_sent'] = frames_sent
             result['duration_sent'] = frames_sent / fpms / 1000
 
-        if delay > 0:
-            time.sleep(delay)
-
+    # time.sleep(5)
     ws.close()
 
 
@@ -89,12 +120,13 @@ if __name__ == '__main__':
         print("      : waver.py ws://localhost:8000/socket recording1.wav")
         exit()
     result = {'frames_sent': 0, 'duration_sent': 0.}
+
     try:
         ws_stream_wav(
             sys.argv[1],
             sys.argv[2],
-            result=result,
-            delay=0.)
+            plot=True,
+            result=result)
 
     except KeyboardInterrupt:
         print("\n\nreceived keyboard interrupt")
