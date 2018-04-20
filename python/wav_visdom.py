@@ -1,5 +1,6 @@
 import visdom
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
 
 class WavVisdom:
@@ -9,6 +10,10 @@ class WavVisdom:
         # `python -m visdom.server`
         self.v = visdom.Visdom()
         self.canvas = 'wav_visdom'
+        self.thread_pool = ThreadPoolExecutor(max_workers=1)
+
+        print('checking visdom.server..')
+        print('make sure you have it running (ie. `pip -m visdom.server`)')
         assert self.v.check_connection()
 
         print('visdom is up')
@@ -19,17 +24,16 @@ class WavVisdom:
         self.counter = 0
 
     def draw(self, waveData, framerate, frames_sent, nframes):
-        self.counter += 1
+        self.thread_pool.submit(
+            self._draw, waveData, framerate, frames_sent, nframes)
 
-        # every 2 * ms_per_frames
-        if self.counter == 3:
-            self.counter = 0
-            # resample to 2
-            signal = np.fromstring(waveData, 'Int16')
+    def _draw(self, waveData, framerate, frames_sent, nframes):
+        # resample to 2
+        signal = np.fromstring(waveData, 'Int16')[::2]
 
-            # resize each item
-            signal = [x / 200 for x in signal]
-            self.v.bar(signal, win=self.canvas)
+        # resize each item
+        signal = [x / 200 for x in signal]
+        self.v.bar(signal, win=self.canvas)
 
         # clear plot in last frame
         if frames_sent == nframes:

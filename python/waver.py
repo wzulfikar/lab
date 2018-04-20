@@ -4,21 +4,40 @@ import sys
 import wave
 import time
 import numpy as np
-from concurrent.futures import ThreadPoolExecutor
 
 from websocket import create_connection
 
-# import matplotlib.pyplot as plt
-import numpy as np
-import wave
-import sys
-
 from wav_visdom import WavVisdom
+
+
+class wav_ws:
+    """wrapper for python websocket"""
+
+    def __init__(self, url: str, dummy: False):
+        self.dummy = dummy
+
+        if self.dummy:
+            print('wav_ws initiated with dummy mode ON')
+            return
+
+        self.ws = create_connection(url)
+
+    def send_binary(self, in_data) -> None:
+        if self.dummy:
+            return
+        self.ws.send_binary(in_data)
+
+    def close(self) -> None:
+        if self.dummy:
+            print('[DUMMY] wav_ws.close')
+            return
+        self.ws.close()
 
 
 def ws_stream_wav(url: str,  # websocket connection
                   wav_file: str,
                   result: dict,
+                  dummy: bool,
                   plot: False)-> (int, float):
     print("using websocket to stream wav file:")
     print("- file:", wav_file)
@@ -32,7 +51,7 @@ def ws_stream_wav(url: str,  # websocket connection
 
     plotter = WavVisdom() if plot else None
 
-    ws = create_connection(url)
+    ws = wav_ws(url, dummy)
 
     wf = wave.open(wav_file, 'r')
     nframes = wf.getnframes()
@@ -58,6 +77,12 @@ def ws_stream_wav(url: str,  # websocket connection
     print("- frame rate:", framerate)
     print("- sample width:", sampwidth)
     print("- frame per ms:", fpms)
+
+    target_rate = 16000
+    if target_rate != framerate:
+        print('[ERROR] frame rate (sample rate) does not match target rate: {} != {}'.format(
+            framerate, target_rate))
+        return
 
     # https://stackoverflow.com/questions/47865690/how-to-get-number-of-framesor-samples-per-sec-or-ms-in-a-audio-wav-or-mp3
     first_frame = wf.readframes(1)
@@ -125,7 +150,8 @@ if __name__ == '__main__':
         ws_stream_wav(
             sys.argv[1],
             sys.argv[2],
-            plot=True,
+            plot=False,
+            dummy=False,
             result=result)
 
     except KeyboardInterrupt:
