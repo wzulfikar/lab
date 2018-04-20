@@ -13,7 +13,7 @@ import postgresql
 from datetime import datetime
 
 # import pipelines
-from pipelines.pipeline_runner import PipelineRunner
+from pipelines.pipeline_register import PipelineRegister
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -184,47 +184,6 @@ feedbacks = {
     },
 }
 
-
-class Recorder:
-
-    def __init__(self, video_capture, storagepath: str, start: bool):
-        self.writer = None
-        self.isrecording = start
-        self.storagepath = storagepath
-        self.framewidth = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-        self.frameheight = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        self.fps = int(video_capture.get(cv2.CAP_PROP_FPS))
-
-        if self.isrecording:
-            self.record(self.fps)
-
-    def close(self) -> bool:
-        if self.writer is None:
-            return None
-
-        self.writer.release()
-        return True
-
-    def record(self, fps: int = None):
-        if fps is None:
-            fps = self.fps
-
-        print("[RECORDING] recording video at", fps, "fps")
-        now = datetime.now()
-        self.writer = cv2.VideoWriter(
-            '{}/{}.avi'.format(
-                self.storagepath,
-                now.strftime('%Y-%m-%d_%H%M%S')),
-            cv2.VideoWriter_fourcc(*"X264"),
-            fps,
-            (int(self.framewidth), int(self.frameheight)))
-
-
-rc = Recorder(frvideo.capture,
-              storage['recordings'],
-              fr.conf['frame']['recordonstart'])
-print("- recording status: {}".format(rc.isrecording))
-
 if not fr.conf["window"]["enabled"]:
     print("- activating facerec without window")
 else:
@@ -243,7 +202,20 @@ else:
     else:
         framewidth, frameheight = currentwh
 
-pipeline = PipelineRunner(fr.findfaces)
+# activate pipelines
+p_reg = PipelineRegister(fr.findfaces, pipelines=['display_info',
+                                                  'display_feedbacks',
+                                                  'draw_face_labels',
+                                                  'lookback',
+                                                  'presence',
+                                                  'recorder'])
+pipelines = p_reg.pipelines
+
+rc = pipelines['recorder']
+rc.set_args(frvideo.capture,
+            storage['recordings'],
+            fr.conf['frame']['recordonstart'])
+print("- recording status: {}".format(rc.isrecording))
 
 print("facerec is activated")
 
@@ -262,14 +234,12 @@ while frvideo.capture.isOpened():
         frame = cv2.flip(frame, 1)
 
     # run the pipelines
-    pipeline.run('display_info',
-                frame, int(framewidth), int(frameheight),
-                (fps_current, KEY_HINTS))
-    pipeline.run('display_feedbacks',
-                frame, int(framewidth), int(frameheight),
-                (feedbacks))
-    pipeline.run('draw_face_labels',
-                 frame, int(framewidth), int(frameheight))
+    w, h = int(framewidth), int(frameheight)
+    pipelines['display_info'].process(frame, w, h, (fps_current, KEY_HINTS))
+    pipelines['display_feedbacks'].process(frame, w, h, (feedbacks))
+    pipelines['draw_face_labels'].process(frame, w, h)
+    pipelines['lookback'].process(frame)
+    pipelines['recorder'].process(frame)
 
     # get location of key hints (drawn in `pipeline.draw_info`)
     ret, baseline = cv2.getTextSize(
@@ -280,7 +250,7 @@ while frvideo.capture.isOpened():
     textWidth = ret[0] + 6
     keyHintsAxis = (int(framewidth) - textWidth, int(frameheight) - 10)
 
-    if rc.writer is not None and rc.isrecording:
+    if rc.isrecording:
         x, y = keyHintsAxis
         cv2.putText(frame,
                     '[R]',
@@ -289,7 +259,6 @@ while frvideo.capture.isOpened():
                     FONT_SCALE - 0.1,
                     RGB_RED,
                     FONT_THICKNESS)
-        rc.writer.write(frame)
 
     c = cv2.waitKey(1)
 
@@ -323,10 +292,11 @@ while frvideo.capture.isOpened():
         rc.isrecording = not rc.isrecording
         if rc.isrecording:
             fps_record_adjustment = 2
-            rc.record(int(fps_current) + fps_record_adjustment)
+            rc.start_recording(int(fps_current) + fps_record_adjustment)
             feedbacks['recordingstarted'][
                 'duration'] = DEFAULT_FEEDBACK_DURATION
         else:
+            rc.stop_recording()
             feedbacks['recordingstopped'][
                 'duration'] = DEFAULT_FEEDBACK_DURATION
         print('[RECORDING] {}'.format(rc.isrecording))
@@ -343,8 +313,12 @@ while frvideo.capture.isOpened():
 
 print("Exit routine started..")
 
-if rc.close() is not None:
-    print("- stopping recorder")
+print("- executing pipeline `closer` method..")
+for pipeline_name, pipeline in pipelines.items():
+    if hasattr(pipeline, 'closer') and callable(getattr(pipeline, 'closer')):
+        pipeline.closer()
+        print("pipeline closed:", pipeline_name)
+
 
 print("- stopping video capture")
 # Release handle to the webcam
