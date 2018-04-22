@@ -11,6 +11,11 @@ class PipelineHooks:
         """handle face recognition events (hooks)"""
 
         self.p_reg = pipeline_register
+        self.p_reg.require(self.__class__.__name__,
+                           ['display_feedbacks'])
+
+        self.display_feedbacks = self.p_reg.pipelines['display_feedbacks']
+
         self.storage = 'storage/hooks'
         if not os.path.exists(self.storage):
             os.mkdir(self.storage)
@@ -23,6 +28,8 @@ class PipelineHooks:
                         face_crop: np.ndarray,
                         face_encoding: List[np.ndarray]):
         """triggered everytime an unknown face appears in frame"""
+
+        self.display_feedbacks.display('unknown_face')
 
         print("[INFO] unknown face detected")
         filename = '{}/unknown_{}.jpg'.format(
@@ -39,11 +46,20 @@ class PipelineHooks:
                        name: str,
                        file: str):
         """triggered everytime new face appears in frame"""
+
+        self.display_feedbacks.display('on_enter',
+                                       duration=30,
+                                       fmt_args=(name))
+
         print("[PROFILE {}] face appears: {}, file: {}".format(
             profile_id, name, file))
 
     def on_face_disappear(self, profile_id: str, name: str):
         """triggered everytime a face disappears from frame"""
+
+        self.display_feedbacks.display('on_leaving',
+                                       duration=30,
+                                       fmt_args=(name))
 
         print("[PROFILE {}] face disappears: {}".format(
             profile_id, name))
@@ -58,5 +74,6 @@ class PipelineHooks:
 
     def on_all_leave(self, frame):
         """triggered when there's no face in frame"""
-
+        self.display_feedbacks.display("whoops! all people leaves",
+                                       duration=30)
         print("whoops! all people leaves")

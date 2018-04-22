@@ -7,8 +7,14 @@ import face_recognition as facerec
 
 
 class DrawFaceLabelsPipeline:
-    def __init__(self, pipeline_register):
+    def __init__(self, pipeline_register, face_finder):
         self.p_reg = pipeline_register
+
+        self.face_locations: List[tuple] = []
+        self.face_profiles: List[Tuple[str, str, str, np.ndarray]] = []
+
+        self.face_finder = face_finder
+
         self.process = self._draw_face_labels
 
     def _face_profile(self,
@@ -16,7 +22,7 @@ class DrawFaceLabelsPipeline:
         # find the encoding in db and draw
         # face label in the same frame.
         # See if the face is a match for the known face(s) in db
-        rows = self.p_reg.face_finder(face_encoding, 1)
+        rows = self.face_finder(face_encoding, 1)
         profile_id, name, file = None, self.p_reg.defaults['face_label'], None
 
         if rows is not None and len(rows) > 0:
@@ -74,7 +80,7 @@ class DrawFaceLabelsPipeline:
         rgb_small_frame = small_frame[:, :, ::-1]
 
         # Find all the faces and face encodings in the current frame of video
-        self.p_reg.face_locations = facerec.face_locations(rgb_small_frame)
+        self.face_locations = facerec.face_locations(rgb_small_frame)
 
         # only run thru face recognition
         # pipeline for every specified iteration
@@ -83,20 +89,11 @@ class DrawFaceLabelsPipeline:
             self.p_reg.pipeline_counter['draw_faces'] = 0
 
             face_encodings = facerec.face_encodings(rgb_small_frame,
-                                                    self.p_reg.face_locations)
-            self.p_reg.face_profiles = [self._face_profile(enc)
-                                        for enc in face_encodings]
+                                                    self.face_locations)
+            self.face_profiles = [self._face_profile(enc)
+                                  for enc in face_encodings]
 
         # draw face labels
-        # draw face labels
-        update_presence = True
-        for location, profile in zip(self.p_reg.face_locations,
-                                     self.p_reg.face_profiles):
-            if 'presence' in self.p_reg.pipelines:
-                self.p_reg.pipelines['presence'].process(frame, w, h,
-                                                         (update_presence,
-                                                          location,
-                                                          profile))
-                update_presence = False
-
+        for location, profile in zip(self.face_locations,
+                                     self.face_profiles):
             self._draw_labels(frame, profile, location)

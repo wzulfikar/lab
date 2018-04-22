@@ -3,10 +3,15 @@ from datetime import datetime
 
 
 class RecorderPipeline:
-    def __init__(self, pipeline_register):
-        pass
+    def __init__(self,
+                 pipeline_register,
+                 video_capture,
+                 storagepath: str,
+                 start: bool):
+        self.p_reg = pipeline_register
+        self._set_args(video_capture, storagepath, start)
 
-    def set_args(self, video_capture, storagepath: str, start: bool):
+    def _set_args(self, video_capture, storagepath: str, start: bool):
         self._writer = None
         self.isrecording = start
         self.storagepath = storagepath

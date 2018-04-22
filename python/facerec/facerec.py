@@ -6,11 +6,9 @@ import os
 import cv2
 import sys
 import yaml
-import time
 import dlib
 import numpy
 import postgresql
-from datetime import datetime
 
 # import pipelines
 from pipelines.pipeline_register import PipelineRegister
@@ -124,10 +122,10 @@ FONT = cv2.FONT_HERSHEY_DUPLEX
 FONT_SCALE = 0.5
 FONT_THICKNESS = 1
 
-RGB_WHITE = (255, 255, 255)
-RGB_LIME = (0, 255, 0)
-RGB_RED = (0, 0, 255)
-RECT_COLOR = RGB_RED  # red
+BGR_WHITE = (255, 255, 255)
+BGR_LIME = (0, 255, 0)
+BGR_RED = (0, 0, 255)
+RECT_COLOR = BGR_RED  # red
 
 # feedback duration in frames
 DEFAULT_FEEDBACK_DURATION = 7
@@ -155,31 +153,47 @@ framewidth = frvideo.capture.get(cv2.CAP_PROP_FRAME_WIDTH)
 device_fps = frvideo.capture.get(cv2.CAP_PROP_FPS)
 print("- video capture fps:", device_fps)
 
-runtimeFlipH = False
-runtimeFlipV = False
 feedbacks = {
     'demoalert': {
         'duration': 0,
         'text': "Demo mode is enabled: press ctrl+c in console to quit",
-        'color': RGB_RED,
+        'color': BGR_RED,
         'flashcolor': None,
     },
     'screenshots': {
         'duration': 0,
         'text': "Screenshot saved!",
-        'color': RGB_LIME,
-        'flashcolor': RGB_LIME,
+        'color': BGR_LIME,
+        'flashcolor': BGR_LIME,
     },
     'recordingstarted': {
         'duration': 0,
         'text': "Recording started",
-        'color': RGB_LIME,
+        'color': BGR_LIME,
         'flashcolor': None,
     },
     'recordingstopped': {
         'duration': 0,
         'text': "Recording stopped",
-        'color': RGB_RED,
+        'color': BGR_RED,
+        'flashcolor': None,
+    },
+    'unknown_face': {
+        'duration': 0,
+        'text': "unknown face detected",
+        'color': BGR_RED,
+        'flashcolor': None,
+    },
+    'on_enter': {
+        'duration': 0,
+        'text': "Hello {}!",
+        'color': BGR_LIME,
+        'flashcolor': None,
+    },
+    'on_leaving': {
+        'duration': 0,
+        'text': "{} has left",
+        'color': BGR_RED,
         'flashcolor': None,
     },
 }
@@ -202,114 +216,71 @@ else:
     else:
         framewidth, frameheight = currentwh
 
+runtime_vars = {
+    'quitting': False,
+    'flip_h': fr.conf["frame"]["flip"]["horizontal"],
+    'flip_v': fr.conf["frame"]["flip"]["vertical"],
+    'window_enabled': fr.conf['window']['enabled'],
+    'demomode': fr.conf['window']['demomode'],
+    'current_fps': 0,
+}
+
 # activate pipelines
-p_reg = PipelineRegister(fr.findfaces, pipelines=['display_info',
-                                                  'display_feedbacks',
-                                                  'draw_face_labels',
-                                                  'lookback',
-                                                  'presence',
-                                                  'recorder'])
+p_reg = PipelineRegister([('lookback'),
+                          ('display_info',
+                           runtime_vars,
+                           KEY_HINTS),
+                          ('display_feedbacks',
+                           feedbacks,
+                           DEFAULT_FEEDBACK_DURATION),
+                          ('draw_face_labels', fr.findfaces),
+                          ('presence'),
+                          ('recorder',
+                           frvideo.capture,
+                           storage['recordings'],
+                           fr.conf['frame']['recordonstart']),
+                          ('key_press',
+                           runtime_vars,
+                           storage['screenshots'],
+                           runtime_vars['window_enabled'],
+                           runtime_vars['demomode'])])
 pipelines = p_reg.pipelines
 
 rc = pipelines['recorder']
-rc.set_args(frvideo.capture,
-            storage['recordings'],
-            fr.conf['frame']['recordonstart'])
 print("- recording status: {}".format(rc.isrecording))
 
 print("facerec is activated")
 
-fps_time = time.time()
-fps_counter = 0
-fps_current = 0
 while frvideo.capture.isOpened():
     # Grab a single frame of video
     ret, frame = frvideo.capture.read()
     if not ret:
         continue
 
-    if fr.conf["frame"]["flip"]["horizontal"] or runtimeFlipH:
+    if runtime_vars['flip_h']:
         frame = cv2.flip(frame, 0)
-    if fr.conf["frame"]["flip"]["vertical"] or runtimeFlipV:
+    if runtime_vars['flip_v']:
         frame = cv2.flip(frame, 1)
 
     # run the pipelines
     w, h = int(framewidth), int(frameheight)
-    pipelines['display_info'].process(frame, w, h, (fps_current, KEY_HINTS))
-    pipelines['display_feedbacks'].process(frame, w, h, (feedbacks))
+    pipelines['display_info'].process(frame, w, h, rc.isrecording)
+    pipelines['display_feedbacks'].process(frame, w, h)
     pipelines['draw_face_labels'].process(frame, w, h)
     pipelines['lookback'].process(frame)
     pipelines['recorder'].process(frame)
-
-    # get location of key hints (drawn in `pipeline.draw_info`)
-    ret, baseline = cv2.getTextSize(
-        KEY_HINTS,
-        FONT,
-        FONT_SCALE - 0.1,
-        FONT_THICKNESS)
-    textWidth = ret[0] + 6
-    keyHintsAxis = (int(framewidth) - textWidth, int(frameheight) - 10)
-
-    if rc.isrecording:
-        x, y = keyHintsAxis
-        cv2.putText(frame,
-                    '[R]',
-                    (x - 23, y + 1),
-                    FONT,
-                    FONT_SCALE - 0.1,
-                    RGB_RED,
-                    FONT_THICKNESS)
+    pipelines['presence'].process(frame)
 
     c = cv2.waitKey(1)
+    pipelines['key_press'].process(frame, c)
+
+    if runtime_vars['quitting']:
+        break
 
     # Display the resulting image in window
-    if fr.conf["window"]["enabled"]:
+    if runtime_vars['window_enabled']:
         cv2.imshow(WINDOW_NAME, frame)
-        fps_counter += 1
 
-    # update `fps_current`
-    if fps_counter == 20:
-        seconds = time.time() - fps_time
-        fps_time = time.time()
-        fps_current = fps_counter / seconds
-        fps_counter = 0
-        print("- current fps:", fps_current)
-
-    # Hit 'q' on the keyboard to quit!
-    if c == ord('q'):
-        if fr.conf['window']['enabled'] and fr.conf['window']['demomode']:
-            feedbacks['demoalert']['duration'] = DEFAULT_FEEDBACK_DURATION
-        else:
-            break
-
-    elif c == ord('h'):
-        runtimeFlipH = not runtimeFlipH
-
-    elif c == ord('v'):
-        runtimeFlipV = not runtimeFlipV
-
-    elif c == ord('r'):
-        rc.isrecording = not rc.isrecording
-        if rc.isrecording:
-            fps_record_adjustment = 2
-            rc.start_recording(int(fps_current) + fps_record_adjustment)
-            feedbacks['recordingstarted'][
-                'duration'] = DEFAULT_FEEDBACK_DURATION
-        else:
-            rc.stop_recording()
-            feedbacks['recordingstopped'][
-                'duration'] = DEFAULT_FEEDBACK_DURATION
-        print('[RECORDING] {}'.format(rc.isrecording))
-
-    elif c == ord('s'):
-        now = datetime.now()
-        filename = '{}/{}_{}.jpg'.format(
-            storage["screenshots"],
-            now.strftime('%Y-%m-%d_%H%M%S'),
-            now.microsecond)
-        cv2.imwrite(filename, frame)
-        feedbacks['screenshots']['duration'] = DEFAULT_FEEDBACK_DURATION
-        print('[SAVED] {}'.format(filename))
 
 print("Exit routine started..")
 
