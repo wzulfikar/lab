@@ -6,15 +6,61 @@ import os
 import postgresql
 import time
 
-if len(sys.argv) < 2:
-    print("Usage: face-add <image> <profile_id (optional)>")
-    exit(1)
+# add parent dir to syspath and import module from there
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import db
 
-PREVIEW_WINDOW = 'FaceAdd Preview'
-cv2.namedWindow(PREVIEW_WINDOW, cv2.WINDOW_NORMAL)
+description = "extract face from image and add to database"
+usage = "usage: faceadd <image> <profile_id (optional)>"
 
+def command(args):
+    if len(args) < 1:
+        print('faceadd:', description)
+        print(usage)
+        exit(1)
 
-def preview(windowname, img, label):
+    main(*args)
+
+def main(path: str, profile_id: str = None):
+    start = time.time()
+    if not os.path.exists(path):
+        print("Path doesn't exist!", path)
+        exit(1)
+
+    # Create a HOG face detector using the built-in dlib class
+    face_detector = dlib.get_frontal_face_detector()
+    
+    db_conn = db.open()
+
+    filecount = 0
+
+    if os.path.isfile(path):
+        filecount += 1
+        print("Processing single file:", path)
+        _faceadd(db_conn, face_detector, path, profile_id)
+    else:
+        print("Processing directory:", path)
+        for root, dirs, files in os.walk(path):
+            path = root.split(os.sep)
+            for file in files:
+                _, ext = os.path.splitext(file)
+                if ext.lower() not in ['.jpg', '.jpeg']:
+                    print("[SKIP]", file)
+                    continue
+
+                filepath = os.path.join(root, file)
+                print("[FOUND] ", filepath)
+                if _faceadd(db_conn, face_detector, filepath, profile_id):
+                    filecount += 1
+                    print("[DONE] File #{} added: {}".format(filecount, filepath))
+
+    cv2.destroyAllWindows()
+
+    print("Files processed:", filecount)
+    print("Time elapsed:", time.time() - start)
+
+def _preview(windowname, img, label):
     preview = img
     cv2.putText(preview,
                 label,
@@ -27,7 +73,9 @@ def preview(windowname, img, label):
     cv2.waitKey(1)
 
 
-def faceadd(db, face_detector, file_name, to_profile_id=None):
+def _faceadd(db, face_detector, file_name, to_profile_id=None) -> bool:
+    PREVIEW_WINDOW = 'FaceAdd Preview'
+
     promptprofile = False
 
     # Load the image
@@ -39,6 +87,10 @@ def faceadd(db, face_detector, file_name, to_profile_id=None):
         detected_faces = face_detector(image, 1)
         print("Found {} faces in the image file {}".format(
             len(detected_faces), file_name))
+        
+        if len(detected_faces) > 0:
+            cv2.namedWindow(PREVIEW_WINDOW, cv2.WINDOW_NORMAL)
+        
     except RuntimeError:
         print("[ERROR] failed to detect face", file_name)
         return False
@@ -66,13 +118,12 @@ def faceadd(db, face_detector, file_name, to_profile_id=None):
                 while(insertprofile is None):
                     previewimg = image[face_rect.top() - 25:face_rect.bottom() + 25,
                                        face_rect.left() - 25:face_rect.right() + 25]
-                    preview(PREVIEW_WINDOW, previewimg, 'F.{}'.format(i + 1))
+                    _preview(PREVIEW_WINDOW, previewimg, 'F.{}'.format(i + 1))
                     insertprofile = input(
                         "> Insert profile ID for face #{} (press enter to skip): ".format(i + 1))
                     if insertprofile != "":
                         profile_id = insertprofile
 
-            print("- Adding face #{} to profile <{}>".format(i + 1, profile_id))
             if not profile_id:
                 query = "INSERT INTO vectors (file, vec_low, vec_high) VALUES ('{}', CUBE(array[{}]), CUBE(array[{}]))".format(
                     file_name,
@@ -88,6 +139,10 @@ def faceadd(db, face_detector, file_name, to_profile_id=None):
                 )
             try:
                 db.execute(query)
+                print("- face #{} added to profile <{}>".format(i + 1, profile_id))
+
+                return True
+
             except:
                 print("[ERROR] failed to execute query", file_name)
                 return False
@@ -95,45 +150,3 @@ def faceadd(db, face_detector, file_name, to_profile_id=None):
         cv2.imwrite(
             "./.faces/aligned_face_{}_{}_crop.jpg".format(file_name.replace('/', '_'), i), crop)
 
-
-# Take the image(s) path from the command line
-path = sys.argv[1]
-
-start = time.time()
-if not os.path.exists(path):
-    print("Path doesn't exist!", path)
-    exit(1)
-
-# Create a HOG face detector using the built-in dlib class
-face_detector = dlib.get_frontal_face_detector()
-db = postgresql.open('pq://user:pass@localhost:5434/db')
-filecount = 0
-
-profile_id = None
-if len(sys.argv) > 2:
-    profile_id = sys.argv[2]
-
-if os.path.isfile(path):
-    filecount += 1
-    print("Processing single file:", path)
-    faceadd(db, face_detector, path, profile_id)
-else:
-    print("Processing directory:", path)
-    for root, dirs, files in os.walk(path):
-        path = root.split(os.sep)
-        for file in files:
-            _, ext = os.path.splitext(file)
-            if ext.lower() not in ['.jpg', '.jpeg']:
-                print("[SKIP]", file)
-                continue
-
-            filepath = os.path.join(root, file)
-            print("[FOUND] ", filepath)
-            if faceadd(db, face_detector, filepath, profile_id) is not False:
-                filecount += 1
-                print("[DONE] File #{} added: {}".format(filecount, filepath))
-
-cv2.destroyAllWindows()
-
-print("Files processed:", filecount)
-print("Time elapsed:", time.time() - start)

@@ -1,23 +1,36 @@
-import sys
-import postgresql
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import db
 
-if len(sys.argv) < 1:
-    print("Usage: facedb --stat|<name>|<filename>")
-    exit(1)
+description = "search profile or display stats from face recognition db"
+usage = "usage: facedb --stat|<name>|<filename>"
 
-print("Connecting to DB..")
-db = postgresql.open('pq://user:pass@localhost:5434/db')
-print("DB connected ✔")
+def command(args):
+    if len(args) < 1:
+        print('facedb:', description)
+        print(usage)
+        exit(1)
+
+    main(*args)
 
 
-def findprofile(arg: str) -> None:
+def main(option: str):
+    db_conn = db.open()
+    if option == "--stat":
+        print('showing stats from face recognition db:')
+        _showstat(db_conn)
+    else:
+        _findprofile(db_conn, option)
+
+
+def _findprofile(db, name_or_file: str) -> None:
     like_tpl = "{} ILIKE '%' || '{}' || '%'"
     query = "SELECT p.id as profile_id, p.name as name, file \
             FROM vectors  v \
             LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
             WHERE {} OR {} \
-            ORDER BY p.id".format(like_tpl.format("p.name", arg),
-                                  like_tpl.format("file", arg))
+            ORDER BY p.id".format(like_tpl.format("p.name", name_or_file),
+                                  like_tpl.format("file", name_or_file))
 
     rows = db.query(query)
 
@@ -41,7 +54,7 @@ def findprofile(arg: str) -> None:
     print("[DONE] Results found:", len(rows))
 
 
-def showstat() -> None:
+def _showstat(db) -> None:
     count_profiles = db.query("SELECT COUNT(*) FROM profiles")
     count_vectors = db.query("SELECT COUNT(*) FROM vectors")
     vectors_without_profiles = db.query(
@@ -67,12 +80,13 @@ def showstat() -> None:
                                            profiles_with_multiple_vectors[0][0],
                                            len(profiles_without_vectors)))
 
+    count_max = 5
+    count = 0
     for p in profiles_without_vectors:
+        count += 1
         print("  Profile #{} - {}".format(p[0], p[1]))
+        
+        if count == count_max:
+            print("  ..and {} more".format(len(profiles_without_vectors) - count_max))
+            break
 
-
-arg = sys.argv[1]
-if arg == "--stat":
-    showstat()
-else:
-    findprofile(arg)

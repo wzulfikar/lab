@@ -5,22 +5,64 @@ import dlib
 import postgresql
 import face_recognition
 
-if len(sys.argv) < 2:
-    print("Usage: facefind <image> --addlabel")
-    exit(1)
+import numpy as np
 
-if not os.path.exists("./.faces"):
-    os.mkdir("./.faces")
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import db
 
-print("Connecting to DB..")
-db = postgresql.open('pq://user:pass@localhost:5434/db')
-print("DB connected")
+description = "find face from image and optionally add label"
+usage = "usage: facefind <image> --addlabel"
 
-# Create a HOG face detector using the built-in dlib class
-face_detector = dlib.get_frontal_face_detector()
+def command(args):
+    if len(args) < 2:
+        print('facefind:', description)
+        print(usage)
+        exit(1)
+
+    main(*args)
 
 
-def facelabel(img, name, rect, rect_color=(0, 0, 255)):
+def main(path: str, maybe_addlabel: str = None):
+    if not os.path.exists("./.faces"):
+        os.mkdir("./.faces")
+
+    if not os.path.exists(path):
+        print("image doesn't exist:", path)
+        exit(1)
+
+    addlabel = maybe_addlabel == '--addlabel'
+    if addlabel:
+        print("addlabel option has been enabled")
+
+    if os.path.isfile(path):
+        print("Processing one file:", path)
+        _facerec(path, addlabel)
+        return
+
+    print("Processing directory:", path)
+    for root, dirs, files in os.walk(path):
+        path = root.split(os.sep)
+
+        currentdir = os.path.basename(root)
+        if len(currentdir) > 1 and currentdir == '.':
+            print("[SKIP] hidden directory:", currentdir)
+
+        for file in files:
+            _, ext = os.path.splitext(file)
+            if ext.lower() not in ['.jpg', '.jpeg', '.png']:
+                print("[SKIP]", file)
+                continue
+
+            filepath = os.path.join(root, file)
+            print("Image found: ", filepath)
+            _facerec(filepath, addlabel)
+
+    db_conn = db.open()
+    _findface(db_conn)
+
+
+def _facelabel(img: np.ndarray, name: str, rect, rect_color=(0, 0, 255)):
     left = rect.left()
     top = rect.top()
     right = rect.right()
@@ -31,6 +73,7 @@ def facelabel(img, name, rect, rect_color=(0, 0, 255)):
                   (right, bottom + 10),
                   rect_color,
                   2)
+
     # Draw a label with a name below the face
     cv2.rectangle(img,
                   (left, bottom - 15),
@@ -45,7 +88,7 @@ def facelabel(img, name, rect, rect_color=(0, 0, 255)):
                 1)
 
 
-def findface(db, enc) -> list:
+def _findface(db, enc) -> list:
     query = "SELECT file, p.name as name, p.id as profile_id \
             FROM vectors  v \
             LEFT OUTER JOIN profiles p ON v.profile_id = p.id \
@@ -58,7 +101,7 @@ def findface(db, enc) -> list:
     return db.query(query)
 
 
-def facerec(file_name, addlabel=None):
+def _facerec(db, file_name, addlabel=None):
     path = os.path.dirname(file_name)
     imgname, ext = os.path.splitext(os.path.basename(file_name))
 
@@ -122,36 +165,3 @@ def facerec(file_name, addlabel=None):
             facelabel(img, label.replace('_', ' '), face_rect, rect_color)
             cv2.imwrite('{}/{}_labeled{}'.format(path, filename, ext), img)
 
-
-# Take the image(s) path from the command line
-path = sys.argv[1]
-if not os.path.exists(path):
-    print("Path doesn't exist!", path)
-    exit(1)
-
-addlabel = None
-if len(sys.argv) > 2 and sys.argv[2] == '--addlabel':
-    print("addlabel option has been enabled")
-    addlabel = True
-
-if os.path.isfile(path):
-    print("Processing one file:", path)
-    facerec(path, addlabel)
-else:
-    print("Processing directory:", path)
-    for root, dirs, files in os.walk(path):
-        path = root.split(os.sep)
-
-        currentdir = os.path.basename(root)
-        if len(currentdir) > 1 and currentdir == '.':
-            print("[SKIP] hidden directory:", currentdir)
-
-        for file in files:
-            _, ext = os.path.splitext(file)
-            if ext.lower() not in ['.jpg', '.jpeg', '.png']:
-                print("[SKIP]", file)
-                continue
-
-            filepath = os.path.join(root, file)
-            print("Image found: ", filepath)
-            facerec(filepath, addlabel)

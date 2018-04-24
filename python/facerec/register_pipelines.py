@@ -1,7 +1,8 @@
 import os 
 
-# import pipelines
+# import pipeline register and event listeners
 from lib.pipeline_register import PipelineRegister
+import event_listeners
 
 from pipelines.lookback import LookbackPipeline
 from pipelines.display_info import DisplayInfoPipeline
@@ -11,10 +12,10 @@ from pipelines.lookback import LookbackPipeline
 from pipelines.presence import PresencePipeline
 from pipelines.recorder import RecorderPipeline
 from pipelines.key_press import KeyPressPipeline
-from modules.facerec_pg import FacerecPG
+from modules.facerec.facerec_pg import FacerecPG
 
-def register(hooks, conf: dict, runtime_vars: dict, video_capture):
-    """configure pipelines"""
+def register(conf: dict, runtime_vars: dict, video_capture):
+    """register pipelines to be used by the application"""
     
     facerec = FacerecPG(conf['postgres'])
     storage = _prepare_storage({
@@ -22,7 +23,8 @@ def register(hooks, conf: dict, runtime_vars: dict, video_capture):
         "recordings": '{}/recordings'.format(conf["storage"]),
     })
     
-    return PipelineRegister({
+    # register your pipelines here
+    pipelines = {
         'lookback': LookbackPipeline,
         'display_info': DisplayInfoPipeline,
         'display_feedbacks': DisplayFeedbacksPipeline,
@@ -32,7 +34,9 @@ def register(hooks, conf: dict, runtime_vars: dict, video_capture):
                                        storage['recordings'],
                                        conf['frame']['recordonstart']),
         'key_press': (KeyPressPipeline, storage['screenshots']),
-        }, hooks, runtime_vars)
+    }
+    
+    return PipelineRegister(pipelines, event_listeners.register(), runtime_vars)
 
 
 def _prepare_storage(storage: dict):

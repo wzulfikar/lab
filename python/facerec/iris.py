@@ -14,8 +14,7 @@ import numpy
 from lib.video_capture import VideoCapture
 import lib.frame_loop as frame_loop
 
-# import user config for pipelines and event listeners
-import event_listeners
+# import pipelines configured by user
 import register_pipelines
 
 if len(sys.argv) < 3:
@@ -113,9 +112,7 @@ if __name__ == '__main__':
     _configure(conf, frvideo, runtime_vars['framewidth'], runtime_vars['frameheight'])
     
     # activate pipelines
-    hooks = event_listeners.register()
-    p_reg = register_pipelines.register(hooks=hooks, 
-                                        runtime_vars=runtime_vars, 
+    p_reg = register_pipelines.register(runtime_vars=runtime_vars, 
                                         conf=conf,
                                         video_capture=frvideo.capture)
 
