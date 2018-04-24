@@ -23,7 +23,7 @@ class PresencePipeline:
 
         self._thread_pool = ThreadPoolExecutor()
 
-    def _update_presence(self, frame):
+    def _update_presence(self, frame, w = None, h = None):
         # get latest face info from `draw_face_labels` pipeline
         self._face_profiles = self._draw_face_labels.face_profiles
         self._face_locations = self._draw_face_labels.face_locations
@@ -66,8 +66,7 @@ class PresencePipeline:
             if profile_id is None:
                 self.p_reg.hooks.on_face_unknown(face_crop, face_encoding)
             else:
-                self.p_reg.hooks.on_face_appear(
-                    face_crop, profile_id, name, file)
+                self.p_reg.hooks.on_face_appear(face_crop, profile_id, name, file)
 
     def _process(self, frame):
         self._update_presence(frame)
@@ -76,8 +75,6 @@ class PresencePipeline:
             self._trigger_presence_hooks(frame, location, profile)
 
     def process(self, frame):
-        # draw_faces == 0 indicates that faces have been recently updated
-        if self.p_reg.pipeline_counter['draw_faces'] != 0:
-            return
-
-        self._thread_pool.submit(self._process, frame)
+        # tick_count == 0 indicates that faces have been recently updated
+        if self._draw_face_labels.tick_count == 0:
+            self._thread_pool.submit(self._process, frame)

@@ -10,6 +10,9 @@ class DrawFaceLabelsPipeline:
     def __init__(self, pipeline_register, face_finder):
         self.p_reg = pipeline_register
 
+        # used to determine when to process the face recognition
+        self.tick_count = 0
+
         self.face_locations: List[tuple] = []
         self.face_profiles: List[Tuple[str, str, str, np.ndarray]] = []
 
@@ -17,13 +20,15 @@ class DrawFaceLabelsPipeline:
 
         self.process = self._draw_face_labels
 
-    def _face_profile(self,
+        self._default_face_label = 'Unknown'
+        
+    def _find_face_profile(self,
                       face_encoding: List[np.ndarray]) -> Tuple[str, str, str]:
         # find the encoding in db and draw
         # face label in the same frame.
         # See if the face is a match for the known face(s) in db
         rows = self.face_finder(face_encoding, 1)
-        profile_id, name, file = None, self.p_reg.defaults['face_label'], None
+        profile_id, name, file = None, self._default_face_label, None
 
         if rows is not None and len(rows) > 0:
             file, profile_id, profilename = rows[0]
@@ -69,7 +74,7 @@ class DrawFaceLabelsPipeline:
                     (255, 255, 255),
                     self.p_reg.defaults['font_thickness'])
 
-    def _draw_face_labels(self, frame: np.ndarray, w: int, h: int):
+    def _draw_face_labels(self, frame: np.ndarray):
 
         # Resize frame of video to 1/4 size
         # for faster face recognition processing
@@ -82,15 +87,15 @@ class DrawFaceLabelsPipeline:
         # Find all the faces and face encodings in the current frame of video
         self.face_locations = facerec.face_locations(rgb_small_frame)
 
-        # only run thru face recognition
-        # pipeline for every specified iteration
-        self.p_reg.pipeline_counter['draw_faces'] += 1
-        if self.p_reg.pipeline_counter['draw_faces'] == 5:
-            self.p_reg.pipeline_counter['draw_faces'] = 0
+        # only run thru face recognition pipeline 
+        # for every specified iteration
+        self.tick_count += 1
+        if self.tick_count == 5:
+            self.tick_count = 0
 
             face_encodings = facerec.face_encodings(rgb_small_frame,
                                                     self.face_locations)
-            self.face_profiles = [self._face_profile(enc)
+            self.face_profiles = [self._find_face_profile(enc)
                                   for enc in face_encodings]
 
         # draw face labels
