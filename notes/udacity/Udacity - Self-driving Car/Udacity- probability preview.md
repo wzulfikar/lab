@@ -1,8 +1,3 @@
-## Udacity: Intro to Self-driving Car
-> Sat, 14 Apr 2018 at 2:00:23 MYT
-
-Preview link: https://classroom.udacity.com/courses/nd113-preview
-
 ### Lesson 2: Probability Preview
 1. Localization: determining where a self-driving car is in the world
 - the mathematical framework to get information is called statistic. bayes is the core of statistics. 
