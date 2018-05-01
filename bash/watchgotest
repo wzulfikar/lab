@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# usage:
+# 1. adjust permission: `chmod +x watchgotest` 
+# 2. copy or link this file to your path (ie. `ln -s $(pwd)/watchgotest /usr/local/bin`)
+# 3. run watchgotest <file>
+
+if [ -z "$1" ] 
+then
+	echo "watchgotest: watch directory and run 'go test <file>' on change"
+  	echo "usage: watchgotest <file>"
+  	exit
+fi
+
+NC='\033[0;0m' # no color
+GREEN='\033[0;32m'
+
+MSG='\n→ Watching go test (using entr)..$NC'
+BANNER='${GREEN}Output of \"$*\":$NC'
+
+COMMAND="clear && echo '$BANNER' && go test $*"
+
+FILES="find . -name \*.go"
+
+# `entr` requires unix `entr` utility
+# → http://entrproject.org
+eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""

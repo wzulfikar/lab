@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# usage:
+# 1. adjust permission: `chmod +x diffy` 
+# 2. copy or link this file to your path (ie. `ln -s $(pwd)/watchgo /usr/local/bin`)
+# 3. run watchgo <file>
+
+if [ -z "$1" ] 
+then
+	echo "watchgo: watch directory and run 'go run <file>' on change"
+  	echo "usage: watchgo <file>"
+  	exit
+fi
+
+# `entr` requires unix `entr` utility
+# → http://entrproject.org
+entr
+
+NC='\033[0;0m' # no color
+GREEN='\033[0;32m'
+
+MSG='\n→ Watching go (using entr)..$NC'
+BANNER='${GREEN}Output of \"$*\":$NC'
+
+COMMAND="clear && echo '$BANNER' && go run $1"
+
+if [ -z "$2" ]; then
+	FILES="find . -name \*.go"
+else
+	# allow passing custom directory to watch
+	FILES="ls *.go $2/*.go"
+fi
+
+eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""

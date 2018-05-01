@@ -14,6 +14,13 @@ extract_text () {
 }
 
 ocr () {
+	if [ -z "$1" ] 
+	then
+		echo "description: run ocr on given file (or files in directory)"
+	  	echo "usage: ocr (file/folder)"
+	  	return
+	fi
+
     PASSED=$1
     if [ -d "${PASSED}" ] ; then
         # PASSED is a directory

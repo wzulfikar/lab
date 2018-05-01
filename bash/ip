@@ -1,5 +1,14 @@
-# check public IP
-ip() {
+#!/usr/bin/env sh
+
+# check public ip of current machine
+# 
+# usage:
+# 1. adjust permission: `chmod +x ip` 
+# 2. copy or link this file to your path (ie. `ln -s $(pwd)/ip /usr/local/bin`)
+# 3. run ip
+
+if [ -z "$1" ]; then
+	echo "checking ip.."
 	LASTIP="$HOME/lastipaddr"
 	GETIPADDR="checkip.amazonaws.com"
 	CURRENTIP=$(curl $GETIPADDR 2>/dev/null)
@@ -16,10 +25,12 @@ ip() {
 	else
 	    echo $CURRENTIP >> $LASTIP
 	fi
-}
-
-# check last 3 IPs
-iplast() {
+elif [ $1 = "--last" ]; then
+	# check last 3 IPs
 	LASTIP="$HOME/lastipaddr"
 	tail -n 3 $LASTIP
-}
+else
+	echo "ip: check public ip of current machine"
+  	echo "usage: ip --last"
+  	exit
+fi
