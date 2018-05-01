@@ -13,7 +13,7 @@ class WavVisdom:
         self.thread_pool = ThreadPoolExecutor(max_workers=1)
 
         print('checking visdom.server..')
-        print('make sure you have it running (ie. `pip -m visdom.server`)')
+        print('make sure you have it running (ie. `python -m visdom.server`)')
         assert self.v.check_connection()
 
         print('visdom is up')
