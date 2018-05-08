@@ -3,7 +3,7 @@
 # check public ip of current machine
 # 
 # usage:
-# 1. adjust permission: `chmod +x ip` 
+# 1. adjust file permission (if you have not): `chmod +x ip` 
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/ip /usr/local/bin`)
 # 3. run ip
 
@@ -30,7 +30,7 @@ elif [ $1 = "--last" ]; then
 	LASTIP="$HOME/lastipaddr"
 	tail -n 3 $LASTIP
 else
-	echo "ip: check public ip of current machine"
+	echo "ip - check public ip of current machine"
   	echo "usage: ip --last"
   	exit
 fi

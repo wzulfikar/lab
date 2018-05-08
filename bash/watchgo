@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 
 # usage:
-# 1. adjust permission: `chmod +x diffy` 
+# 1. adjust file permission (if you have not): `chmod +x diffy` 
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/watchgo /usr/local/bin`)
 # 3. run watchgo <file>
 
 if [ -z "$1" ] 
 then
-	echo "watchgo: watch directory and run 'go run <file>' on change"
+	echo "watchgo - watch directory and run 'go run <file>' on change"
   	echo "usage: watchgo <file>"
   	exit
 fi

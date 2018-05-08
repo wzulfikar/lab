@@ -18,7 +18,8 @@ func robfig() {
 	// doc: gopkg.in/robfig/cron.v2/doc.go
 
 	// robfig/cron's cron spec (cron expression)
-	cronExpr := "0 0 8 * * *" // everyday at 8am
+	// cronExpr := "0 0 8 * * *" // everyday at 8am
+	cronExpr := "0 0 0 */15 * *" // everyday at 8am
 	// cronExpr := "0 0 */3 * * *" // everyday in 3hrs windows
 	// cronExpr := "0 0 8 * * 1" // 8am every monday
 
@@ -39,6 +40,7 @@ func robfig() {
 	// done := make(chan bool)
 	// <-done
 }
+
 func gorhill() {
 	// cron docs: https://godoc.org/github.com/robfig/cron
 	cronExpr := "0 8 * * * *"

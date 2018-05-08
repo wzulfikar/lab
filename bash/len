@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 
 # usage:
-# 1. adjust permission: `chmod +x len` 
+# 1. adjust file permission (if you have not): `chmod +x len` 
 # 2. copy or link this file to your path (ie. `ln -s len /usr/local/bin`)
 # 3. run len <string>
 
 if [ -z "$1" ] 
 then
-	echo "len: get length of passed argument (ie. string)"
+	echo "len - get length of passed argument (ie. string)"
   	echo "usage: len <string>"
   	exit
 fi

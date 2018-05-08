@@ -1,5 +1,7 @@
+#!/usr/bin/env sh
+
 # usage:
-# 1. adjust permission: `chmod +x qotd` 
+# 1. adjust file permission (if you have not): `chmod +x qotd` 
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/qotd /usr/local/bin`)
 # 3. run qotd
 
@@ -15,6 +17,6 @@ if [ -z "$1" ]; then
 	printf '\033[0;32m'
 	sed $rand"q;d" $d
 else
-	echo "qotd: display quote of the day"
+	echo "qotd - display quote of the day"
   	echo "usage: qotd"
 fi

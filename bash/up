@@ -4,13 +4,13 @@
 # source: https://github.com/dutchcoders/transfer.sh/
 # 
 # usage:
-# 1. adjust permission: `chmod +x up` 
+# 1. adjust file permission (if you have not): `chmod +x up` 
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/up /usr/local/bin`)
 # 3. run up <file>
 
 if [ -z "$1" ] 
 then
-	echo "up: upload file to transfer.sh"
+	echo "up - upload file to transfer.sh"
   	echo "usage: up <file>"
   	exit
 fi
