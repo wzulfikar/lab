@@ -1,18 +1,15 @@
 #!/usr/bin/env sh
 
-# usage:
-# 1. adjust file permission (if you have not): `chmod +x diffy` 
-# 2. copy or link this file to your path (ie. `ln -s $(pwd)/watchgo /usr/local/bin`)
-# 3. run watchgo <file>
+# eg. `watch-sh '*.php' 'say ha'`
 
-if [ -z "$1" ] 
-then
-	echo "watchgo - watch directory and run 'go run <file>' on change"
-  	echo "usage: watchgo  <file to run> <pattern to watch - optional>"
+if [ -z $1 ]; then
+	echo "watchpy3 - watch directory and run python3 on change"
+  	echo "usage: watchpy3 <file to run> <pattern to watch - optional>"
   	echo ""
   	echo "examples:"
-  	echo "  watchgo main.go"
-  	echo "  watchgo main.go src/mymodule.go"
+  	echo "  watchpy3 main.py"
+  	echo "  watchpy3 main.py ."
+  	echo "  watchpy3 main.py src/mymodule"
   	echo ""
   	echo "dependencies:"
   	echo "  entr - run tests whenever files change (https://github.com/clibs/entr)"
@@ -34,11 +31,18 @@ else
 	FILES="find . -name $WATCH_DIR"
 fi
 
+if [ $($FILES | wc -l) -eq 0 ]; then
+	echo "[ERROR] cannot find any file from '$WATCH_DIR'"
+	exit
+fi
+
 NC='\033[0;0m' # no color
 GREEN='\033[0;32m'
 
-MSG='\n→ Watching go (using entr)..$NC'
-BANNER='${GREEN}Output of \"$*\":$NC'
+FILENAME=$1
 
-COMMAND="clear && echo '$BANNER' && go run $1"
+MSG='\n→ Watching python (using entr)..$NC'
+BIN="python3"
+COMMAND="clear && echo '${GREEN}Output of ‘$@’:$NC' && $BIN $@"
+
 eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""

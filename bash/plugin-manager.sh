@@ -10,7 +10,6 @@ source ~/code/github/lab/bash/brew-switch.sh
 source ~/code/github/lab/bash/watch-artisan-entr.sh
 source ~/code/github/lab/bash/watch-phpunit-entr.sh
 source ~/code/github/lab/bash/watch-java-entr.sh
-source ~/code/github/lab/bash/watch-sh.sh
 source ~/code/github/lab/bash/docker-snippets.sh
 source ~/code/github/lab/bash/openssl-enc-dec.sh
 # source ~/code/github/lab/bash/bitly.sh
