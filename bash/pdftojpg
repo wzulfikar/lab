@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+# usage:
+# 1. adjust file permission (if you have not): `chmod +x eq`
+# 2. copy or link to your path, ie. `ln -s eq /usr/local/bin`
+# 3. run `eq helloworld helloworld`
+
+if [ -z "$1" ]
+then
+	echo "pdftojpg - convert pdf to jpg using imagemagick convert"
+  	echo "usage: pdftojpg pdffile"
+  	exit
+fi
+
+PDFFILE=$1
+OUT=$2
+
+if [ -z "$2" ]
+then
+	OUT=$PDFFILE.jpg
+fi
+
+if [ -f "$PDFFILE" ]
+then
+	echo "- converting pdf file to jpg.."
+	convert -density 300 -trim $PDFFILE -quality 100 $OUT
+	echo "Done! $OUT"
+else
+	echo "[ERROR] pdf file not found: $PDFFILE"
+fi
