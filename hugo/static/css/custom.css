@@ -3,6 +3,9 @@ h2[id]:before {
     content: '# ';
 }
 */
+ul>li {
+	margin-bottom: 0.5em;
+}
 
 .read-time {
 	font-weight: normal;
@@ -45,7 +48,7 @@ h2[id]:before {
 }
 
 /* Link for Go playground, repl.it */
-a[href^="https://play.golang.org/"], 
+a[href^="https://play.golang.org/"],
 a[href^="https://repl.it/repls/"],
 a[href^="https://codesandbox.io/s/"] {
 	display: flex;
@@ -71,4 +74,10 @@ img[src$='#featured']
     width: auto;
     display: block;
     margin: auto;
+}
+
+.last-update-time {
+	display: inline-block;
+	float: right;
+	color: darkgray;
 }

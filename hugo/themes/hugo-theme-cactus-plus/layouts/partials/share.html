@@ -1,7 +1,7 @@
 <a class="twitter" href="https://twitter.com/intent/tweet?text={{ .Permalink }} - {{ .LinkTitle }} {{ with .Site.Params.twitter }}by @{{ . }}{{ end }}">
 	<span><i class="fa fa-twitter"></i> {{ .Site.Params.tweet | default "tweet" }}</span>
 </a>
- ∙ 
+ ∙
 <a class="facebook" href="#" onclick="
     window.open(
       'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
@@ -10,3 +10,6 @@
     return false;">
     <span><i class="fa fa-facebook-square"></i> {{ .Site.Params.share | default "share" }}</span>
 </a>
+<div class="last-update-time">
+	<i>Last updated: {{ $.Page.Lastmod.Format "Jan 02, 2006 (3:04pm)" }}</i>
+</div>

@@ -39,8 +39,10 @@
                 <section id="post-body">
                     {{ .Content }}
                 </section>
+
             </article>
 
+			<div style="margin-top: 50px;">
             {{ if .Site.Params.enableShare }}
                 {{ partial "share.html" . }}
             {{ end }}
@@ -49,7 +51,7 @@
                 	{{ partial "disqus.html" . }}
                 {{ end }}
             {{ end }}
-
+			</div>
             {{ if .Site.Params.showLatestPosts }}
                 {{ partial "latest-posts.html" . }}
             {{ end }}
