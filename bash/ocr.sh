@@ -14,7 +14,7 @@ extract_text () {
 }
 
 ocr () {
-	if [ -z "$1" ] 
+	if [ -z "$1" ]
 	then
 		echo "description: run ocr on given file (or files in directory)"
 	  	echo "usage: ocr (file/folder)"
@@ -46,7 +46,7 @@ ocr () {
 
                 echo "Output file: ${file}.txt"
                 echo "------------------------------\n"
-                
+
                 eval "cat ${file}.txt"
             else
                 echo "File not supported. Only jpg, jpeg & png are supported."

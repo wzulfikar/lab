@@ -2,7 +2,7 @@
 # by `curl`-ing the page.
 getlinks () {
 	# use curl's -L switch to follow redirect
-	link_regex='href="([^"#]+)"'
+	link_regex='(href="([^"#]+)"|src="([^"#]+)")'
 	links=$(curl -L $1 2>&1 | grep -o -E "$link_regex" | cut -d'"' -f2)
 
 	# display links found
