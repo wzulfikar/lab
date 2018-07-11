@@ -30,7 +30,7 @@ NC='\033[0;0m' # no color
 
 width=28
 fill_char="█"
-empty_char="|"
+empty_char="░"
 
 # round function
 round() { printf %.0f "$1"; }
