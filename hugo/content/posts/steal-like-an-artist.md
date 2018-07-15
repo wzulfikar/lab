@@ -1,8 +1,8 @@
 ---
 title: "Steal Like an Artist"
 date: 2018-07-15T16:18:42+08:00
-tags: [""]
-draft: true
+tags: ["reflection"]
+draft: false
 ---
 
 ![Steal Like and Artist - Kindle Store](/images/steal-like-an-artist-kindle-store.jpg)
@@ -13,7 +13,7 @@ I was visiting a library in my block this morning, and stumbled upon this 2012 b
 
 It's a good book, with a lot of takeaways that I can relate. Started reading it at 8.50am, finished the reading at 9.45am, and reading it again at 15.00.
 
-This post contains the things I read from the book, that I want myself to relate back, anytime in the future. All credits goes back to the author –– thanks for writing the book!
+This post contains the things I read from the book, that I want myself to relate/reflect back, anytime in the future. All credits goes back to the author –– thanks for writing the book!
 
 <p class="text-center">***</p>
 
