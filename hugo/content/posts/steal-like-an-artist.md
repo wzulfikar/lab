@@ -7,7 +7,7 @@ draft: false
 
 ![Steal Like and Artist - Kindle Store](/images/steal-like-an-artist-kindle-store.jpg)
 
-I was visiting a library in my block this morning, and stumbled upon this 2012 book, authored by Austin Kleon, titled "Steal Like an Artist" (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want fto finish the book soon.
+I was visiting a library in my block this morning, and stumbled upon this 2012 book, authored by Austin Kleon, titled "Steal Like an Artist" (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want to finish the book soon.
 
 <!--more-->
 
