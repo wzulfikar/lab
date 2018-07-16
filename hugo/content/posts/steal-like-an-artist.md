@@ -7,7 +7,7 @@ draft: false
 
 ![Steal Like and Artist - Kindle Store](/images/steal-like-an-artist-kindle-store.jpg)
 
-I was visiting a library in my block this morning, and stumbled upon this 2012 book, authored by Austin Kleon, titled "Steal Like an Artist" (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want to finish the book soon.
+I was visiting a library in my block this morning, and stumbled upon a book authored by Austin Kleon in 2012, titled "Steal Like an Artist" (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want to finish the book soon.
 
 <!--more-->
 
@@ -50,7 +50,7 @@ This post contains the things I read from the book, that I want myself to relate
 31. "Once you start getting your ideas, then you can move over to your digital station and use the computer to help you execute and publish them."
 32. "The work you do while you procrastinate is probably the work you should be doing for the rest of your life" – Jessica Hische
 33. "I think it's good to have a lot of projects going at once so you can bounce between them"
-34. "Practice productive procastination"
+34. "Practice productive procrastination"
 35. "I love ironing my shirts –– *it's so boring, I almost always get good ideas.*"
 36. Take time to mess around. Get lost. Wander. You never know where it's going to lead you. As the artist Maira Kalman says, "Avoiding work is the way to focus my mind."
 37. You can't connect the dots looking forward, you can only connect them looking backwards – Steve Jobs
@@ -59,7 +59,7 @@ This post contains the things I read from the book, that I want myself to relate
 40. "The classroom is wonderful, if artificial, place: Your professor *gets paid* to pay attention to your ideas, and your classmates *are paying* to pay attention to your ideas. Never again in your life will you have such a captive audience." Soon after, you'll learn that most of the world doesn't necessarily care about what you think. As the writer Steven Pressfield says, "It's not that people are mean or cruel, they're just busy."
 41. *In the beginning, obscurity is good.* When you're unknown, there's nothing to distract you from getting better. *No public image to manage*. You'll never get that freedom back again once people start paying you attention, and especially not once they start paying you money. *Enjoy obscurity while it lasts.*
 42. The more open you're about sharing your passions, the closer people will feel to your work. When you open up your process and invite people, you learn.
-43. "You don't put yourself online only because you've somthing to say –– you can put yourself online *to find something to say.*"
+43. "You don't put yourself online only because you've something to say –– you can put yourself online *to find something to say.*"
 44. "If you're worried about giving your secrets away, *you can share your dots without connecting them.* It's your finger that has to hit the publish button."
 45. "All you need is a little space, and a little time; a little self-imposed solitude, and temporary captivity"
 46. *Leave home*; "Distance and difference are the secret tonic of creativity. When we get home, home is still the same. *But something in our mind has been changed,* and that changes everything." – Jonah Lehrer
