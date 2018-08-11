@@ -1,5 +1,7 @@
 alias mk="make"
 alias so="source"
+alias clr="clear"
+alias cls="clear"
 
 alias sshconfig="nano ~/.ssh/config"
 
