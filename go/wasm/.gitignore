@@ -1,0 +1,3 @@
+lib.wasm
+dist
+!dist/CNAME

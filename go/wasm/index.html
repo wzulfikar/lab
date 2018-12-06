@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+Copyright 2018 The Go Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Go wasm</title>
+</head>
+
+<body>
+
+  <script src="wasm_exec.js"></script>
+
+  <span id="loader">loading go wasm..</span>
+
+  <div id="content" style="display: none;">
+    <button onClick="sayHello('result')" id="btnClickMe">Click me</button>
+    <input type="text" id="result" disabled/>
+
+    <pre>
+      codes are available at:
+      github.com/wzulfikar/lab/tree/master/go/wasm
+    </pre>
+  </div>
+
+  <script>
+    // trigger wasm.ready event. this will be called inside
+    // `main.go` when the wasm code is ready
+    document.wasmReady = () => {
+      document.dispatchEvent(new CustomEvent("wasm.ready"));
+    }
+
+    document.addEventListener("wasm.ready", function(e) {
+      document.getElementById('loader').style.display = "none";
+      document.getElementById('content').style.display = "block";
+    });
+
+    if (!WebAssembly.instantiateStreaming) { // polyfill
+      WebAssembly.instantiateStreaming = async (resp, importObject) => {
+        const source = await (await resp).arrayBuffer();
+        return await WebAssembly.instantiate(source, importObject);
+      };
+    }
+    const go = new Go();
+
+    let mod, inst;
+    WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(async (result) => {
+      mod = result.module;
+      inst = result.instance;
+
+      await go.run(inst);
+
+      // the execution will never reach this line
+      // since our wasm is blocking further execution.
+      // see the `c` channel in `main.go`
+    });
+  </script>
+</body>
+</html>
