@@ -1,0 +1,6 @@
+# hello.bin is hello-caller.c compiled
+hello.bin
+
+hello.h
+hello.so
+hello.so.dylib
