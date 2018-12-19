@@ -17,8 +17,8 @@ fi
 
 echo "uploading to transfer.sh.."
 
-# write output to tmpfile because of progress bar
-tmpfile=$( mktemp -t transferXXX )
+# create temp file to write progress bar output
+tmpfile=$(mktemp)
 filename=$(basename $1)
 
 # support optional arg, will return link to virustotal scan result.
