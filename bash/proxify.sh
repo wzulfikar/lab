@@ -4,6 +4,7 @@ proxify() {
     echo "proxify - export env vars for proxy"
     echo "usage: proxify <proxy server>|off"
     echo "example: proxify 192.168.0.101:8080"
+    return
   fi
 
   proxyserver="$1"
