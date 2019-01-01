@@ -1,8 +1,8 @@
 # `entr` requires unix `entr` utility
 # → http://entrproject.org
 watch-java () {
-	NC='\033[0;0m' # no color
-	GREEN='\033[0;32m'
+    NC='\033[0;0m' # no color
+    GREEN='\033[0;32m'
 
     FILENAME=$1
 
@@ -11,7 +11,7 @@ watch-java () {
 
     COMMAND="clear && echo '$BANNER' && javac $FILENAME.java && java $FILENAME"
 
-	FILES="find . -name \*.java"
+    FILES="find . -name \*.java"
 
-	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
+    eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }

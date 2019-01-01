@@ -6,8 +6,8 @@ run-cpp () {
 # `entr` requires unix `entr` utility
 # → http://entrproject.org
 watch-cpp () {
-	NC='\033[0;0m' # no color
-	GREEN='\033[0;32m'
+    NC='\033[0;0m' # no color
+    GREEN='\033[0;32m'
 
     FILENAME=$1
 
@@ -16,7 +16,7 @@ watch-cpp () {
 
     COMMAND="clear && g++ -o $FILENAME $FILENAME.cpp && echo '$BANNER' && ./$FILENAME"
 
-	FILES="find . -name \*.cpp"
+    FILES="find . -name \*.cpp"
 
-	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
+    eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }

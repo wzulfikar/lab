@@ -6,18 +6,18 @@
 # 3. run qotd
 
 if [ -z "$1" ]; then
-	# replace this path to your own
-	d=~/code/github/lab/bash/qotd-words.txt
+    # replace this path to your own
+    d=~/code/github/lab/bash/qotd-words.txt
 
-	rand=$[($RANDOM % `wc -l $d|sed "s/[^0-9]//g"`)+1]
+    rand=$[($RANDOM % `wc -l $d|sed "s/[^0-9]//g"`)+1]
 
-	# `printf` ansi escape code for green
-	# so the qotd will be printed in green color.
-	# for other escape code, see https://en.wikipedia.org/wiki/ANSI_escape_code
-	printf '\033[0;32m'
-	sed $rand"q;d" $d
-	printf '\033[0;0m' # no color
+    # `printf` ansi escape code for green
+    # so the qotd will be printed in green color.
+    # for other escape code, see https://en.wikipedia.org/wiki/ANSI_escape_code
+    printf '\033[0;32m'
+    sed $rand"q;d" $d
+    printf '\033[0;0m' # no color
 else
-	echo "qotd - display quote of the day"
-  	echo "usage: qotd"
+    echo "qotd –– display quote of the day"
+    echo "usage: qotd"
 fi

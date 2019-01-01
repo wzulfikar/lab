@@ -14,12 +14,12 @@ extract_text () {
 }
 
 ocr () {
-	if [ -z "$1" ]
-	then
-		echo "description: run ocr on given file (or files in directory)"
-	  	echo "usage: ocr (file/folder)"
-	  	return
-	fi
+    if [ -z "$1" ]; then
+        echo "ocr –– run ocr on given file (or files in directory)"
+        echo "usage: ocr (file/folder)"
+        echo "example: ocr ~/Downloads/my-document.jpg"
+        return
+    fi
 
     PASSED=$1
     if [ -d "${PASSED}" ] ; then
@@ -51,10 +51,8 @@ ocr () {
             else
                 echo "File not supported. Only jpg, jpeg & png are supported."
             fi
-
         else
             echo "${PASSED} is not valid.";
         fi
     fi
 }
-

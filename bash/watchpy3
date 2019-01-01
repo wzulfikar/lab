@@ -3,37 +3,37 @@
 # eg. `watch-sh '*.php' 'say ha'`
 
 if [ -z $1 ]; then
-	echo "watchpy3 - watch directory and run python3 on change"
-  	echo "usage: watchpy3 <file to run> <pattern to watch - optional>"
-  	echo ""
-  	echo "examples:"
-  	echo "  watchpy3 main.py"
-  	echo "  watchpy3 main.py ."
-  	echo "  watchpy3 main.py src/mymodule"
-  	echo ""
-  	echo "dependencies:"
-  	echo "  entr - run tests whenever files change (https://github.com/clibs/entr)"
-  	exit
+    echo "watchpy3 –– watch directory and run python3 on change"
+    echo "usage: watchpy3 <file to run> <pattern to watch - optional>"
+    echo ""
+    echo "examples:"
+    echo "  watchpy3 main.py"
+    echo "  watchpy3 main.py ."
+    echo "  watchpy3 main.py src/mymodule"
+    echo ""
+    echo "dependencies:"
+    echo "  entr - run tests whenever files change (https://github.com/clibs/entr)"
+    exit
 fi
 
 if [ ! -f "$1" ]; then
-	echo "[ERROR] $1 is not a file"
-	exit
+    echo "[ERROR] $1 is not a file"
+    exit
 fi
 
 WATCH_DIR=$2
 if [ -z "$WATCH_DIR" ] || [ "$WATCH_DIR" == "." ]; then
-	WATCH_DIR=.
-	FILES="find ."
+    WATCH_DIR=.
+    FILES="find ."
 elif [ -f "$WATCH_DIR" ]; then
-	FILES="find $WATCH_DIR"
+    FILES="find $WATCH_DIR"
 else
-	FILES="find . -name $WATCH_DIR"
+    FILES="find . -name $WATCH_DIR"
 fi
 
 if [ $($FILES | wc -l) -eq 0 ]; then
-	echo "[ERROR] cannot find any file from '$WATCH_DIR'"
-	exit
+    echo "[ERROR] cannot find any file from '$WATCH_DIR'"
+    exit
 fi
 
 NC='\033[0;0m' # no color

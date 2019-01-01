@@ -8,11 +8,11 @@
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/up /usr/local/bin`)
 # 3. run up <file>
 
-if [ -z "$1" ]
-then
-	echo "up - upload file to transfer.sh"
-  	echo "usage: up <file>"
-  	exit
+if [ -z "$1" ]; then
+    echo "up –– upload file to transfer.sh"
+    echo "usage: up <file>"
+    echo "example: up ~/Documents/my-file.pdf"
+    exit
 fi
 
 echo "uploading to transfer.sh.."
@@ -24,8 +24,7 @@ filename=$(basename $1)
 # support optional arg, will return link to virustotal scan result.
 # eg. upload malicious-file.exe virustotal
 optional_arg=""
-if [ $# -eq 2 ]
-  then
+if [ $# -eq 2 ]; then
     optional_arg="/$2"
 fi
 

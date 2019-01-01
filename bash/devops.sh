@@ -57,9 +57,9 @@ site () {
     SITE_EDIT="nano ${SITE_PATH}/sites-available/$2"
     SITE_ENABLE="mv ${SITE_PATH}/sites-available/$2 ${SITE_PATH}/sites-enabled"
     SITE_UPDATE="ln -s ${SITE_PATH}/sites-available/$2 ${SITE_PATH}/sites-enabled"
-    
+
     LAST_ARG=${@: -1}
-    
+
     if [ $1 == "create" ]; then
         run ${SITE_CREATE} $LAST_ARG
     elif [ $1 == "enable" ]; then

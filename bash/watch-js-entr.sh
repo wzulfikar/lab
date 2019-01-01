@@ -1,8 +1,8 @@
 # `entr` requires unix `entr` utility
 # → http://entrproject.org
 watch-js () {
-	NC='\033[0;0m' # no color
-	GREEN='\033[0;32m'
+    NC='\033[0;0m' # no color
+    GREEN='\033[0;32m'
 
     FILENAME=$1
 
@@ -11,7 +11,7 @@ watch-js () {
 
     COMMAND="clear && echo '$BANNER' && node $FILENAME"
 
-	FILES="find . -name \*.js"
+    FILES="find . -name \*.js"
 
-	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
+    eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }

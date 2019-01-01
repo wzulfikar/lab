@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 
-# usage: 
+# usage:
 # 1. adjust file permission (if you have not): `chmod +x eq`
 # 2. copy or link to your path, ie. `ln -s eq /usr/local/bin`
 # 3. run `eq helloworld helloworld`
 
-if [ -z "$1" ] 
-then
-	echo "eq - check if both string are equal"
-  	echo "usage: eq <string1> <string2>"
-  	exit
+if [ -z "$1" ]; then
+    echo "eq –– check if both string are equal"
+    echo "usage: eq <string1> <string2>"
+    echo "example: eq 'Hi there!' 'Hi there'"
+    exit
 fi
 
 NC='\033[0m' # no color
@@ -19,9 +19,7 @@ ORANGE='\033[0;33m'
 
 if [ "$1" = "$2" ]
 then
-	echo "${GREEN}[✔ IT EQUALS!]${NC}"
-	echo "▍$1"
+    echo "${GREEN}✔ Matches!${NC}"
 else
-	echo "${RED}[✘ NOT EQUALS!]${NC}"
-	echo "▍$1\n${NC}${ORANGE}▍$2${NC}"
+    echo "${RED}✘ Not equals${NC}"
 fi

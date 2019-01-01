@@ -1,32 +1,32 @@
 #!/usr/bin/env sh
 
 # usage:
-# 1. adjust file permission (if you have not): `chmod +x diffy` 
+# 1. adjust file permission (if you have not): `chmod +x diffy`
 # 2. copy or link this file to your path (ie. `ln -s diffy /usr/local/bin`)
 # 3. run diffy to upload your `git diff` to diffy
 
 if git rev-parse --git-dir > /dev/null 2>&1; then
-  DIFF_FILE=/tmp/to_diffy.diff
-  DIFF_COMMAND="git diff"
-  if [ -z "$1" ]; then
-    `$DIFF_COMMAND > $DIFF_FILE`
-  elif [ $1 == "-h" ]; then
-  	echo "diffy - upload output of git diff to diffy.org"
-  	echo "usage: diffy <git diff command (optional)>"
-  	exit
-  else
-  	DIFF_COMMAND=$@
-    `$DIFF_COMMAND > $DIFF_FILE`
-  fi
+    DIFF_FILE=/tmp/to_diffy.diff
+    DIFF_COMMAND="git diff"
+    if [ -z "$1" ]; then
+        `$DIFF_COMMAND > $DIFF_FILE`
+    elif [ $1 == "-h" ]; then
+        echo "diffy –– upload output of git diff to diffy.org"
+        echo "usage: diffy <git diff command (optional)>"
+        exit
+    else
+        DIFF_COMMAND=$@
+        `$DIFF_COMMAND > $DIFF_FILE`
+    fi
 
-  echo "uploading output of '$DIFF_COMMAND' to diffy.org.."
+    echo "uploading output of '$DIFF_COMMAND' to diffy.org.."
 
-  # sample response:
-  # Found. Redirecting to /diff/4hrag1lvv7lgyt81v6t0fqolxr
-  diffy_response=`curl -s -F diffFile=@$DIFF_FILE https://diffy.org/new`
+    # sample response:
+    # Found. Redirecting to /diff/4hrag1lvv7lgyt81v6t0fqolxr
+    diffy_response=`curl -s -F diffFile=@$DIFF_FILE https://diffy.org/new`
 
-  replacer=diffy.org/diff
-  echo "${diffy_response/\/diff/$replacer}"
+    replacer=diffy.org/diff
+    echo "${diffy_response/\/diff/$replacer}"
 else
-  echo "diffy error: this directory is not a git repo"
+    echo "diffy error: this directory is not a git repo"
 fi

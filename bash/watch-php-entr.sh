@@ -1,8 +1,8 @@
 # `entr` requires unix `entr` utility
 # → http://entrproject.org
 watch-php () {
-	NC='\033[0;0m' # no color
-	GREEN='\033[0;32m'
+    NC='\033[0;0m' # no color
+    GREEN='\033[0;32m'
 
     FILENAME=$1
 
@@ -11,7 +11,7 @@ watch-php () {
 
     COMMAND="clear && echo '$BANNER' && php $FILENAME"
 
-	FILES="find . -name \*.php"
+    FILES="find . -name \*.php"
 
-	eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
+    eval "$FILES | entr sh -c \"$COMMAND; printf '$MSG';\""
 }

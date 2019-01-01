@@ -1,6 +1,6 @@
 # snippets to install stuffs.
 # Note:
-# all snippets listed here have been 
+# all snippets listed here have been
 # used in an OSX environment.
 
 # google drive cli

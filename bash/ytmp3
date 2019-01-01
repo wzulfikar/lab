@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 # download youtube video and convert it to mp3.
 # behind the scene, `ytdl` is used to download
@@ -12,24 +12,24 @@
 
 # display usage info
 if [ "$1" == "-h" ] || [ -z "$1" ] || [ -z "$2" ]; then
-  echo "ytmp3 –– download youtube video and convert to mp3"
-  echo "usage: ytmp3 <output path> <youtube video id>"
-  echo "example: ytmp3 ~/Downloads/ RXARHZmpgvw"
-  exit
+    echo "ytmp3 –– download youtube video and convert to mp3"
+    echo "usage: ytmp3 <output path> <youtube video id>"
+    echo "example: ytmp3 ~/Downloads/ RXARHZmpgvw"
+    exit
 fi
 
 # ensure output dir exists
 if [ ! -d "$1" ]; then
-  echo "Error: directory '$1' doesn't exist."
-  echo "Please create the directory and try again."
-  exit
+    echo "Error: directory '$1' doesn't exist."
+    echo "Please create the directory and try again."
+    exit
 fi
 
 # check if output dir has / suffix.
 # this is necessary for compatibility with `ytdl`.
 if [[ "$1" != */ ]]; then
-  echo "Error: output directory should end with '/'"
-  exit
+    echo "Error: output directory should end with '/'"
+    exit
 fi
 
 # use ytdl to fetch video info.
@@ -46,12 +46,18 @@ fi
 # line that comes after ': ' (-F': ').
 FILENAME=`ytdl --info $2 | awk -F': ' 'NR == 1 {print $2}'`
 if [ -z "$FILENAME" ]; then
-  echo "Download failed: video id '$2' is invalid"
-  exit
+    echo "Download failed: video id '$2' is invalid"
+    exit
 fi
 
 echo "Downloading: $FILENAME"
 ytdl --filter best-audio --output $1{{.Title}}.{{.Ext}} $2
+
+# ensure the video is downloaded
+if [ ! -f "${1}${FILENAME}.webm" ]; then
+    echo "Error: Couldn't convert video to mp3. Video file doesn't exist."
+    exit
+fi
 
 echo "Converting to mp3.."
 ffmpeg -loglevel 0 -hide_banner -nostats -i "${1}${FILENAME}.webm" "${1}${FILENAME}.mp3"

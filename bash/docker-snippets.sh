@@ -7,5 +7,5 @@ export DOCKER_PS_FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS
 
 # run bash from given container name and remove the container on exit
 bash-from () {
-	eval "docker run -it --rm $1 bash"
+    eval "docker run -it --rm $1 bash"
 }
