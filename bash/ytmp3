@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# download youtube video and convert it to mp3.
+# behind the scene, `ytdl` is used to download
+# the video. once downloaded, the video file
+# will be converted to mp3 using `ffmpeg`.
+#
+# dependencies:
+# - ytdl: https://github.com/rylio/ytdl
+# - ffmpeg: http://ffmpeg.org
+# - awk: https://www.gnu.org/software/gawk/manual/gawk.html
+
+# display usage info
+if [ "$1" == "-h" ] || [ -z "$1" ] || [ -z "$2" ]; then
+  echo "ytmp3 –– download youtube video and convert to mp3"
+  echo "usage: ytmp3 <output path> <youtube video id>"
+  echo "example: ytmp3 ~/Downloads/ RXARHZmpgvw"
+  exit
+fi
+
+# ensure output dir exists
+if [ ! -d "$1" ]; then
+  echo "Error: directory '$1' doesn't exist."
+  echo "Please create the directory and try again."
+  exit
+fi
+
+# check if output dir has / suffix.
+# this is necessary for compatibility with `ytdl`.
+if [[ "$1" != */ ]]; then
+  echo "Error: output directory should end with '/'"
+  exit
+fi
+
+# use ytdl to fetch video info.
+# using ytdl v0.5.0, the info would look like this:
+# ```
+# Title: Bee Gees - How Deep Is Your Love (1977)
+# Author: beegees
+# Date Published: Oct 26 2009
+# Duration: 4m0s
+# ```
+#
+# the `awk -F': ' 'NR == 1 {print $2}'` will get the first
+# line of video info ('NR == 1'), and take the part of
+# line that comes after ': ' (-F': ').
+FILENAME=`ytdl --info $2 | awk -F': ' 'NR == 1 {print $2}'`
+if [ -z "$FILENAME" ]; then
+  echo "Download failed: video id '$2' is invalid"
+  exit
+fi
+
+echo "Downloading: $FILENAME"
+ytdl --filter best-audio --output $1{{.Title}}.{{.Ext}} $2
+
+echo "Converting to mp3.."
+ffmpeg -loglevel 0 -hide_banner -nostats -i "${1}${FILENAME}.webm" "${1}${FILENAME}.mp3"
+echo "✔ ytmp3 finished for '$2'"
