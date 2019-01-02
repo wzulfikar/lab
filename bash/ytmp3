@@ -19,17 +19,16 @@ if [ "$1" == "-h" ] || [ -z "$1" ] || [ -z "$2" ]; then
 fi
 
 # ensure output dir exists
-if [ ! -d "$1" ]; then
+OUTPUT_DIR=$1
+if [ ! -d "$OUTPUT_DIR" ]; then
     echo "Error: directory '$1' doesn't exist."
     echo "Please create the directory and try again."
     exit
 fi
 
-# check if output dir has / suffix.
-# this is necessary for compatibility with `ytdl`.
-if [[ "$1" != */ ]]; then
-    echo "Error: output directory should end with '/'"
-    exit
+# ensure output dir has / suffix
+if [[ "$OUTPUT_DIR" != */ ]]; then
+    OUTPUT_DIR="${OUTPUT_DIR}/"
 fi
 
 # use ytdl to fetch video info.
@@ -51,14 +50,14 @@ if [ -z "$FILENAME" ]; then
 fi
 
 echo "Downloading: $FILENAME"
-ytdl --filter best-audio --output $1{{.Title}}.{{.Ext}} $2
+ytdl --filter best-audio --output $OUTPUT_DIR{{.Title}}.{{.Ext}} $2
 
 # ensure the video is downloaded
-if [ ! -f "${1}${FILENAME}.webm" ]; then
+if [ ! -f "${OUTPUT_DIR}${FILENAME}.webm" ]; then
     echo "Error: Couldn't convert video to mp3. Video file doesn't exist."
     exit
 fi
 
 echo "Converting to mp3.."
-ffmpeg -loglevel 0 -hide_banner -nostats -i "${1}${FILENAME}.webm" "${1}${FILENAME}.mp3"
+ffmpeg -loglevel 0 -hide_banner -nostats -i "${OUTPUT_DIR}${FILENAME}.webm" "${OUTPUT_DIR}${FILENAME}.mp3"
 echo "✔ ytmp3 finished for '$2'"
