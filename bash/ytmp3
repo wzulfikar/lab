@@ -60,4 +60,8 @@ fi
 
 echo "Converting to mp3.."
 ffmpeg -loglevel 0 -hide_banner -nostats -i "${OUTPUT_DIR}${FILENAME}.webm" "${OUTPUT_DIR}${FILENAME}.mp3"
+
+echo "Deleting webm file.."
+rm "${OUTPUT_DIR}${FILENAME}.webm"
+
 echo "✔ ytmp3 finished for '$2'"
