@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # download youtube video and convert it to mp3.
 # behind the scene, `ytdl` is used to download
