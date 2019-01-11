@@ -1,0 +1,58 @@
+#! /bin/sh
+
+restic_server_command=restic-rest-server
+ngrok_port=4040
+if [ -z "$1" ] || [ "$1" = "-h" ]; then
+    echo "restic-rest-ngrok –– serve restic rest server behind ngrok"
+    echo "usage: restic-rest-ngrok <path to restic repo> [ngrok port]"
+    echo "example: restic-rest-ngrok /opt/restic/repo"
+    echo ""
+    echo "description:"
+    echo "this script will run ngrok in in background (using detached screen)"
+    echo "and fetch the ngrok url using ngrok http api. once the ngrok url"
+    echo "is available, copy it and use it as restic rest endpoint in your "
+    echo "restic client. the restic-rest-server is run in foreground so you"
+    echo "can monitor its logs."
+    echo ""
+    echo "if you are running multiple ngrok instance simultaneously, its http api"
+    echo "will have different port. by default, ngrok http api is available at"
+    echo "127.0.0.1:4040. when run simultaneously, the subsequent ngrok instance"
+    echo "will use port 4041, 4042, and so on. this is the case where you need to"
+    echo "pass the additional argument for the \`[ngrok port]\`"
+    exit
+fi
+
+if [ ! -z "$2" ]; then
+    ngrok_port=$2
+    echo "using ngrok port ${ngrok_port}"
+fi
+
+screen_simple_id=$(screen -ls | wc -l)
+screen_name="restic-rest-ngrok_screen${screen_simple_id}"
+
+screen -dmS ${screen_name} ngrok http 8000
+echo "preparing ngrok url.." && \
+sleep 3 && \
+ngrok_url=$(curl --silent --show-error http://127.0.0.1:${ngrok_port}/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
+
+# rename the screen
+screen -S ${screen_name} -X sessionname ${ngrok_url}
+screen_name=${ngrok_url}
+
+echo ""
+echo "================================================"
+echo "→ ngrok url: $ngrok_url"
+echo ""
+echo "copy the ngrok url and use it in your restic"
+echo "client as the endpoint of its rest backend."
+echo ""
+echo "the ngrok process is running in a screen named"
+echo "'${screen_name}'. to stop, run this command:"
+echo "screen -S ${screen_name} -X quit"
+echo "================================================"
+echo ""
+
+echo "running restic rest server.."
+echo ""
+
+${restic_server_command} --path $1
