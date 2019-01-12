@@ -1,6 +1,11 @@
 #! /bin/sh
 
-restic_server_command=restic-rest-server
+# if no `RESTIC_SERVER_COMMAND` env var,
+# use default `restic-rest-server` from path.
+if [ -z "$RESTIC_SERVER_COMMAND" ]; then
+  RESTIC_SERVER_COMMAND=restic-rest-server
+fi
+
 ngrok_port=4040
 if [ -z "$1" ] || [ "$1" = "-h" ]; then
     echo "restic-rest-ngrok –– serve restic rest server behind ngrok"
@@ -27,17 +32,36 @@ if [ ! -z "$2" ]; then
     echo "using ngrok port ${ngrok_port}"
 fi
 
-screen_simple_id=$(screen -ls | wc -l)
+# using `tr -d` to trim whitespaces
+screen_simple_id=$(screen -ls | wc -l | tr -d '[:space:]')
 screen_name="restic-rest-ngrok_screen${screen_simple_id}"
 
-screen -dmS ${screen_name} ngrok http 8000
-echo "preparing ngrok url.." && \
-sleep 3 && \
-ngrok_url=$(curl --silent --show-error http://127.0.0.1:${ngrok_port}/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
+screen -dmS ${screen_name} ngrok http 8000 && \
+echo "preparing ngrok url.."
+echo "make sure you have active internet connection"
 
-# rename the screen
-screen -S ${screen_name} -X sessionname ${ngrok_url}
-screen_name=${ngrok_url}
+while true; do
+  sleep 3
+
+  # use curl --noproxy if `CURL_NO_PROXY` env exists.
+  # curl version must be at least 7.19.4
+  if [ "$CURL_NO_PROXY" = "true" ]; then
+    ngrok_url=$(curl --noproxy "*" --silent --show-error http://127.0.0.1:$ngrok_port/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
+  else
+    ngrok_url=$(curl --silent --show-error http://127.0.0.1:$ngrok_port/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
+  fi
+
+  # retry if ngrok url is (still) empty
+  if [ -z "$ngrok_url" ]; then
+    echo "couldn't get ngrok url. trying again.. (or press ctrl+c to exit)"
+    continue
+  fi
+
+  # rename the screen
+  screen -S ${screen_name} -X sessionname ${ngrok_url}
+  screen_name=${ngrok_url}
+  break
+done;
 
 echo ""
 echo "================================================"
@@ -55,4 +79,4 @@ echo ""
 echo "running restic rest server.."
 echo ""
 
-${restic_server_command} --path $1
+${RESTIC_SERVER_COMMAND} --path $1
