@@ -1,23 +1,42 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 # usage:
 # 1. adjust file permission (if you have not): `chmod +x qotd`
 # 2. copy or link this file to your path (ie. `ln -s $(pwd)/qotd /usr/local/bin`)
 # 3. run qotd
 
-if [ -z "$1" ]; then
-    # replace this path to your own
-    d=~/code/github/lab/bash/qotd-words.txt
-
-    rand=$[($RANDOM % `wc -l $d|sed "s/[^0-9]//g"`)+1]
-
-    # `printf` ansi escape code for green
-    # so the qotd will be printed in green color.
-    # for other escape code, see https://en.wikipedia.org/wiki/ANSI_escape_code
-    printf '\033[0;32m'
-    sed $rand"q;d" $d
-    printf '\033[0;0m' # no color
-else
+if [ "$1" = "-h" ]; then
     echo "qotd –– display quote of the day"
     echo "usage: qotd"
+    exit
 fi
+
+# try to use default word list if QOTD_WORDS is not set
+if [ -z "$QOTD_WORDS" ]; then
+    # reflect the executable to get dir in attempt
+    # to reach default qotd word list –– assuming the
+    # qotd executable is cloned from github directly
+    script_dir=$(dirname $(which qotd))
+    QOTD_WORDS=$script_dir/qotd-words.txt
+fi
+
+# fail if word list doesn't exist
+if [ ! -e "$QOTD_WORDS" ]; then
+    echo "QOTD_WORDS is not set. Tried to use default word list"
+    echo "at $QOTD_WORDS but couldn't find it."
+    echo "To continue, create a word list and use its path"
+    echo "as the value of your QOTD_WORDS env var."
+    echo ""
+    echo "example of word list file:"
+    echo "https://github.com/wzulfikar/lab/tree/master/bash/qotd-words.txt"
+    exit
+fi
+
+rand=$[($RANDOM % `wc -l $QOTD_WORDS|sed "s/[^0-9]//g"`)+1]
+
+# `printf` ansi escape code for green
+# so the qotd will be printed in green color.
+# for other escape code, see https://en.wikipedia.org/wiki/ANSI_escape_code
+printf '\033[0;32m'
+sed $rand"q;d" $QOTD_WORDS
+printf '\033[0;0m' # no color
