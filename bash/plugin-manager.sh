@@ -1,7 +1,6 @@
 # Put this code `source path_to_this/plugins.sh`
 # into your profile file (.bashrc, .zshrc, etc)
 # and your plugins are now centralized here.
-source ~/code/github/lab/bash/ocr.sh
 source ~/code/github/lab/bash/misc.sh
 source ~/code/github/lab/bash/cpp-runner-entr.sh
 source ~/code/github/lab/bash/git-aliases.sh

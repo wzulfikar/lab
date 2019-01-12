@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # download youtube video and convert it to mp3.
 # behind the scene, `ytdl` is used to download
@@ -13,7 +13,7 @@
 # display usage info
 if [ "$1" == "-h" ] || [ -z "$1" ] || [ -z "$2" ]; then
     echo "ytmp3 –– download youtube video and convert to mp3"
-    echo "usage: ytmp3 <output path> <youtube video id>"
+    echo "usage: ytmp3 <output dir> <youtube video id>"
     echo "example: ytmp3 ~/Downloads/ RXARHZmpgvw"
     exit
 fi

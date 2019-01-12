@@ -1,0 +1,14 @@
+.git
+.phpintel
+__pycache__
+.ipynb_checkpoints
+hugo
+docs
+.creds
+cpp
+*/cpp
+codeforces
+*.jpg
+*.gif
+*.png
+*.ipynb
