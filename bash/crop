@@ -4,7 +4,7 @@ if [ -z "$1" ] || [ "$1" = "-h" ]; then
   echo "crop –– crop one or multiple images using imagemagick"
   echo "usage: crop <image or pattern> <crop geometry> [optional output dir]"
   echo ""
-  echo "examples"
+  echo "examples:"
   echo "- crop single image:"
   echo "  crop my-image.png 779x436+550+120"
   echo "- crop multiple images:"
@@ -17,6 +17,8 @@ if [ -z "$1" ] || [ "$1" = "-h" ]; then
   echo "779px to right and 436px to bottom and then push the"
   echo "selected area 550px to right and 120px to bottom"
 fi
+
+current_dir=$(pwd)
 
 crop_geometry=$2
 output_dir=$3
@@ -39,7 +41,15 @@ for filename in $1; do
   # the same directory.
   # ---
 
-  cropped_file=cropped_$filename
-  convert $filename -crop $crop_geometry $cropped_file
+  dir_name=$(dirname "$filename")
+
+  # get filename with extension
+  filename_with_ext=$(basename "$filename")
+
+  # extract extension
+  ext="${filename_with_ext##*.}"
+
+  cropped_file=cropped--$filename
+  convert $filename -crop $crop_geometry $dir_name/$cropped_file
   echo "$filename → $cropped_file"
 done
