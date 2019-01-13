@@ -1,0 +1,22 @@
+#! /bin/sh
+
+if [ -z "$1" ] || [ "$1" = "-h" ]; then
+  echo "collate –– wrapper for imagemagick 'convert',"
+  echo "           combines multiple images/pdfs to one pdf."
+  echo "usage: collate <images/documents> <optional output pdf>"
+  echo ""
+  echo "examples:"
+  echo "- collate single image to pdf (image to pdf conversion):"
+  echo "  collate my-image.png my-image.pdf"
+  echo "- collate multiple images to one pdf (use quote):"
+  echo "  collate '*.png' output.pdf"
+  exit
+fi
+
+output=$2
+if [ -z "$output" ]; then
+  output="collated.pdf"
+fi
+
+convert "$1" $output
+echo "collate command finished. output: $output"
