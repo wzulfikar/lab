@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ "$1" = "-h" ]; then
+    echo "dockerd-expose –– expose docker engine to remote clients"
+    echo "usage: dockerd-expose [optional port - defaults to 2375]"
+    echo "examples:"
+    echo "- expose docker engine at default port (2375):"
+    echo "  dockerd-expose"
+    echo "- expose docker engine at port 80:"
+    echo "  dockerd-expose 80"
+    exit
+fi
+
+PORT=$1
+if [ -z "$PORT" ]; then
+	PORT=2375
+fi
+
+echo "docker will be accessible at port :${PORT}."
+echo "keep in mind that the connection is not secure (no tls)."
+echo "make sure you have permission to /var/run/docker.sock"
+echo ""
+echo "from your remote machine, use nmap to check"
+echo "if it can access this docker instance:"
+echo "nmap <ip of this machine> -p ${PORT}"
+echo ""
+echo "then use 'DOCKER_HOST' to connect your"
+echo "remote docker client to this docker instance:"
+echo "DOCKER_HOST=<ip of this machine>:${PORT} docker info"
+echo ""
+echo "to stop, press ctrl+c"
+
+# forked from https://github.com/jarkt/docker-remote-api
+socat TCP-LISTEN:${PORT},reuseaddr,fork UNIX-CLIENT:/var/run/docker.sock
