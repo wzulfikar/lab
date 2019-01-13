@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 OCR_TIFF_FILE=/tmp/__ocr_temp.tiff
 
