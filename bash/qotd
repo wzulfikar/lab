@@ -23,7 +23,8 @@ fi
 # fail if word list doesn't exist
 if [ ! -e "$QOTD_WORDS" ]; then
     echo "QOTD_WORDS is not set. Tried to use default word list"
-    echo "at $QOTD_WORDS but couldn't find it."
+    echo "at $QOTD_WORDS but it doesn't exist."
+    echo ""
     echo "To continue, create a word list and use its path"
     echo "as the value of your QOTD_WORDS env var."
     echo ""
