@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# E-mail, subdomain and people names harvester
+# https://github.com/laramies/theHarvester
+# e.g. `harvest -d cerberus.com -b all`
+
+# try to use default path
+if [ -z "$PYTHON_HARVESTER_PATH" ]; then
+    # reflect the executable to get dir in attempt
+    # to reach default qotd word list –– assuming the
+    # qotd executable is cloned from github directly
+    PYTHON_HARVESTER_PATH=/theharvester/theHarvester.py
+fi
+
+# fail if path doesn't exist
+if [ ! -e "$PYTHON_HARVESTER_PATH" ]; then
+    echo "PYTHON_HARVESTER_PATH is not set. Tried to use default"
+    echo "harvester dir at $PYTHON_HARVESTER_PATH but it doesn't exist."
+    echo ""
+    echo "To continue, download or clone theHarvester from"
+    echo "https://github.com/laramies/theHarvester and use"
+    echo "its path as the value of your PYTHON_HARVESTER_PATH"
+    echo "env var."
+    exit
+fi
+
+python3 $PYTHON_HARVESTER_PATH $@
