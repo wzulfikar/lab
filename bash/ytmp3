@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # download youtube video and convert it to mp3.
 # behind the scene, `ytdl` is used to download
