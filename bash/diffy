@@ -5,6 +5,15 @@
 # 2. copy or link this file to your path (ie. `ln -s diffy /usr/local/bin`)
 # 3. run diffy to upload your `git diff` to diffy
 
+# verify dependencies
+hash git 2>/dev/null || { MISSING_DEPS="$MISSING_DEPS git"; }
+hash curl 2>/dev/null || { MISSING_DEPS="$MISSING_DEPS curl"; }
+if [ ! -z "$MISSING_DEPS" ]; then
+    echo "whoops! missing dependencies:"
+    echo $MISSING_DEPS
+    exit
+fi
+
 if git rev-parse --git-dir > /dev/null 2>&1; then
     DIFF_FILE=/tmp/to_diffy.diff
     DIFF_COMMAND="git diff"

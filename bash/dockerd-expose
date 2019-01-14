@@ -16,17 +16,30 @@ if [ -z "$PORT" ]; then
 	PORT=2375
 fi
 
-echo "docker will be accessible at port :${PORT}."
+# verify dependencies
+hash dsocat 2>/dev/null || { MISSING_DEPS="$MISSING_DEPS socat"; }
+if [ ! -z "$MISSING_DEPS" ]; then
+    echo "whoops! missing dependencies:"
+    echo $MISSING_DEPS
+    exit
+fi
+
+echo "==========================================================="
+echo "docker engine will be accessible at port :${PORT}."
+echo "you'll need to have permission to"
+echo "/var/run/docker.sock to do this operation."
 echo "keep in mind that the connection is not secure (no tls)."
-echo "make sure you have permission to /var/run/docker.sock"
+echo "anyone in your network might be able to connect to this"
+echo "docker engine. handle with care."
+echo "==========================================================="
 echo ""
 echo "from your remote machine, use nmap to check"
 echo "if it can access this docker instance:"
-echo "nmap <ip of this machine> -p ${PORT}"
+echo "\`nmap <ip of this machine> -p ${PORT}\`"
 echo ""
-echo "then use 'DOCKER_HOST' to connect your"
+echo "then use 'DOCKER_HOST' env var to connect your"
 echo "remote docker client to this docker instance:"
-echo "DOCKER_HOST=<ip of this machine>:${PORT} docker info"
+echo "\`DOCKER_HOST=<ip of this machine>:${PORT} docker info\`"
 echo ""
 echo "to stop, press ctrl+c"
 
