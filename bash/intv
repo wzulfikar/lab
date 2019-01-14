@@ -1,17 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -z "$1" ] || [ "$1" = "-h" ]; then
     echo "intv –– run commands in interval"
     echo "usage: intv <second interval> <command>"
     echo "examples:"
-    echo "- runing curl every 1 second:"
+    echo "- run curl every 1 second:"
     echo "  intv 1 curl localhost"
-    echo "- running multiple commands using eval:"
+    echo "- run multiple commands using eval:"
     echo "  intv 1 eval \"echo 'hi!'; curl localhost\""
     exit
 fi
 
-# execute args (except first arg) as single command
+# execute args (except first arg) as single command.
+# use bash because shell doesn't understand this
+# string substitution.
 cmd=${@:2}
 
 echo "→ running command in $1 second interval. use ctrl+c to stop."
