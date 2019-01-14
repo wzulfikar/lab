@@ -17,7 +17,7 @@ if [ -z "$PORT" ]; then
 fi
 
 # verify dependencies
-hash dsocat 2>/dev/null || { MISSING_DEPS="$MISSING_DEPS socat"; }
+hash socat 2>/dev/null || { MISSING_DEPS="$MISSING_DEPS socat"; }
 if [ ! -z "$MISSING_DEPS" ]; then
     echo "whoops! missing dependencies:"
     echo $MISSING_DEPS
