@@ -24,4 +24,12 @@ if [ ! -e "$PYTHON_HARVESTER_PATH" ]; then
     exit
 fi
 
-python3 $PYTHON_HARVESTER_PATH $@
+echo "running theHarvester.."
+echo "press ctrl+c or ctrl+\\ to interrupt"
+
+# if `WORDLISTS_DIR` is unset, use `HARVESTER_WORDLISTS_DIR` 
+# as harvester's wordlists dir
+if [ -z "$WORDLISTS_DIR" ]; then
+    WORDLISTS_DIR=$HARVESTER_WORDLISTS_DIR
+fi
+WORDLISTS_DIR=$WORDLISTS_DIR python3 $PYTHON_HARVESTER_PATH $@
