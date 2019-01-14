@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# try to use default path
+if [ -z "$PYTHON_XSSTRIKE_PATH" ]; then
+    # reflect the executable to get dir in attempt
+    # to reach default qotd word list –– assuming the
+    # qotd executable is cloned from github directly
+    PYTHON_XSSTRIKE_PATH=/xsstrike/xsstrike.py
+fi
+
+# fail if path doesn't exist
+if [ ! -e "$PYTHON_XSSTRIKE_PATH" ]; then
+    echo "PYTHON_XSSTRIKE_PATH is not set. Tried to use default"
+    echo "xsstrike path at $PYTHON_XSSTRIKE_PATH but it doesn't exist."
+    echo ""
+    echo "To continue, download or clone XSStrike from"
+    echo "https://github.com/s0md3v/XSStrike and use"
+    echo "its path as the value of your PYTHON_XSSTRIKE_PATH"
+    echo "env var."
+    exit
+fi
+
+python3 $PYTHON_XSSTRIKE_PATH $@

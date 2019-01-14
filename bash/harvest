@@ -15,7 +15,7 @@ fi
 # fail if path doesn't exist
 if [ ! -e "$PYTHON_HARVESTER_PATH" ]; then
     echo "PYTHON_HARVESTER_PATH is not set. Tried to use default"
-    echo "harvester dir at $PYTHON_HARVESTER_PATH but it doesn't exist."
+    echo "harvester path at $PYTHON_HARVESTER_PATH but it doesn't exist."
     echo ""
     echo "To continue, download or clone theHarvester from"
     echo "https://github.com/laramies/theHarvester and use"
