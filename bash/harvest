@@ -24,8 +24,12 @@ if [ ! -e "$PYTHON_HARVESTER_PATH" ]; then
     exit
 fi
 
-echo "running theHarvester.."
-echo "press ctrl+c or ctrl+\\ to interrupt"
+# don't display 'running' indicator if
+# user just want to show help page
+if [ ! -z "$1" ] && [ ! "$1" = "-h" ]; then
+    echo "running theHarvester.."
+    echo "press ctrl+c or ctrl+\\ to interrupt"
+fi
 
 # if `WORDLISTS_DIR` is unset, use `HARVESTER_WORDLISTS_DIR` 
 # as harvester's wordlists dir
