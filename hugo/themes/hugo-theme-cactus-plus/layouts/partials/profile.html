@@ -5,7 +5,7 @@
                 <img id="avatar" class="2x" src="{{ .Site.BaseURL }}images/avatar.jpeg"/>
             </a>
             <h1>{{ .Site.Title }}</h1>
-            {{ with .Site.Params.bio }}<h2>{{ . | markdownify }}</h2>{{ end }}
+            {{ with .Site.Params.bio }}<h2 id="header--bio">{{ . | markdownify }}</h2>{{ end }}
         </header>
     </section>
 </div>
