@@ -10,19 +10,23 @@ https://johndoe.com
 
 * Slide 1: Text only
 
-Example slide that contains only text.
+This is an example page that shows some usage.
 
-A clickable link (opens in new tab):
+- A clickable link (opens in new tab):
 .link https://blog.golang.org/gopher/gopher.png blog.golang.org/gopher/gopher.png
 
-Read more on official documentation:
-.link https://godoc.org/golang.org/x/tools/present
-
-Use [[https://go-talks.appspot.com][go-talks.appspot.com]] to play `.slide` or `.article`. Example:
+- Using [[https://go-talks.appspot.com][go-talks.appspot.com]] to play `.slide` or `.article`. Example:
 .link https://go-talks.appspot.com/github.com/wzulfikar/lab/slides/template.slide
 
-: Presenter notes (first paragraph). Press "n" in the presentation window to display presenter notes.
-: Presenter notes (second paragraph)
+- Official documentation:
+.link https://godoc.org/golang.org/x/tools/present
+
+- Source code of this slide:
+.link https://github.com/wzulfikar/lab/blob/master/slides/template.slide
+
+`P.S`: This page has a _presenter_note_. To show it, press "`n`" on your keyboard.
+
+: Hi there! This is a presenter note.
 
 
 * Next: Text with image
@@ -33,14 +37,14 @@ Use [[https://go-talks.appspot.com][go-talks.appspot.com]] to play `.slide` or `
 
 This slide contains an image from https://blog.golang.org/gopher/gopher.png. To add an image, use `.image` template function:
 
-        .image https://blog.golang.org/gopher/gopher.png 200 _
+	.image https://blog.golang.org/gopher/gopher.png 200 _
 
 .image https://blog.golang.org/gopher/gopher.png 200 _
 .caption [[https://blog.golang.org/gopher/gopher.png][Gopher mascot]]
 
 The caption "Gopher mascot" was created using `.caption`:
 
-        .caption [[https://blog.golang.org/gopher/gopher.png][Gopher mascot]]
+	.caption [[https://blog.golang.org/gopher/gopher.png][Gopher mascot]]
 
 * Slide 2: video
 
