@@ -18,6 +18,9 @@ A clickable link (opens in new tab):
 Read more on official documentation:
 .link https://godoc.org/golang.org/x/tools/present
 
+Use [[https://go-talks.appspot.com][go-talks.appspot.com]] to play `.slide` or `.article`. Example:
+.link https://go-talks.appspot.com/github.com/wzulfikar/lab/slides/template.slide
+
 : Presenter notes (first paragraph). Press "n" in the presentation window to display presenter notes.
 : Presenter notes (second paragraph)
 
