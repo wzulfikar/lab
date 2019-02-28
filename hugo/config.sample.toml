@@ -25,7 +25,7 @@ hasCJKLanguage = false
 	useCDN = false
 	author = "wzulfikar"
 	description = "Just another blog."
-	bio = "What is bio?"
+	bio = ""
 
 	twitter = "wzulfikar"
 	# facebook = "your_facebook_id"
