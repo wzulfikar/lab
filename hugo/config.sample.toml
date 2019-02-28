@@ -3,7 +3,7 @@
 baseurl = "/"
 languageCode = "en"
 publishDir = "../docs"
-title = "It's Dan :)"
+title = "Wildan's Blog."
 theme = "hugo-theme-cactus-plus"
 
 # Set the value to true if your site include CJK (Chinese, Japanese, and Korean languages) characters
@@ -25,7 +25,7 @@ hasCJKLanguage = false
 	useCDN = false
 	author = "wzulfikar"
 	description = "Just another blog."
-	bio = "Communication, and Technology."
+	bio = "What is bio?"
 
 	twitter = "wzulfikar"
 	# facebook = "your_facebook_id"
