@@ -80,4 +80,7 @@ img[src$='#featured']
 	display: inline-block;
 	float: right;
 	color: darkgray;
+	font-size: 14px;
+	position: relative;
+	top: 3px;
 }

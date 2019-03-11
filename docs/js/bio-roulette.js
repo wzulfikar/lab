@@ -18,6 +18,7 @@ const words = [
 
 	quote("Muhammad Ali", "Don't count the days. Make the days count."),
 	quote("The Jogging Baboon", "It gets easier. Every day it gets a little easier.", "But you got to do it every day."),
+	quote("Batman", "I'm Batman"),
 ];
 
 // get random number as index (including `min`, excluding `max`)
