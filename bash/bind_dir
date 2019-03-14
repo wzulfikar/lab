@@ -1,7 +1,8 @@
 #!/bin/sh
 
 if [ -z "$1" ] || [ "$1" = "-h" ]; then
-	echo "bind_dir.sh bind local directory to mount point under /mnt using bindfs and updates /etc/fstab accordingly"
+	echo "bind_dir.sh bind local directory to mount point under /mnt using bindfs and"
+	echo "updates /etc/fstab accordingly. tested with bindfs 1.12.6."
 	echo "usage: bind_dir <source directory>"
 	exit
 fi
