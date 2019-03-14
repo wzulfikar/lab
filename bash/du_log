@@ -42,7 +42,7 @@ watch_usage() {
             counter=0
         fi
 
-        ts=$(date +"%Y-%m-%dT%H:%m:%S%z")
+        ts=$(date +"%Y-%m-%dT%H:%M:%S%z")
         du -s --block-size=1 $@ | xargs --max-lines=1 | awk '{
 			gsub(" ", ",\"path\":\"", $0);
 			print "{\"hostname\":\"'$(hostname)'\",\"timestamp\":\"'$ts'\",\"bytes_used\":"$0"\"}";
