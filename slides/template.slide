@@ -1,0 +1,55 @@
+Working Title: Some Title here
+And some subtitle here
+15:04 1 Mar 2019
+Tags: foo, bar, baz
+
+John Doe
+@johndoe_twitter
+me@johndoe.com
+https://johndoe.com
+
+* Slide 1: Text only
+
+This is an example page that shows some usage.
+
+- A clickable link (opens in new tab):
+.link https://blog.golang.org/gopher/gopher.png blog.golang.org/gopher/gopher.png
+
+- Using [[https://go-talks.appspot.com][go-talks.appspot.com]] to play `.slide` or `.article`. Example:
+.link https://go-talks.appspot.com/github.com/wzulfikar/lab/slides/template.slide
+
+- Official documentation:
+.link https://godoc.org/golang.org/x/tools/present
+
+- Source code of this slide:
+.link https://github.com/wzulfikar/lab/blob/master/slides/template.slide
+
+`P.S`: This page has a _presenter_note_. To show it, press "`n`" on your keyboard.
+
+: Hi there! This is a presenter note.
+
+
+* Next: Text with image
+: Title will be put at left-bottom of the slide if it's followed by another title (another `*`) and there's no content in between.This is useful when you want to create "divider" to signal a change of topic/subject.
+
+* Text with image
+: some note
+
+This slide contains an image from https://blog.golang.org/gopher/gopher.png. To add an image, use `.image` template function:
+
+	.image https://blog.golang.org/gopher/gopher.png 200 _
+
+.image https://blog.golang.org/gopher/gopher.png 200 _
+.caption [[https://blog.golang.org/gopher/gopher.png][Gopher mascot]]
+
+The caption "Gopher mascot" was created using `.caption`:
+
+	.caption [[https://blog.golang.org/gopher/gopher.png][Gopher mascot]]
+
+* Slide 2: video
+
+You can display video using `.video` for local video or `.iframe` for remote content (ie. youtube embed). Below video is embedded from youtube using `.iframe`:
+
+        .iframe https://www.youtube.com/embed/UDVtMYqUAyw 400 980
+
+.iframe https://www.youtube.com/embed/UDVtMYqUAyw 400 980

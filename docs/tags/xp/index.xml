@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xp on Wildan&#39;s Blog</title>
+    <link>/tags/xp/</link>
+    <description>Recent content in Xp on Wildan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 27 Mar 2018 20:00:34 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/xp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PPI-IIUM Producation 2018: Finding Passion in University</title>
+      <link>/posts/iium-producation-2018/</link>
+      <pubDate>Tue, 27 Mar 2018 20:00:34 +0800</pubDate>
+      
+      <guid>/posts/iium-producation-2018/</guid>
+      <description>&lt;p&gt;Earlier this week, I received an invitation from Persatuan Pelajar Indonesia (PPI) –– an Indonesian Students Society at my campus (IIUM, Malaysia), to become a speaker of a sharing session event titled &amp;ldquo;Producation&amp;rdquo;. The event will be held at IIUM this coming Friday, March 30.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,13 +6,17 @@
 	<section id="wrapper" class="home">
 		{{ range .Data.Pages.GroupByDate "2006" }}
 		<div class="archive">
-			<h3>{{ .Key }}</h3>
+			<h3>
+				{{ .Key }}
+				<span style="font-size: 14px;color: grey;">–– {{ len .Pages }} entry</span>
+			</h3>
 			<ul>
 				{{ range .Pages }}
 				<div class="post-item">
 					<div class="post-time">{{ .Date.Format "Jan 2" }}</div>
 					<a href="{{ .Permalink }}" class="post-link">
 						{{ .Title  | markdownify }}
+						{{ if .Draft }}<span class="draft-indicator">DRAFT</span>{{ end }}
 					</a>
 				</div>
 				{{ end }}

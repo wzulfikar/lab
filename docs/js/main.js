@@ -1,6 +1,6 @@
 // To make images retina, add a class "2x" to the img element
 // and add a <image-name>@2x.png image. Assumes jquery is loaded.
- 
+
 function isRetina() {
 	var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
 					  (min--moz-device-pixel-ratio: 1.5),\
@@ -32,5 +32,5 @@ function retina() {
 		$(image).attr("src", path);
 	});
 };
- 
+
 $(document).ready(retina);

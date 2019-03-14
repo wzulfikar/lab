@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reflection on Wildan&#39;s Blog</title>
+    <link>/tags/reflection/</link>
+    <description>Recent content in Reflection on Wildan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 15 Jul 2018 16:18:42 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/reflection/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Steal Like an Artist</title>
+      <link>/posts/steal-like-an-artist/</link>
+      <pubDate>Sun, 15 Jul 2018 16:18:42 +0800</pubDate>
+      
+      <guid>/posts/steal-like-an-artist/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/steal-like-an-artist-kindle-store.jpg&#34; alt=&#34;Steal Like and Artist - Kindle Store&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was visiting a library in my block this morning, and stumbled upon a book authored by Austin Kleon in 2012, titled &amp;ldquo;Steal Like an Artist&amp;rdquo; (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want to finish the book soon.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PPI-IIUM Producation 2018: Finding Passion in University</title>
+      <link>/posts/iium-producation-2018/</link>
+      <pubDate>Tue, 27 Mar 2018 20:00:34 +0800</pubDate>
+      
+      <guid>/posts/iium-producation-2018/</guid>
+      <description>&lt;p&gt;Earlier this week, I received an invitation from Persatuan Pelajar Indonesia (PPI) –– an Indonesian Students Society at my campus (IIUM, Malaysia), to become a speaker of a sharing session event titled &amp;ldquo;Producation&amp;rdquo;. The event will be held at IIUM this coming Friday, March 30.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

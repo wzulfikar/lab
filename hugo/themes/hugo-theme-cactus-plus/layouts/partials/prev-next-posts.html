@@ -2,7 +2,7 @@
 
 {{ if .Next }}
 <div style="float: left;">
-	<a href="{{.Next.URL }}" class="link-hover">
+	<a href="{{.Next.URL }}" class="link-hover" title="{{ .Next.Title }}">
 		<b><i class="fa fa-caret-left"></i></b>
 		<span class="dark-underline"> {{ .Next.Title | truncate 15 }} ({{ .Next.Date.Format "Jan 2" }})</span>
 	</a>
@@ -11,7 +11,7 @@
 
 {{ if .Prev }}
 <div style="float: right;">
-	<a href="{{.Prev.URL }}" class="link-hover">
+	<a href="{{.Prev.URL }}" class="link-hover" title="{{ .Prev.Title }}">
 		<span class="dark-underline">{{ .Prev.Title | truncate 15}} ({{ .Prev.Date.Format "Jan 2" }})</span>
 		<b><i class="fa fa-caret-right"></i></b>
 	</a>
