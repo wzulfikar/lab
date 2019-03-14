@@ -43,7 +43,7 @@ watch_usage() {
         fi
 
         ts=$(date +"%Y-%m-%dT%H:%m:%S%z")
-        du -s --bytes $@ | xargs --max-lines=1 | awk '{
+        du -s --block-size=1 $@ | xargs --max-lines=1 | awk '{
 			gsub(" ", ",\"path\":\"", $0);
 			print "{\"hostname\":\"'$(hostname)'\",\"timestamp\":\"'$ts'\",\"bytes_used\":"$0"\"}";
         }' >> $logfile
