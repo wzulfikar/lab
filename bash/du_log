@@ -53,11 +53,14 @@ watch_usage() {
 	done
 }
 
-pid=$(cat $pidfile)
-if ps -p $pid > /dev/null; then
-   echo "du_log already running as pid $pid."
-   echo "use 'du_log stop' to stop current du_log process."
-   exit
+# check if du_log is already running
+if [ -f "$pidfile" ]; then
+	pid=$(cat $pidfile)
+	if [ ! -z "$pid" ] && ps -p $pid > /dev/null; then
+	   echo "du_log already running as pid $pid."
+	   echo "use 'du_log stop' to stop current du_log process."
+	   exit
+	fi
 fi
 
 watch_usage $LOGFILE $@ &
