@@ -3,6 +3,33 @@ h2[id]:before {
     content: '# ';
 }
 */
+
+h1[id] a, h2[id] a, h3[id] a {
+    color: #555555;
+}
+
+#post-list h2 {
+	font: 400 17px/1.5em "-webkit-body";
+}
+
+#post-body > p {
+    font-family: "-webkit-body";
+}
+
+.post h1 {
+	letter-spacing: normal;
+}
+
+/* set 100% width for highlighted codes */
+div.highlight td:nth-child(2) {
+	width: 100%;
+}
+
+span.header--first-letter {
+	border-bottom: 2px solid #9f9f9f;
+    padding-right: 2px;
+}
+
 ul>li {
 	margin-bottom: 0.5em;
 }
