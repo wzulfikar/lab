@@ -1,71 +1,25 @@
 #!/bin/sh
 
-if [ -z "$SECONDS_INTERVAL" ]; then
-    SECONDS_INTERVAL=60
-fi
-
-if [ -z "$MAX_LOG_SIZE_MB" ]; then
-    MAX_LOG_SIZE_MB=10
-fi
-
-if [ -z "$LOGFILE" ]; then
-    LOGFILE=/tmp/du_log.log
-fi
+# get value for options from env vars or use defaults
+MAX_LOG_SIZE_MB=${MAX_LOG_SIZE_MB:-10}
+LOGFILE=${LOGFILE:-/tmp/du_log.log}
 
 if [ -z "$1" ]; then
-    echo "du_log records disk usage of given paths in logfile at '$LOGFILE'."
-    echo "usage: du_log <paths..>"
-    echo "example: du_log /tmp /opt/*"
+    echo 'du_log records disk usage of given paths in logfile at $LOGFILE ('$LOGFILE').'
+    echo 'add du_log entry to crontab to log your disk usage every given interval.'
+    echo 'usage: du_log <paths..>'
+    echo 'example: du_log /tmp /opt/*'
     exit
 fi
 
-# stop du_log process
-pidfile=/tmp/du_log.pid
-if [ "$1" = "stop" ]; then
-    pid=$(cat $pidfile)
-    kill $pid
-    echo "[DONE] stopped du_log at pid $pid"
-    exit
+# renew file if size is greater than limit
+logSizeMB=$(du -m $LOGFILE | awk '{print $(NF-1)}')
+if [ "$logSizeMB" -gt "$MAX_LOG_SIZE_MB" ]; then
+    touch $LOGFILE
 fi
 
-watch_usage() {
-    logfile=$1
-
-    counter=0
-    while true; do
-        if [ "$counter" = 1 ]; then
-            # renew file if size is greater than limit
-            logSizeMB=$(du -m $logfile | awk '{print $(NF-1)}')
-            if [ "$logSizeMB" -gt "$MAX_LOG_SIZE_MB" ]; then
-                touch $logfile
-            fi
-            counter=0
-        fi
-
-        ts=$(date +"%Y-%m-%dT%H:%M:%S%z")
-        du -s --block-size=1 $@ | xargs --max-lines=1 | awk '{
-			gsub(" ", ",\"path\":\"", $0);
-			print "{\"hostname\":\"'$(hostname)'\",\"timestamp\":\"'$ts'\",\"bytes_used\":"$0"\"}";
-        }' >> $logfile
-
-        counter=$(($counter+1))
-        sleep $SECONDS_INTERVAL
-    done
-}
-
-# check if du_log is already running
-if [ -f "$pidfile" ]; then
-    pid=$(cat $pidfile)
-    if [ ! -z "$pid" ] && ps -p $pid > /dev/null; then
-        echo "du_log already running as pid $pid."
-        echo "use 'du_log stop' to stop current du_log process."
-        exit
-    fi
-fi
-
-watch_usage $LOGFILE $@ &
-echo "$!" > $pidfile
-
-echo "[INFO] du_log running as pid $(cat $pidfile)"
-echo "use this command to follow du_log logfile:"
-echo "tail -f $LOGFILE"
+ts=$(date +"%Y-%m-%dT%H:%M:%S%z")
+du -s --block-size=1 $@ | xargs --max-lines=1 | awk '{
+    gsub(" ", ",\"path\":\"", $0);
+    print "{\"hostname\":\"'$(hostname)'\",\"timestamp\":\"'$ts'\",\"bytes_used\":"$0"\"}";
+}' >> $LOGFILE
