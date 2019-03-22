@@ -12,9 +12,8 @@ if [ -z "$1" ]; then
     exit
 fi
 
-# renew file if size is greater than limit
-logSizeMB=$(du -m $LOGFILE | awk '{print $(NF-1)}')
-if [ "$logSizeMB" -gt "$MAX_LOG_SIZE_MB" ]; then
+# create logfile if it doesn't exist or renew if size is greater than limit
+if [ ! -f "$LOGFILE" ] || [ "$(du -m $LOGFILE | awk '{print $(NF-1)}')" -gt "$MAX_LOG_SIZE_MB" ]; then
     touch $LOGFILE
 fi
 
