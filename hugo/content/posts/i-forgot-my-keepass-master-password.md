@@ -3,6 +3,10 @@ title: "I Forgot My Keepass Master Password"
 date: 2019-04-01T18:36:08+08:00
 draft: true
 tags: [security, hashcat, password manager]
+post_id: 28
+aliases: [
+    "/posts/28",
+]
 ---
 
 Today was just like another day, until I realized that I can't open my keepass password manager. Apparently, I forgot my master password.
