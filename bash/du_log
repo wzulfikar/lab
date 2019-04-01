@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# get value for options from env vars or use defaults
+MAX_LOG_SIZE_MB=${MAX_LOG_SIZE_MB:-10}
+LOGFILE=${LOGFILE:-/tmp/du_log.log}
+
+if [ -z "$1" ]; then
+    echo 'du_log records disk usage of given paths in logfile at $LOGFILE ('$LOGFILE').'
+    echo 'add du_log entry to crontab to log your disk usage every given interval.'
+    echo 'usage: du_log <paths..>'
+    echo 'example: du_log /tmp /opt/*'
+    exit
+fi
+
+# create logfile if it doesn't exist or renew if size is greater than limit
+if [ ! -f "$LOGFILE" ] || [ "$(du -m $LOGFILE | awk '{print $(NF-1)}')" -gt "$MAX_LOG_SIZE_MB" ]; then
+    touch $LOGFILE
+fi
+
+ts=$(date +"%Y-%m-%dT%H:%M:%S%z")
+du -s --block-size=1 $@ | xargs --max-lines=1 | awk '{
+    gsub(" ", ",\"path\":\"", $0);
+    print "{\"hostname\":\"'$(hostname)'\",\"timestamp\":\"'$ts'\",\"bytes_used\":"$0"\"}";
+}' >> $LOGFILE
