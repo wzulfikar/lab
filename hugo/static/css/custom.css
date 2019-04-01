@@ -12,7 +12,7 @@ h1[id] a, h2[id] a, h3[id] a {
 	font: 400 17px/1.5em "-webkit-body";
 }
 
-#post-body > p {
+#post-body > p, #post-body li {
     font-family: "-webkit-body";
 }
 
