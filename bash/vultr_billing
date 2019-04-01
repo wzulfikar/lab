@@ -10,6 +10,20 @@ fi
 
 timestamp=$(date +"%Y-%m-%dT%H:%M:%S%z")
 
+if [ -z "$API_KEY" ]; then
+	echo '{"timestamp":"'$timestamp'","error":"API_KEY must be vultr api key or path to api key file."}'
+	exit 1
+fi
+
+# get api key from file if API_KEY is file
+if [ -f "$API_KEY" ]; then
+	if [ ! -r "$API_KEY" ]; then
+		echo '{"timestamp":"'$timestamp'","error":"api key file ('$API_KEY') is not readable."}'
+		exit 1
+	fi
+	API_KEY=$(cat $API_KEY)
+fi
+
 # send curl with timeout
 timeout_seconds=15
 json=$(curl --max-time $timeout_seconds -Ssq -H API-Key:$API_KEY https://api.vultr.com/v1/account/info)
@@ -17,7 +31,7 @@ json=$(curl --max-time $timeout_seconds -Ssq -H API-Key:$API_KEY https://api.vul
 curl_exit_code=$?
 if [ "$curl_exit_code" != "0" ]; then
 	if [ "$curl_exit_code" = "28" ]; then
-		echo '{"timestamp":"'$timestamp'","error":"curl timeout after '$timeout_seconds' seconds."}'	
+		echo '{"timestamp":"'$timestamp'","error":"curl timeout after '$timeout_seconds' seconds."}'
 	else
 		echo '{"timestamp":"'$timestamp'","error":"curl error '$curl_exit_code'"}'
 	fi
