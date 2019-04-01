@@ -3,6 +3,10 @@ title: "Steal Like an Artist"
 date: 2018-07-15T16:18:42+08:00
 tags: ["reflection"]
 draft: false
+post_id: 23
+aliases: [
+    "/posts/23",
+]
 ---
 
 ![Steal Like and Artist - Kindle Store](/images/steal-like-an-artist-kindle-store.jpg)

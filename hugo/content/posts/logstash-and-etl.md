@@ -2,6 +2,10 @@
 title: "Logstash and ETL"
 date: 2019-03-07T01:14:10+08:00
 draft: true
+post_id: 26
+aliases: [
+    "/posts/26",
+]
 ---
 
 This is a post on how I try to relate ETL process when working with Logstash. In data-warehouse terminology, ETL (extract, transform, load) is a process where we extract data from its source, do any necessary transformation to that data, and load it to data repository. Logstash, on the other hand, is an open-source tool that can do such process.
@@ -35,7 +39,7 @@ Above log file is space-separated value where the first column is message timest
 We know that we won't be able to query the messages without transforming the message body from hex to plain text. So, we come up with a plan:
 
 1. Send the log file from its original location (ie. a vps where the service is running) to a *transformation layer*
-2. Tell the *transformation layer* to convert each hex-encoded message body to plain text 
+2. Tell the *transformation layer* to convert each hex-encoded message body to plain text
 3. Push the transformed log to our data repository
 4. Query the messages from data repository
 
