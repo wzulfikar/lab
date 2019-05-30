@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# SSH_LOGIN example: `ubuntu@192.123.123.1`
+SSH_LOGIN=$1
+
+SSH_PORT=$2
+
+# BIND_ADDRESS example: `5044:logstash:5044`
+BIND_ADDRESS=$3
+REMOTE_PORT=$(cut -d':' -f1 <<< $BIND_ADDRESS)
+
+if [ ! -z "$(ssh -p ${SSH_PORT} ${SSH_LOGIN} "netstat -an | grep -i listen | grep $REMOTE_PORT")" ]; then
+	echo "$(date +"%Y-%m-%d %H:%m:%S%z") [INFO] tunnel already opened"
+	exit
+fi
+
+echo "$(date +"%Y-%m-%d %H:%m:%S%z") [INFO] opening tunnel at ${SSH_LOGIN} (port ${SSH_PORT}). bind address: '${BIND_ADDRESS}'."
+
+ssh -N \
+-o UserKnownHostsFile=/dev/null \
+-o StrictHostKeyChecking=no \
+-o ExitOnForwardFailure=yes \
+-o ServerAliveInterval=500 \
+-o ServerAliveCountMax=3 \
+-R ${BIND_ADDRESS} \
+-p ${SSH_PORT} \
+${SSH_LOGIN} >/dev/null 2>&1 &
+
+echo "$(date +"%Y-%m-%d %H:%m:%S%z") [INFO] tunnel opened"
