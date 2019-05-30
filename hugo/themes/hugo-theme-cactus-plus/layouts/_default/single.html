@@ -12,6 +12,11 @@
                     <span class="draft-indicator--inverted">DRAFT</span>
                     {{ end }}
                     <h2 class="headline">
+                    {{ if .Params.Post_id }}
+                    POST #{{ .Params.Post_id }}
+                    ·
+                    {{ end }}
+
                     {{ .Date.Format "Jan 2, 2006 15:04" }}
                     · {{ if lt 1 .WordCount }}{{ .WordCount }} words{{ else }}{{ .WordCount }} word{{ end }}
                     · {{ .ReadingTime }} minute read
