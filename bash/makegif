@@ -47,8 +47,21 @@ fi
 
 echo ""
 
-ffmpeg -i "$input_file" \
+# adopted from http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
+palette="/tmp/palette.png"
+filters="fps=${fps},scale=${scale}:-1:flags=lanczos"
+
+# create palette
+ffmpeg \
+-i "$input_file" \
 -loglevel panic -hide_banner -nostats \
--filter_complex \
-'fps='$fps',scale='$scale':-1:flags=lanczos,split [o1] [o2];[o1] palettegen [p]; [o2] fifo [o3];[o3] [p] paletteuse' \
-"$output_file"
+-vf "$filters,palettegen" \
+-y "$palette"
+
+# create gif
+ffmpeg \
+-i "$input_file" \
+-loglevel panic -hide_banner -nostats \
+-i $palette \
+-lavfi "$filters [x]; [x][1:v] paletteuse" \
+-y "$output_file"
