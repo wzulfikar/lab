@@ -3,7 +3,7 @@
 # the directory where you place your codes. This way,
 # you can jump to your code directly from anywhere in
 # your terminal which can help reduce mental burden.
-code () {
+.code () {
     CODE_DIRECTORY="~/code"
     if [[ $1 ]]; then
         eval "cd $CODE_DIRECTORY/$1"
