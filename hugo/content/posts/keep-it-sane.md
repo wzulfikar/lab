@@ -2,12 +2,12 @@
 title: "Keep It Sane"
 date: 2019-06-16T03:34:27+08:00
 tags: ["workflow", "xp"]
-draft: true
+draft: false
 # post_id: POST_ID
 hideToc: true
-aliases: [
-    "/posts/POST_ID",
-]
+# aliases: [
+#     "/posts/POST_ID",
+# ]
 ---
 
 This "Keep It Sane" list is a lisf of problems I find myself recurringly trying to figure solution for. Not surprisingly, the solution often came from the page or blog post that I've read before. 

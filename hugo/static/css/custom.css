@@ -110,3 +110,8 @@ img[src$='#featured']
 	position: relative;
 	top: 3px;
 }
+
+summary.collapsible {
+    color: darkgrey;
+    font-size: 12px;
+}
