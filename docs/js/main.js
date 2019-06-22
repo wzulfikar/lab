@@ -16,21 +16,23 @@ function isRetina() {
 	return false;
 };
  
- 
 function retina() {
-	
-	if (!isRetina())
+	if (!isRetina()) 
 		return;
-	
+
 	$("img.2x").map(function(i, image) {
-		
 		var path = $(image).attr("src");
-		
 		path = path.replace(".png", "@2x.png");
 		path = path.replace(".jpg", "@2x.jpg");
-		
 		$(image).attr("src", path);
 	});
 };
 
 $(document).ready(retina);
+
+// decorate collapsible details
+$('summary.collapsible').click(e => {
+	e.target.innerText = e.target.innerText == 'collapse'
+		? 'expand'
+		: 'collapse'
+})

@@ -5,6 +5,9 @@ snapshot:
 	hugo && git add -A && git commit -m "hugo snapshot" && git push
 	@echo "done."
 
+build:
+	hugo
+
 publish:
 	git push
 	@echo "done."
