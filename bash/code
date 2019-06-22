@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ "$(uname)" = "Darwin" ]; then
+	VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $*
+else
+	/usr/bin/code "$@"
+fi

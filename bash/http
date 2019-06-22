@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "running python2.7 http server for http://$(hostname):8000"
+python -m SimpleHTTPServer 8000
