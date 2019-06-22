@@ -10,11 +10,11 @@ hideToc: true
 # ]
 ---
 
-This "Keep It Sane" list is a lisf of problems I find myself recurringly trying to figure solution for. Not surprisingly, the solution often came from the page or blog post that I've read before. 
+This is a list of issues that I've dealt with at least once. The list would serve as a shortcut to save me time from trying to google the solution again and again. It's like index of things that had bitten me in the past.
 
 <!--more-->
 
-The list would serve as a shortcut that saves me time from trying to google the solution again and again. It's like index of things that had bitten me in the past, which I don't want to get bitten by again.
+The list will be updated from time to time as new issue occurs.
 
 ## macOS
 
