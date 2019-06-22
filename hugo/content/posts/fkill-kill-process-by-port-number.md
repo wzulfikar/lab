@@ -3,7 +3,7 @@ title: "Fabulosly Kill (fkill) Process by Port Number"
 date: 2018-03-26T12:49:55+08:00
 tags: ["devops"]
 draft: true
-disableToc: true
+hideToc: true
 ---
 
 ![fkill logo](/images/bettercap/fkill-logo.jpg#featured)

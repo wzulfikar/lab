@@ -4,7 +4,7 @@ date: 2018-03-27T20:00:34+08:00
 publishAt: 2018-03-30T20:00:00+08:00
 tags: ["xp", "reflection"]
 draft: false
-disableToc: true
+hideToc: true
 ---
 
 Earlier this week, I received an invitation from Persatuan Pelajar Indonesia (PPI) –– an Indonesian Students Society at my campus (IIUM, Malaysia), to become a speaker of a sharing session event titled "Producation". The event will be held at IIUM this coming Friday, March 30.

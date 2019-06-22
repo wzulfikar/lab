@@ -3,7 +3,7 @@ title: "My Take on Go Template"
 date: 2018-03-04T20:23:44+08:00
 draft: false
 tags: ["go"]
-disableToc: true
+hideToc: true
 ---
 
 In programming, string interpolation is common. Using ES6 (JavaScript), string interpolation can be done like this:

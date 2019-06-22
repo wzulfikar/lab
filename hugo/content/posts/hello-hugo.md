@@ -3,7 +3,7 @@ title: "Hello Hugo!"
 date: 2018-03-03T02:33:20+08:00
 tags: ["experiment", "go"]
 draft: false
-disableToc: true
+hideToc: true
 ---
 
 <p class="text-center">Another experiment on how/where I write things I like to write <i>(Duh)</i>.</p>
