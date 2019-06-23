@@ -21,7 +21,7 @@ The list will be updated from time to time as new issue occurs.
 <details open>
 <summary class="collapsible">collapse</summary>
 
-1. [Source Tree](https://www.sourcetreeapp.com) keep asking for password ([image](/images/macos-sourcetree-keep-asking-for-password.png)):
+1. [Source Tree](https://www.sourcetreeapp.com) keep asking for password ([image](/images/macos-sourcetree-keep-asking-for-password.png))
   - **tldr**: `git config --global credential.helper osxkeychain`
   - ref: [stackoverflow](https://stackoverflow.com/questions/38489022/sourcetree-keeps-asking-for-github-password)
 - Keychain asking password two times
@@ -30,7 +30,7 @@ The list will be updated from time to time as new issue occurs.
   - *(Not solved yet)*
 - Activate "Do Not Disturb" mode (disable all notifications)
   - `alt+click` on notification icon in menu bar. See: [macOS DnD](/videos/macOS_DnD.mp4).
-- macOS won't boot. Question mark (with disk icon behind it) appears during boot
+- macOS won't boot; grey folder with question mark appears during boot
   - Unfortunately, your SSD might have failed you. Try replacing it.
   - Blog post: WIP
 
