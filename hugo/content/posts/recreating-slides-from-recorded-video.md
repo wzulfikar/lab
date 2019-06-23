@@ -8,7 +8,6 @@ draft: true
 `TODO: write content`
 
 This is some image [^1]. This is another image [^2].
-some monkeys [^fn:2]
 
 - [ ] asdfa
 - [x] asdfasd
@@ -29,8 +28,6 @@ to this:
   {{< figure src="/images/aws-reinvent-2017_sony-playstation/cropped/2.png" >}}
 {{< /gallery >}}
 
-{{< load-photoswipe >}}
-
 combine the cropped images into one pdf:
 
 <embed src="/docs/redis-couchbase-migration_sony-playstation.pdf" width="100%" height="375"
@@ -45,6 +42,4 @@ combine the cropped images into one pdf:
 [^1]: /images/aws-reinvent-2017_sony-playstation/cropped/1a.png
 [^2]: /my-page-on-monkeys/
 
-<div class="footnote-popup">
-{{< figure src="" >}}
-</div>
+{{< load-photoswipe >}}

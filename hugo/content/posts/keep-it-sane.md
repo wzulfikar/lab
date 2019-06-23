@@ -21,7 +21,7 @@ The list will be updated from time to time as new issue occurs.
 <details open>
 <summary class="collapsible">collapse</summary>
 
-1. [Source Tree](https://www.sourcetreeapp.com) keep asking for password:
+1. [Source Tree](https://www.sourcetreeapp.com) keep asking for password ([image](/images/macos-sourcetree-keep-asking-for-password.png)):
   - **tldr**: `git config --global credential.helper osxkeychain`
   - ref: [stackoverflow](https://stackoverflow.com/questions/38489022/sourcetree-keeps-asking-for-github-password)
 - Keychain asking password two times
@@ -44,7 +44,7 @@ The list will be updated from time to time as new issue occurs.
 1. Stuck in boot screen (Ubuntu's purple screen)
 	- Login to [recovery mode](/images/ubuntu-recovery-mode.jpg), run `fsck`, reboot.
 - Recover data from unbootable ubuntu
-	- Boot to [Finnix rescue cd](https://www.finnix.org/Download), activate ssh server, recover data using sftp. See: [Vultr blog post](https://www.vultr.com/docs/using-finnix-rescue-cd-to-rescue-repair-or-backup-your-linux-system) (or [its snapshot](/images/vultr-finnix-rescue-cd.png)).
+	- Boot to [Finnix rescue cd](https://www.finnix.org/Download), activate ssh server, recover data using sftp. See: [Vultr blog post](https://www.vultr.com/docs/using-finnix-rescue-cd-to-rescue-repair-or-backup-your-linux-system) (or see [snapshot](/images/vultr-finnix-rescue-cd.png)).
 
 </details>
 
@@ -119,3 +119,5 @@ The list will be updated from time to time as new issue occurs.
 	- add glow-in-the dark sticker.
 </details>
  -->
+
+ {{< load-photoswipe >}}
