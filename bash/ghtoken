@@ -8,10 +8,10 @@ if [ "$1" = "-h" ] || [ -z "$2" ]; then
     echo "  ghtoken my-username list"
     echo "- get token info:"
     echo "  ghtoken whoami b889..<oauth-token redacted>..2b05"
-    echo "- create personal access token with scope 'read:email':"
-    echo "  ghtoken my-username read:email 'my sample token'"
+    echo "- create personal access token with scope 'user:email':"
+    echo "  ghtoken my-username user:email 'my sample token'"
     echo "- create personal access token with multiple scopes:"
-    echo "  ghtoken my-username read:email,read:org 'org token read-only'"
+    echo "  ghtoken my-username user:email,read:org 'token multiple scopes read-only'"
     exit
 fi
 
