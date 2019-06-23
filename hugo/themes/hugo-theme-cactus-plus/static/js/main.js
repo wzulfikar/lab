@@ -36,3 +36,54 @@ $('summary.collapsible').click(e => {
 		? 'expand'
 		: 'collapse'
 })
+
+// handle footnote popup
+const footnotePopup = {
+	$pswp: $('.pswp')[0],
+	options: {
+		index: 0, 
+		bgOpacity: 0.8,
+		showHideOpacity: true
+	},
+	item: {
+		w		: 800, // temp default size
+		h 		: 600, // temp default size
+	}
+}
+
+// formats to display in photoswipe popup
+const rePopupAsset = /(.gif|.png|.jpg|.jpeg)/
+
+$('sup.footnote-ref a').each((i, el) => {
+	const id = el.href.split('#').splice(1)[0]
+	const footnoteItemEl = document.getElementById(id)
+	const href = footnoteItemEl.innerText.replace('[return]', '').trim()
+	if (!rePopupAsset.test(href)) {
+		return
+	}
+
+	// append baseURL to href if href is relative
+	if (href.startsWith('/')) {
+		const fullPathHref = window.location.origin + href
+		footnoteItemEl.innerHTML = footnoteItemEl
+			.innerHTML
+			.replace(href, `<a href=${fullPathHref}>${fullPathHref}</a>`)
+	}
+
+	$(el).click(e => {
+		e.preventDefault()
+
+		footnotePopup.item.src = href
+		footnotePopup.item.msrc = href
+		footnotePopup.item.title = href.split('/').splice(-1)[0]
+
+		// display photoswipe
+		new PhotoSwipe(
+			footnotePopup.$pswp, 
+			PhotoSwipeUI_Default, 
+			[footnotePopup.item], 
+			footnotePopup.options
+		)
+		.init();
+	})
+})

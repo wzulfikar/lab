@@ -1,5 +1,5 @@
-serve:
-	HUGO_LOCAL_DEV=true hugo server -F -D
+dev:
+	HUGO_LOCAL_DEV=true hugo server -F -D --config ./config.dev.toml
 
 snapshot:
 	hugo && git add -A && git commit -m "hugo snapshot" && git push

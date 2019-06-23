@@ -7,6 +7,11 @@ draft: true
 
 `TODO: write content`
 
+This is some image [^1]. This is another image [^2].
+some monkeys [^fn:2]
+
+- [ ] asdfa
+- [x] asdfasd
 
 from this:
 
@@ -36,3 +41,10 @@ combine the cropped images into one pdf:
 *Outline:*
 
 1.
+
+[^1]: /images/aws-reinvent-2017_sony-playstation/cropped/1a.png
+[^2]: /my-page-on-monkeys/
+
+<div class="footnote-popup">
+{{< figure src="" >}}
+</div>
