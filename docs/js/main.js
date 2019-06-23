@@ -77,10 +77,9 @@ $('a').each((i, el) => {
 
 	// ignore if href is not supported asset
 	if (!rePopupAsset.test(href)) {
-		console.log("h:", href)
 		return
 	}
-	console.log("attaching:", href)
+
 	// attach photoswipe
 	const opts = inlinePopupOpts
 	$(el).click(e => {
