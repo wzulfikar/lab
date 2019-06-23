@@ -115,3 +115,8 @@ summary.collapsible {
     color: darkgrey;
     font-size: 12px;
 }
+
+/* photoswip override */
+.pswp__caption__center {
+	text-align: center !important;
+}
