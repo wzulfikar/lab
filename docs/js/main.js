@@ -38,7 +38,7 @@ $('summary.collapsible').click(e => {
 })
 
 // handle footnote popup
-const footnotePopup = {
+const inlinePopupOpts = {
 	$pswp: $('.pswp')[0],
 	options: {
 		index: 0, 
@@ -54,36 +54,48 @@ const footnotePopup = {
 // formats to display in photoswipe popup
 const rePopupAsset = /(.gif|.png|.jpg|.jpeg)/
 
-$('sup.footnote-ref a').each((i, el) => {
-	const id = el.href.split('#').splice(1)[0]
-	const footnoteItemEl = document.getElementById(id)
-	const href = footnoteItemEl.innerText.replace('[return]', '').trim()
+// attach photoswipe to anchor tags which href is an image
+$('a').each((i, el) => {
+	let href = el.href
+
+	// handle links from footnote markup
+	if (href.includes('/#fn:')) {
+		const id = el.href.split('#').splice(1)[0]
+		const footnoteItemEl = document.getElementById(id)
+		
+		// replace `#fn:{footnote id}` href with actual link
+		href = footnoteItemEl.innerText.replace('[return]', '').trim()
+
+		// append baseURL to href if href is relative
+		if (href.startsWith('/')) {
+			const fullPathHref = window.location.origin + href
+			footnoteItemEl.innerHTML = footnoteItemEl
+				.innerHTML
+				.replace(href, `<a href=${fullPathHref}>${fullPathHref}</a>`)
+		}
+	}
+
+	// ignore if href is not supported asset
 	if (!rePopupAsset.test(href)) {
+		console.log("h:", href)
 		return
 	}
-
-	// append baseURL to href if href is relative
-	if (href.startsWith('/')) {
-		const fullPathHref = window.location.origin + href
-		footnoteItemEl.innerHTML = footnoteItemEl
-			.innerHTML
-			.replace(href, `<a href=${fullPathHref}>${fullPathHref}</a>`)
-	}
-
+	console.log("attaching:", href)
+	// attach photoswipe
+	const opts = inlinePopupOpts
 	$(el).click(e => {
 		e.preventDefault()
 
-		footnotePopup.item.src = href
-		footnotePopup.item.msrc = href
-		footnotePopup.item.title = href.split('/').splice(-1)[0]
+		opts.item.src = href
+		opts.item.msrc = href
+		opts.item.title = href.split('/').splice(-1)[0]
 
-		// display photoswipe
+		// trigger photoswipe
 		new PhotoSwipe(
-			footnotePopup.$pswp, 
+			opts.$pswp, 
 			PhotoSwipeUI_Default, 
-			[footnotePopup.item], 
-			footnotePopup.options
-		)
-		.init();
+			[opts.item], 
+			opts.options
+		).init();
 	})
 })

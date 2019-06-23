@@ -26,6 +26,10 @@ $( document ).ready(function() {
 			$title  = $img.attr('alt'),
 			$msrc	= $img.attr('src');
 		
+		if (!$src) {
+			return
+		}
+		
 		// use filename as figcaption if unset
 		if (!$title) {
 			$title = $src.split('/').splice(-1)
