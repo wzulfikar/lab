@@ -6,7 +6,7 @@ snapshot:
 	@echo "done."
 
 build:
-	hugo
+	hugo && git add ../docs && git commit -m "hugo: build"
 
 publish:
 	git push
