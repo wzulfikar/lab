@@ -20,3 +20,5 @@ TODO: content
 *Outline:*
 
 1.
+
+{{< load-photoswipe >}}
