@@ -6,7 +6,7 @@ snapshot:
 	@echo "done."
 
 build:
-	hugo && git add ../docs
+	hugo --minify && git add ../docs
 
 publish:
 	git commit -m 'hugo: update blog content'
