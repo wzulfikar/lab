@@ -116,7 +116,12 @@ summary.collapsible {
     font-size: 12px;
 }
 
-/* photoswip override */
+/* photoswipe override */
 .pswp__caption__center {
 	text-align: center !important;
+}
+img.pswp__img {
+	height: auto !important;
+	margin-top: 20px;
+    max-height: 80%;
 }

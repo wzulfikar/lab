@@ -29,7 +29,7 @@ The list will be updated from time to time as new issue occurs.
 - NAS disk prompt keeps popping up
   - *(Not solved yet)*
 - Activate "Do Not Disturb" mode (disable all notifications)
-  - `alt+click` on notification icon in menu bar. See: [macOS DnD](/videos/macOS_DnD.mp4).
+  - `alt+click` on notification icon in menu bar. See: [macOS_DnD.mp4](/videos/macOS_DnD.mp4).
 - macOS won't boot; grey folder with question mark appears during boot
   - Unfortunately, your SSD might have failed you. Try replacing it.
   - Blog post: WIP
