@@ -29,6 +29,16 @@ fi
 
 github_username=$1
 
+# handle token revocation
+if [ "$2" = "revoke" ] && [ ! -z "$3" ]; then
+  echo "revoking token.."
+  authorizationID=$3
+  curl -XDELETE \
+    "https://api.github.com/authorizations/${authorizationID}" \
+    --user $github_username
+  exit
+fi
+
 # pass scopes to awk to add quotes so that it can
 # be represented as array of strings (in json payload).
 # example: from `read:user,gist` to `"read:user","gist"`
