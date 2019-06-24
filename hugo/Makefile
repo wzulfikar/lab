@@ -9,5 +9,6 @@ build:
 	hugo && git add ../docs
 
 publish:
+	git commit -m 'hugo: update blog content'
 	git push
 	@echo "done."

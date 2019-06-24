@@ -77,7 +77,20 @@ The list will be updated from time to time as new issue occurs.
 		```
 
 	- See: [stackoverflow](https://stackoverflow.com/questions/23921117/disable-only-full-group-by)
-
+- Setting git commit author per repo basis
+	- run this command in root directory of git repo (based on [dereenigne.org](https://dereenigne.org/git/set-git-email-address-on-a-per-repository-basis/)):
+	
+	```
+	echo "[user]
+        name = <author name>
+        email = <author oemail>" >> .git/config
+	```
+- Need to quickly switch proxy server for command line environment
+	- use [`proxify.sh`](https://github.com/wzulfikar/lab/blob/master/bash/proxify.sh)
+- Preview JSON response in Opera:
+	- Install [json-lite](https://addons.opera.com/en/extensions/details/json-lite/) extension
+- Save time typing `localhost` by aliasing `l` to `localhost`
+  - `echo '127.0.0.1 l' >> /etc/hosts`. `curl l:3000` is now equivalent to `curl localhost:3000`
 </details>
 
 ## Workflow
@@ -87,10 +100,6 @@ The list will be updated from time to time as new issue occurs.
 
 1. Debugging NodeJS, Go, Bash, etc. with vscode
 	- *(Blog post in progress)*
-- Need to quickly switch proxy server for command line environment
-	- use `proxify`
-- Preview JSON response in Opera:
-	- Install [json-lite](https://addons.opera.com/en/extensions/details/json-lite/) extension
 - need to grab screen shot and use it as quick reference
 	- use grabit
 - need to upload file and share it randomly
@@ -101,8 +110,6 @@ The list will be updated from time to time as new issue occurs.
   - See: [stackoverflow](https://stackoverflow.com/a/25948759/5381120)
 - change command+click handler in iterm (macOS)
   - *(Not solved yet)*
-- Save time typing `localhost` by aliasing `l` to `localhost`
-  - `echo '127.0.0.1 l' >> /etc/hosts`. `curl l:3000` is now equivalent to `curl localhost:3000`
 - Convenient scripts:
   - [collate](https://github.com/wzulfikar/lab/blob/master/bash/collate): combine images to one pdf file
   - [makegif](https://github.com/wzulfikar/lab/blob/master/bash/makegif), [makemp4](https://github.com/wzulfikar/lab/blob/master/bash/makemp4): convert videos into (optimized) gif/mp4

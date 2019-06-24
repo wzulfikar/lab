@@ -99,7 +99,7 @@
                     
 
                     Jun 16, 2019 03:34
-                    · 382 words
+                    · 413 words
                     · 2 minute read
                       <span class="tags">
                       
@@ -226,9 +226,38 @@
 
 <li><p>See: <a href="https://stackoverflow.com/questions/23921117/disable-only-full-group-by">stackoverflow</a></p></li>
 </ul></li>
-</ol>
 
-<p></details></p>
+<li><p>Setting git commit author per repo basis</p>
+
+<ul>
+<li>run this command in root directory of git repo (based on <a href="https://dereenigne.org/git/set-git-email-address-on-a-per-repository-basis/">dereenigne.org</a>):
+<br /></li>
+</ul>
+
+<pre><code>echo &quot;[user]
+    name = &lt;author name&gt;
+    email = &lt;author oemail&gt;&quot; &gt;&gt; .git/config
+</code></pre></li>
+
+<li><p>Need to quickly switch proxy server for command line environment</p>
+
+<ul>
+<li>use <a href="https://github.com/wzulfikar/lab/blob/master/bash/proxify.sh"><code>proxify.sh</code></a></li>
+</ul></li>
+
+<li><p>Preview JSON response in Opera:</p>
+
+<ul>
+<li>Install <a href="https://addons.opera.com/en/extensions/details/json-lite/">json-lite</a> extension</li>
+</ul></li>
+
+<li><p>Save time typing <code>localhost</code> by aliasing <code>l</code> to <code>localhost</code></p>
+
+<ul>
+<li><code>echo '127.0.0.1 l' &gt;&gt; /etc/hosts</code>. <code>curl l:3000</code> is now equivalent to <code>curl localhost:3000</code>
+</details></li>
+</ul></li>
+</ol>
 
 <h2 id="workflow">Workflow</h2>
 
@@ -240,16 +269,6 @@
 
 <ul>
 <li><em>(Blog post in progress)</em></li>
-</ul></li>
-<li>Need to quickly switch proxy server for command line environment
-
-<ul>
-<li>use <code>proxify</code></li>
-</ul></li>
-<li>Preview JSON response in Opera:
-
-<ul>
-<li>Install <a href="https://addons.opera.com/en/extensions/details/json-lite/">json-lite</a> extension</li>
 </ul></li>
 <li>need to grab screen shot and use it as quick reference
 
@@ -275,11 +294,6 @@
 
 <ul>
 <li><em>(Not solved yet)</em></li>
-</ul></li>
-<li>Save time typing <code>localhost</code> by aliasing <code>l</code> to <code>localhost</code>
-
-<ul>
-<li><code>echo '127.0.0.1 l' &gt;&gt; /etc/hosts</code>. <code>curl l:3000</code> is now equivalent to <code>curl localhost:3000</code></li>
 </ul></li>
 <li>Convenient scripts:
 
