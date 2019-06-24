@@ -52,7 +52,7 @@ const inlinePopupOpts = {
 }
 
 // formats to display in photoswipe popup
-const rePopupAsset = /(.gif|.png|.jpg|.jpeg)/
+const rePopupAsset = /(.gif|.png|.jpg|.jpeg|.mp4)/
 
 // attach photoswipe to anchor tags which href is an image
 $('a').each((i, el) => {
@@ -81,20 +81,37 @@ $('a').each((i, el) => {
 	}
 
 	// attach photoswipe
-	const opts = inlinePopupOpts
+	const item = Object.assign({}, inlinePopupOpts.item)
 	$(el).click(e => {
 		e.preventDefault()
 
-		opts.item.src = href
-		opts.item.msrc = href
-		opts.item.title = href.split('/').splice(-1)[0]
+		// handle mp4
+		if (href.endsWith('.mp4')) {
+			const v = document.createElement('video')
+			v.src = href
+			v.controls = true
+			v.autoplay = true
+			v.loop = true
+			v.style.top = '51%'
+			v.style.left = '51%'
+			v.style.position = 'absolute'
+			v.style.maxWidth = '90%'
+			v.style.maxHeight = '80%'
+			v.style.transform = 'translate(-50%, -50%)'
+
+			item.html = v.outerHTML
+		} else {
+			item.src = href
+			item.msrc = href
+		}
+		item.title = href.split('/').splice(-1)[0]
 
 		// trigger photoswipe
 		new PhotoSwipe(
-			opts.$pswp, 
+			inlinePopupOpts.$pswp, 
 			PhotoSwipeUI_Default, 
-			[opts.item], 
-			opts.options
+			[item], 
+			inlinePopupOpts.options
 		).init();
 	})
 })
