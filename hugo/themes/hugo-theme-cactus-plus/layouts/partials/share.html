@@ -1,4 +1,5 @@
-<div>
+{{ if not .Params.HideSharer }}
+<span>
 	<a class="twitter" href="https://twitter.com/intent/tweet?text={{ .Permalink }} - {{ .LinkTitle }} {{ with .Site.Params.twitter }}by @{{ . }}{{ end }}">
 		<span><i class="fa fa-twitter"></i> {{ .Site.Params.tweet | default "tweet" }}</span>
 	</a>
@@ -11,7 +12,8 @@
 	    return false;">
 	    <span><i class="fa fa-facebook-square"></i> {{ .Site.Params.share | default "share" }}</span>
 	</a>
-	<span class="last-update-time">
-		Last updated: {{ $.Page.Lastmod.Format "Jan 02, 2006 (3:04pm)" }}
-	</span>
-</div>
+</span>
+<span class="last-update-time">
+	Last updated {{ $.Page.Lastmod.Format "Jan 02, 2006 (3:04pm)" }}
+</span>
+{{ end }}

@@ -11,6 +11,8 @@
                     {{ if .Draft }}
                     <span class="draft-indicator--inverted">DRAFT</span>
                     {{ end }}
+
+                    {{ if not .Params.HideHeadline }}
                     <h2 class="headline">
                     {{ if .Params.Post_id }}
                     POST #{{ .Params.Post_id }}
@@ -30,6 +32,8 @@
                       {{ end}}
                       </span>
                     </h2>
+                    {{ end }}
+
                 </header>
                 {{ if .Site.Params.enableToc }}
                   {{ if not .Params.hideToc }}
@@ -47,7 +51,7 @@
 
             </article>
 
-			<div style="margin-top: 50px;">
+			<div class="sharer">
             {{ if .Site.Params.enableShare }}
                 {{ partial "share.html" . }}
             {{ end }}
@@ -61,8 +65,10 @@
                 {{ partial "latest-posts.html" . }}
             {{ end }}
 
-            {{ partial "prev-next-posts.html" . }}
-
+            {{ if not .Params.HidePrevNextPost }}
+                {{ partial "prev-next-posts.html" . }}
+            {{ end }}
+            
             {{ partial "footer.html" . }}
         </section>
 

@@ -127,6 +127,7 @@ img.pswp__img {
 details.show-repl-it summary {
 	position: relative;
     top: -15px;
+    color: grey;
 	text-align: right;
 }
 
@@ -145,4 +146,20 @@ details.show-repl-it summary:after {
 
 details.show-repl-it[open] > summary:after {
     content: " ▾";
+}
+
+/* sharer */
+div.sharer {
+	margin-top: 50px;
+}
+
+@media only screen and (max-width: 420px) {
+	/* adjust sharer when screen width is 420px or less */
+	div.sharer > span {
+		width: 100%;
+		display: block;
+		text-align: center;
+		margin: 10px;
+		float: none;
+	}
 }
