@@ -3,7 +3,7 @@
 baseurl = "/"
 languageCode = "en"
 enableGitInfo = true
-publishDir = "../docs"
+publishDir = "./dist"
 
 title = "Wildan's Blog"
 theme = "hugo-theme-cactus-plus"
