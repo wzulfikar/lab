@@ -59,6 +59,8 @@ The list will be updated from time to time as new issue occurs.
   - *(Not solved yet)*
 - Share termux shell as web app
   - Download [gotty](https://github.com/yudai/gotty), run `./gotty -w sh`, and visit `http://<device-ip>:8080` from browser.
+- Share android screen to local computer (eg. for demo/presentation)
+  - Install [ScreenStream](https://play.google.com/store/apps/details?id=info.dvkr.screenstream) to stream device screen (mirror) over http. No root required. See: [github repo](https://github.com/dkrivoruchko/ScreenStream).
 
 </details>
 
