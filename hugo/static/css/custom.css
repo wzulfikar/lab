@@ -120,4 +120,26 @@ img.pswp__img {
 	height: auto !important;
 	margin-top: 20px;
     max-height: 80%;
+}/* adjust detail marker for "Show repl.it" collapsible */
+details.show-repl-it summary {
+	position: relative;
+    top: -15px;
+	text-align: right;
+}
+
+details.show-repl-it > iframe {
+    position: relative;
+    top: -10px;
+}
+
+details.show-repl-it summary::-webkit-details-marker {
+    display: none
+}
+
+details.show-repl-it summary:after {
+    content: " ▸";
+}
+
+details.show-repl-it[open] > summary:after {
+    content: " ▾";
 }
