@@ -1,7 +1,7 @@
 {{ if not .Params.HideSharer }}
 <span>
 	<a class="twitter" href="https://twitter.com/intent/tweet?text={{ .Permalink }} - {{ .LinkTitle }} {{ with .Site.Params.twitter }}by @{{ . }}{{ end }}">
-		<span><i class="fa fa-twitter"></i> {{ .Site.Params.tweet | default "tweet" }}</span>
+		<span><i class="fa fa-twitter"></i>&nbsp;{{ .Site.Params.tweet | default "tweet" }}</span>
 	</a>
 	 ∙
 	<a class="facebook" href="#" onclick="
@@ -10,7 +10,7 @@
 	      'facebook-share-dialog',
 	      'width=626,height=436');
 	    return false;">
-	    <span><i class="fa fa-facebook-square"></i> {{ .Site.Params.share | default "share" }}</span>
+	    <span><i class="fa fa-facebook-square"></i>&nbsp;{{ .Site.Params.share | default "share" }}</span>
 	</a>
 </span>
 <span class="last-update-time">
