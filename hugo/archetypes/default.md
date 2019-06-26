@@ -3,6 +3,7 @@ title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
 tags: [""]
 draft: true
+hideToc: true
 post_id: POST_ID
 aliases: [
     "/posts/POST_ID",
