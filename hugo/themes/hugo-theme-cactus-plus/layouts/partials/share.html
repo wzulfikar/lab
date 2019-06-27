@@ -14,6 +14,8 @@
 	</a>
 </span>
 <span class="last-update-time">
-	Last updated {{ $.Page.Lastmod.Format "Jan 02, 2006 (3:04pm)" }}
+	{{ if $.Page.GitInfo }}
+	Last updated {{ $.Page.Lastmod.Format "Jan 02, 2006 (3:04pm)" }}&nbsp;<a target="_blank" title="View changes" href="https://github.com/wzulfikar/lab/commit/{{ with $.Page.GitInfo }}{{ .Hash }}{{ end }}"><i class="fa fa-code-fork"></i></a>
+	{{ end }}
 </span>
 {{ end }}

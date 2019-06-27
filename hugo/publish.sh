@@ -6,7 +6,7 @@ else
 fi
 
 # generate static files
-hugo --minify
+BUILD_ID=$(git describe --always) hugo --minify
 
 # push static files to remote repo
 (
