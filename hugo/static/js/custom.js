@@ -93,3 +93,28 @@ $('a').each((i, el) => {
 		).init();
 	})
 })
+
+// lazy load embedded repl
+$('details.show-repl-it').click(function(e) {
+	const $this = $(this)
+	if ($this.attr('loaded')) {
+		return
+	}
+	const loadingIndicator = $this.find('div.repl-loading-indicator')[0]
+	const loader = $this.find('div.repl-loader')[0]
+	const iframe = document.createElement('iframe')
+	iframe.id = (new Date()).getTime()
+	iframe.height = '400px'
+	iframe.width = '100%'
+	iframe.src = loader.attributes.src.value
+	iframe.scrolling = 'no'
+	iframe.frameborder = 'no'
+	iframe.allowtransparency = "true" 
+	iframe.allowfullscreen = "true" 
+	iframe.sandbox = "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"
+	loader.replaceWith(iframe)
+	$this.attr('loaded', true)
+	document.getElementById(iframe.id).onload = function() {
+		loadingIndicator.remove()
+	}
+})

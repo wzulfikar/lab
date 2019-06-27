@@ -1,4 +1,8 @@
 <details class="show-repl-it">
 <summary>Show repl.it</summary>
-<iframe height="400px" width="100%" src="{{ .Get "url" }}" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
-</details>
+<div class="repl-loading-indicator" style="text-align: center;">
+Loading embedded repl. Click <a class="reset" target="blank" href="{{ .Get "url" }}">here</a> if it loads too long.
+<br/>
+
+</div>
+<div class="repl-loader" src="{{ .Get "url" }}"></div>
