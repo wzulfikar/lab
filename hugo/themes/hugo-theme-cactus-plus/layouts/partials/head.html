@@ -30,7 +30,7 @@
 		<link rel="stylesheet" href="/css/highlight.css">
 		
 		{{ range .Site.Params.customCSS }}
-		<link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
+		<link rel="stylesheet" href="/{{ . }}?{{ with $.Page.GitInfo }}{{ .AbbreviatedHash }}{{ end }}">
 		{{ end }}
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
