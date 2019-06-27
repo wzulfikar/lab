@@ -5,6 +5,7 @@ hideToc: true
 hideSharer: true
 hideHeadline: true
 hidePrevNextPost: true
+disableIndexing: true
 # disableDisqus: true
 ---
 

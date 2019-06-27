@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "index": "hugo-lunr -o static/lunr-index/raw.json && node script/curate-index.js"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.2",
+    "hugo-lunr": "^0.0.4"
+  }
+}
