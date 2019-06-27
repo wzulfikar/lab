@@ -125,15 +125,9 @@ img.pswp__img {
 
 /* adjust detail marker for "Show repl.it" collapsible */
 details.show-repl-it summary {
-	position: relative;
-    top: -15px;
     color: grey;
 	text-align: right;
-}
-
-details.show-repl-it > iframe {
-    position: relative;
-    top: -10px;
+    margin-bottom: 10px;
 }
 
 details.show-repl-it summary::-webkit-details-marker {
@@ -162,4 +156,9 @@ div.sharer {
 		margin: 10px;
 		float: none;
 	}
+}
+
+/* adjust code highlighter */
+div.highlight td > pre {
+	margin-bottom: 10px !important;
 }
