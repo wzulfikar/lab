@@ -18,7 +18,14 @@
 	{{ end }}
 
 	{{ if .Site.Params.enableRSS }}
-	<a href="{{ .Site.RSSLink }}">{{ with .Site.Params.subscribe }}{{ . }}{{ else }}Subscribe{{ end }}</a>
+	<a href="{{ .Site.RSSLink }}" style="padding-right: 5px;">{{ with .Site.Params.subscribe }}{{ . }}{{ else }}Subscribe{{ end }}</a>
 	{{ end }}
-	<a href="/search" title="Search site"><i class="fa fa-search"></i></a>
+	<div id="instantsearch-wrapper">
+		<div id="search-box"></div>
+		<div id="refinement-list"></div>
+		<div id="hits"></div>
+		<div id="current-refined-values"></div>
+		<!-- <div id="clear-all"></div> -->
+		<!-- <div id="pagination"></div> -->
+	</div>
 </nav>

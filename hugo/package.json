@@ -1,9 +1,14 @@
 {
   "scripts": {
-    "index": "hugo-lunr -o static/lunr-index/raw.json && node script/curate-index.js"
+    "index": "hugo-lunr -o static/algolia-index/raw.json && node script/curate-index.js",
+    "index:upload": "node script/upload-index.js",
+    "index:sync": "yarn index && yarn index:upload"
   },
   "devDependencies": {
+    "algoliasearch": "^3.33.0",
+    "dotenv": "^8.0.0",
     "gray-matter": "^4.0.2",
+    "hugo-algolia": "^1.2.14",
     "hugo-lunr": "^0.0.4"
   }
 }

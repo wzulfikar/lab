@@ -1,0 +1,122 @@
+@media only screen and (max-width: 420px) {
+	div#instantsearch-wrapper {
+		width: 100%;
+		position: relative;
+		top: -3px !important;
+		left: 0px;
+		margin-left: auto;
+	}
+	.ais-search-box--input {
+		left: 28px;
+		position: relative;
+	}
+}
+
+/* hide reset wrapper if loading */
+div.ais-search-box.ais-stalled-search .ais-search-box--reset-wrapper {
+	display: none !important;
+}
+
+div.ais-search-box.ais-stalled-search .ais-search-box--loading-indicator-wrapper {
+	right: 10px;
+}
+
+div.ais-hits--item .hit-title > a {
+	display: block;
+	margin: 15px 20px;
+}
+
+div.ais-hits--item .hit-title > a > h4 {
+	margin-bottom: 10px;
+}
+
+div.ais-hits--item .hit-title span.subtitle {
+	margin-top: 1px;
+	color: #989898;
+    display: block;
+    font-size: 0.7em;
+}
+
+div.ais-hits--item .hit-title span.tag {
+	font-weight: 400;
+    text-transform: uppercase;
+}
+
+div.ais-hits--item .hit-title span.summary {
+	color: grey;
+}
+
+div.ais-hits--item .hit-title img {
+	margin-bottom: 10px;
+}
+
+div.ais-hits--item .hit-title em {
+	font-style: normal;
+    background-color: yellow;
+}
+
+div#instantsearch-wrapper #hits hr {
+	margin: 0;
+	background: #e4e4e4;
+}
+
+div#instantsearch-wrapper #hits hr:last-child {
+	margin-top: 20px;
+}
+
+.ais-hits.ais-hits__empty {
+	padding: 10px 30px 10px 10px;
+	color: grey;
+}
+
+div#instantsearch-wrapper #hits {
+	max-width: 300px;
+	max-height: 400px;
+	overflow: scroll;
+    text-align: left;
+    position: absolute;
+    right: 33px;
+    background-color: white;
+    border-radius: 6px;
+	border: 1px solid #d4d4d4;
+	box-shadow: #c7c7c7 0px 2px 5px;
+	box-sizing: content-box;
+	z-index: 1;
+}
+
+.ais-search-box--input::placeholder {
+	color: #5badf0;
+}
+
+.ais-search-box--input:focus::placeholder {
+	color: #919191;
+}
+
+/* .ais-search-box--input:focus {
+	width: 140px;
+} */
+
+.ais-search-box--input {
+	width: 65px;
+    color: #5a5a5a;
+	padding-right: 2.2em;
+	padding-left: 1em;
+	border: none;
+	box-shadow: none;
+	font-family: 'FontAwesome', sans-serif;
+}
+
+.ais-search-box--magnifier-wrapper {
+	display: none;
+}
+
+div#instantsearch-wrapper {
+	max-width: 300px;
+    display: inline-block;
+    top: 8px;
+    right: 6px;
+    color: #5badf0;
+    font-size: 13px;
+    line-height: 1.35;
+    border-radius: 3px;
+}

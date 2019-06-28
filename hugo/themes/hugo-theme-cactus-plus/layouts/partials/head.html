@@ -28,15 +28,23 @@
 
 		<link rel="stylesheet" href="/css/style.min.css">
 		<link rel="stylesheet" href="/css/highlight.css">
-		
+
 		{{ range .Site.Params.customCSS }}
-		<link rel="stylesheet" href="/{{ . }}?{{ with $.Page.GitInfo }}{{ .AbbreviatedHash }}{{ end }}">
+		<link rel="stylesheet" href="/{{ . }}?{{ getenv "BUILD_ID" }}">
 		{{ end }}
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
 			{{ if .Site.Params.useCDN }}
+			<!-- algolia -->
+			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.4/dist/instantsearch.min.css">
+			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.4/dist/instantsearch-theme-algolia.min.css">
+			
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 			{{ else }}
+			<!-- algolia -->
+			<link rel="stylesheet" type="text/css" href="/libs/instantsearch/instantsearch.min.css">
+			<link rel="stylesheet" type="text/css" href="/libs/instantsearch/instantsearch-theme-algolia.min.css">
+			
 		 	<link rel="stylesheet" href="/css/font-awesome.min.css">
 		 	{{ end }}
 		{{ else }}
