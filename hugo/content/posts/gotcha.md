@@ -2,7 +2,7 @@
 title: "Gotcha!"
 date: 2019-06-25T20:26:16+08:00
 tags: ["programming"]
-#draft: true
+draft: false
 hideToc: true
 #post_id: POST_ID
 #aliases: [
