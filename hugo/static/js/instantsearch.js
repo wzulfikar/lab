@@ -96,24 +96,15 @@ $resetWrapper.click(e => {
 	$searchBoxInput.focus()
 })
 
-// add spacing to avoid overlap with span.ais-search-box--reset-wrapper
-$searchBoxInput.keydown(e => {
-	if (e.target.value.trim()) {
-		e.target.style.left = '0px'
-	} else {
-		e.target.style.left = '28px'
-	}
-})
-
-const SEARCH_BOX_WIDTH_IDLE = '65px'
 $searchBoxInput.focus(e => {
 	e.target.style.width = '140px'
+	e.target.style.paddingRight = '2.2em'
 })
 
 $searchBoxInput.blur(e => {
 	if (!e.target.value.trim().length) {
-		e.target.style.width = SEARCH_BOX_WIDTH_IDLE
-		e.target.style.left =  '28px'
+		e.target.style.width = ''
+		e.target.style.paddingRight = ''
 		e.target.value = ''
 		$resetWrapper.hide()
 	}
