@@ -6,4 +6,4 @@ snapshot:
 	@echo "done."
 
 publish:
-	yarn index && ./script/publish.sh
+	./script/publish.sh

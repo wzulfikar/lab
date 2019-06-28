@@ -18,3 +18,6 @@ BUILD_ID=$(git describe --always) hugo --minify
 	git commit -m 'build'
 	git push -u origin master
 )
+
+echo "updating algolia index.."
+yarn index:sync
