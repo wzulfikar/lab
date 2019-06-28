@@ -3,12 +3,13 @@ title: "A Night with Kubernetes"
 date: 2018-03-21T23:13:40+08:00
 tags: ["devops", "cloud"]
 draft: false
+coverImg: /images/kubernetes_logo-sm.png#featured
+coverAlt: Kubernetes logo
 ---
 
-### What is Kubernetes?
+<p class="figure-text">Kubernetes Logo.</p>
 
-![kubernetes logo](/images/kubernetes_logo-sm.png#featured)
-<p class="figure-text"><i>*Kubernetes Logo.</i></p>
+### What is Kubernetes?
 
 Dealing with lot of applications that are containerized (ie. via docker) and installed across regions can cause headache; from restarting containers, deploying to multiple nodes, scaling, etc. Kubernetes is a tool to help us deal with such situation by putting those containers in a _cluster_.
 
@@ -177,3 +178,5 @@ _"It turns out to be a long night of exploring Kubernetes"_ 😆
 [^2]:https://github.com/containernetworking/cni
 [^3]:https://kubernetes.io/docs/concepts/services-networking/service/
 [^4]:https://kubernetes.io/docs/concepts/services-networking/ingress/
+
+{{< load-photoswipe >}}

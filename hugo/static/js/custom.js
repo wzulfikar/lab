@@ -2,6 +2,15 @@
  * custom.js will be appended at end of html body.
  */
 
+const path = window.location.pathname
+const pathNoSlash = path.replace(/\//g, '')
+if (pathNoSlash) {
+	const navItem = $(`nav a[href$=${pathNoSlash}]`)[0]
+	if (navItem) {
+		navItem.className = 'cta'
+	}
+}
+
 // open external code runner in new tab
 $('a:contains("Run in")').each((i, el) => {
 	el.target = '_blank'
@@ -33,11 +42,20 @@ const inlinePopupOpts = {
 const rePopupAsset = /(.gif|.png|.jpg|.jpeg|.mp4)/
 
 // attach photoswipe to anchor tags which href is an image
-$('a').each((i, el) => {
+$('a, img.cover-image').each((i, el) => {
 	let href = el.href
 
+	// some adjustment if element is image.
+	if (el.tagName == 'IMG') {
+		// only enable photoswipe on image with no '#feature' suffix.
+		if (!el.src.endsWith('#featured')) {
+			href = el.src
+			el.style.cursor = 'pointer'
+		}
+	}
+
 	// handle links from footnote markup
-	if (href.includes('/#fn:')) {
+	if (href && href.includes('/#fn:')) {
 		const id = el.href.split('#').splice(1)[0]
 		const footnoteItemEl = document.getElementById(id)
 		

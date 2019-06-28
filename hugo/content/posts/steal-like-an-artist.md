@@ -4,12 +4,12 @@ date: 2018-07-15T16:18:42+08:00
 tags: ["reflection"]
 draft: false
 post_id: 23
+coverImg: /images/steal-like-an-artist-kindle-store.jpg
+coverAlt: Steal Like and Artist - Kindle Store
 aliases: [
     "/posts/23",
 ]
 ---
-
-![Steal Like and Artist - Kindle Store](/images/steal-like-an-artist-kindle-store.jpg)
 
 I was visiting a library in my block this morning, and stumbled upon a book authored by Austin Kleon in 2012, titled "Steal Like an Artist" (you can find it online in Amazon, Book Depository, etc.). Upon skimming few of its pages, I already felt like I want to finish the book soon.
 
@@ -98,3 +98,5 @@ This post contains the things I read from the book, that I want myself to relate
 75. "Some advice can be a vice. Feel free to take what you can use and leave the rest."
 
 <p class="text-center">***</p>
+
+{{< load-photoswipe >}}

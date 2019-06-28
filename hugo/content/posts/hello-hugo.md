@@ -4,11 +4,11 @@ date: 2018-03-03T02:33:20+08:00
 tags: ["experiment", "go"]
 draft: false
 hideToc: true
+coverImg: /images/hugo-logo.png#featured
+coverAlt: gohugo
 ---
 
 <p class="text-center">Another experiment on how/where I write things I like to write <i>(Duh)</i>.</p>
-
-![gohugo](/images/hugo-logo.png#featured) 
 
 <p class="text-center red">***</p>
 
@@ -82,3 +82,4 @@ Yup, you've reached the end of this post! And to end this, there's also a good w
 ![Gopher mascot](/images/gopher-head.png#featured "Gopher mascot")
 <p class="text-center">**The Go gopher: an iconic mascot of Go project.*</p>
 
+{{< load-photoswipe >}}

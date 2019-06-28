@@ -4,11 +4,11 @@ date: 2018-03-24T02:10:11+08:00
 tags: ["intro", "networking"]
 draft: false
 hideToc: true
+coverImg: /images/bettercap/bettercap-logo-sm.png#featured
+coverAlt: Bettercap logo
 ---
 
 ## What is Bettercap?
-
-![bettercap logo](/images/bettercap/bettercap-logo-sm.png#featured)
 
 If you are into networking tools for ARP spoof, sniffing, and other MITM-like utilities, you've probably heard about ettercap[^1]. Bettercap, which *sounds* similar to ettercap, is a networking tool like ettercap. Some people like to relate the name "Bettercap" as _better ettercap_.
 

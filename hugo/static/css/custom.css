@@ -185,3 +185,18 @@ span#build-id a {
 	color: #bfbfbf;
     border-bottom: 1px dotted #bfbfbf;
 }
+
+nav.main-nav a.cta {
+	margin-left: 0px;
+}
+
+/* unhide home in small screen */
+@media (max-width: 324px) {
+	nav.main-nav a.cta {
+		display: inline-block !important;
+	}
+}
+
+img.cover-image {
+	margin: 10px auto;
+}

@@ -5,6 +5,9 @@ else
 	git pull origin master
 fi
 
+# make env vars accessible by hugo
+export $(cat .env)
+
 # generate static files
 BUILD_ID=$(git describe --always) hugo --minify
 

@@ -46,6 +46,9 @@
 	              {{ end }}
                 {{ end }}
                 <section id="post-body">
+                    {{ if .Params.coverImg }}
+                    <img class="cover-image" alt="{{ .Params.coverAlt }}" src="{{ .Params.coverImg }}">
+                    {{ end }}
                     {{ .Content }}
                 </section>
 
