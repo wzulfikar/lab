@@ -11,10 +11,12 @@ export $(cat .env)
 # generate static files
 BUILD_ID=$(git describe --always) hugo --minify
 
-# push static files to remote repo
-(
-	cd dist
-	git add .
-	git commit -m 'build'
-	git push -u origin master
-)
+if [ "$1" != "--build-only" ]; then
+	push static files to remote repo
+	(
+		cd dist
+		git add .
+		git commit -m 'build'
+		git push -u origin master
+	)
+fi
