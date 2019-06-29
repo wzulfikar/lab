@@ -1,11 +1,5 @@
 <script>
-const HUGO_ENV = {
-  algolia: {
-    appId: '{{ getenv "ALGOLIA_APP_ID" }}',
-    searchKey: '{{ getenv "ALGOLIA_SEARCH_KEY" }}',
-    indexName: '{{ getenv "ALGOLIA_INDEX_NAME" }}',
-  }
-}
+const HUGO_ENV = JSON.parse(atob('{{ printf `{"algolia":{"appId":"%s", "searchKey":"%s", "indexName":"%s"}}` (getenv "ALGOLIA_APP_ID") (getenv "ALGOLIA_SEARCH_KEY") (getenv "ALGOLIA_INDEX_NAME") | base64Encode }}'))
 </script>
 
 {{ if .Site.Params.useCDN }}
