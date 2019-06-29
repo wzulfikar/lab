@@ -1,7 +1,7 @@
-const { appId, apiKey, indexName } = HUGO_ENV.algolia
+const { appId, searchKey, indexName } = HUGO_ENV.algolia
 const search = instantsearch({
     appId,
-    apiKey,
+    apiKey: searchKey,
     indexName,
     searchParameters: {
         hitsPerPage: 5,

@@ -4,10 +4,10 @@ require('dotenv').config()
 const algoliasearch = require('algoliasearch')
 
 const appId = process.env.ALGOLIA_APP_ID
-const appKey = process.env.ALGOLIA_API_KEY
+const adminKey = process.env.ALGOLIA_ADMIN_KEY
 const indexName = process.env.ALGOLIA_INDEX_NAME
 
-const client = algoliasearch(appId, appKey);
+const client = algoliasearch(appId, adminKey);
 const index = client.initIndex(indexName);
 
 const data = require(__dirname + '/../static/algolia-index/curated.json')

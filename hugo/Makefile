@@ -7,3 +7,7 @@ snapshot:
 
 publish:
 	./script/publish.sh
+
+sync-index:
+	@echo "updating algolia index.."
+	@yarn index:sync
