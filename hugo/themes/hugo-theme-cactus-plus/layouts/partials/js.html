@@ -1,7 +1,3 @@
-<script>
-const HUGO_ENV = JSON.parse(atob('{{ printf `{"algolia":{"appId":"%s", "searchKey":"%s", "indexName":"%s"}}` (getenv "ALGOLIA_APP_ID") (getenv "ALGOLIA_SEARCH_KEY") (getenv "ALGOLIA_INDEX_NAME") | base64Encode }}'))
-</script>
-
 {{ if .Site.Params.useCDN }}
   <!-- algolia instantsearch -->
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.4"></script>
@@ -20,10 +16,17 @@ const HUGO_ENV = JSON.parse(atob('{{ printf `{"algolia":{"appId":"%s", "searchKe
   <script src="/js/load-photoswipe.js"></script>
 {{ end }}
 
-<script>hljs.initHighlightingOnLoad();</script>
+<script>
+const HUGO_ENV = JSON.parse(atob('{{ printf `{"buildId":"%s","algolia":{"appId":"%s", "searchKey":"%s", "indexName":"%s"}}` (getenv "BUILD_ID") (getenv "ALGOLIA_APP_ID") (getenv "ALGOLIA_SEARCH_KEY") (getenv "ALGOLIA_INDEX_NAME") | base64Encode }}'))
+hljs.initHighlightingOnLoad();
+
+// append build id
+$('footer #build-id').html(`<a target="_blank" href="https://github.com/wzulfikar/lab/commit/${HUGO_ENV.buildId}">Build #${HUGO_ENV.buildId}</a>`)
+</script>
 
 {{ range .Site.Params.customJS }}
-  <script src="/{{ . }}?{{ getenv "BUILD_ID" }}"></script>
+  {{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
+  <script type="text/javascript" src="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}" crossorigin="anonymous"></script>
 {{ end }}
 
 {{ if ne (getenv "HUGO_LOCAL_DEV") "true" }}

@@ -4,6 +4,7 @@ baseurl = "/"
 languageCode = "en"
 enableGitInfo = true
 publishDir = "../docs"
+assetDir = "static"
 
 title = "Wildan's Blog"
 theme = "hugo-theme-cactus-plus"
@@ -54,8 +55,8 @@ hasCJKLanguage = false
 	# The url for twitter card image, default is avatar.png in static/images directory
 	twitterCardImage = ""
 
-	# Add custom assets with their paths relative to the static folder
-	customCSS = ["css/custom.css", "css/instantsearch.css"]
+	# Add custom assets with their paths relative to the `assetDir` folder
+	customCSS = ["css/highlight.css", "css/custom.css", "css/instantsearch.css"]
 	customJS  = ["js/custom.js", "js/instantsearch.js"]
 
 	# The variables below are optionally too and can be used to

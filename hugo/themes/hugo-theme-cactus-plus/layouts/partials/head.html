@@ -27,7 +27,6 @@
 		<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/favicons/favicon-180.png">
 
 		<link rel="stylesheet" href="/css/style.min.css">
-		<link rel="stylesheet" href="/css/highlight.css">
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
 			{{ if .Site.Params.useCDN }}
@@ -48,7 +47,8 @@
 		{{ end }}
 
 		{{ range .Site.Params.customCSS }}
-		<link rel="stylesheet" href="/{{ . }}?{{ getenv "BUILD_ID" }}">
+		{{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
+		<link rel="stylesheet"  href="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}">
 		{{ end }}
 
 		{{ if .Site.Params.enableRSS }}
