@@ -12,7 +12,7 @@ export $(cat .env)
 BUILD_ID=$(git describe --always) hugo --minify
 
 if [ "$1" != "--build-only" ]; then
-	push static files to remote repo
+	# push static files to remote repo
 	(
 		cd dist
 		git add .
