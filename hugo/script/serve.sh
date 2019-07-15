@@ -1,4 +1,4 @@
-# dev.sh runs hugo dev server for local development
+# serve.sh runs hugo dev server for local development
 
 # make env vars accessible by hugo
 export $(cat .env)

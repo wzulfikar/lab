@@ -47,8 +47,13 @@
 		{{ end }}
 
 		{{ range .Site.Params.customCSS }}
-		{{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
-		<link rel="stylesheet"  href="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}">
+			{{ if eq (getenv "HUGO_LOCAL_DEV") "true" }}
+				{{ $asset := resources.Get (printf "%s" .) }}
+				<link rel="stylesheet"  href="{{ $asset.Permalink }}">
+			{{ else }}
+				{{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
+				<link rel="stylesheet"  href="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}">
+			{{ end }}
 		{{ end }}
 
 		{{ if .Site.Params.enableRSS }}

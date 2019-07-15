@@ -25,8 +25,13 @@ $('footer #build-id').html(`<a target="_blank" href="https://github.com/wzulfika
 </script>
 
 {{ range .Site.Params.customJS }}
-  {{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
-  <script type="text/javascript" src="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}" crossorigin="anonymous"></script>
+  {{ if eq (getenv "HUGO_LOCAL_DEV") "true" }}
+    {{ $asset := resources.Get (printf "%s" .) }}
+    <script type="text/javascript" src="{{ $asset.Permalink }}"></script>
+  {{ else }}
+    {{ $asset := resources.Get (printf "%s" .) | resources.Minify | resources.Fingerprint "sha512" }}
+    <script type="text/javascript" src="{{ $asset.Permalink }}" integrity="{{ $asset.Data.Integrity }}" crossorigin="anonymous"></script>
+  {{ end }}
 {{ end }}
 
 {{ if ne (getenv "HUGO_LOCAL_DEV") "true" }}

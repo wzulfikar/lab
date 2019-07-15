@@ -1,5 +1,16 @@
 const { appId, searchKey, indexName } = HUGO_ENV.algolia
-const search = instantsearch({
+
+const subIndexTrigger = '/'
+const subIndex = instantsearch({
+    appId,
+    apiKey: searchKey,
+    indexName: 'personal',
+    searchParameters: {
+        hitsPerPage: 5,
+	},
+});
+  
+const mainIndex = instantsearch({
     appId,
     apiKey: searchKey,
     indexName,
@@ -12,12 +23,24 @@ const search = instantsearch({
 			searchResults.hide()
 			return
 		}
-		// perform the regular search & display the search results
-		helper.search();
+		
+		let subIndexQuery = ''
+		if (helper.state.query.startsWith(subIndexTrigger)) {
+			subIndexQuery = helper.state.query.replace(subIndexTrigger, '')
+		}
+
+		if (subIndexQuery.length) {
+			subIndex.helper.setQuery(subIndexQuery).search();
+			subIndex.helper.search()
+		} else {
+			// perform the regular search & display the search results
+			helper.search();
+		}
 		searchResults.show();
 	}
 });
-search.addWidget(
+
+mainIndex.addWidget(
     instantsearch.widgets.searchBox({
 		loadingIndicator: 'loading..',
 		container: '#search-box',
@@ -27,11 +50,11 @@ search.addWidget(
 );
 
 const months = [
-	'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-	'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+	'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
-search.addWidget(
+mainIndex.addWidget(
     instantsearch.widgets.hits({
         container: '#hits',
         templates: {
@@ -39,7 +62,7 @@ search.addWidget(
             item: hit => {
 				let date = hit.date && new Date(hit.date)
 				if (date) {
-					date = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+					date = `${months[date.getMonth()].toUpperCase()} ${date.getDate()}, ${date.getFullYear()}`
 				}
 
 				let tags = hit.tags 
@@ -55,7 +78,7 @@ search.addWidget(
 								<span class="subtitle">${date || hit._highlightResult.type.value} ${tags}</span>
 							</h4>
 							<span class="summary">
-							${hit.summary 
+							${hit.summary
 								? hit._highlightResult.summary.value 
 								: hit._highlightResult.body.value.split(' ').splice(0, 35).join(' ')}
 							</span>
@@ -67,7 +90,43 @@ search.addWidget(
     })
 );
 
-search.start();
+subIndex.addWidget(
+    instantsearch.widgets.hits({
+        container: '#hits',
+        templates: {
+            empty: 'No results found',
+            item: hit => {
+				let date = hit.timestamp && new Date(hit.timestamp)
+				if (date) {
+					date = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+				}
+
+				return `
+					<div class="hit-title">
+						<a href="${hit.url}">
+							<h4>
+								<img src="${hit.thumbsUrl}" style="width: 40px; margin: 0px 0.5em 0px 0.2em; display: inline-block;"/>
+								<div style="display: inline-block; vertical-align: sub;">
+									<span>${hit._highlightResult.title.value}</span>
+									<span class="subtitle">${hit._highlightResult.description.value}</span>
+									<span class="subtitle" style="font-weight: 400;">${date}</span>
+								</div>
+							</h4>
+							<span class="summary">
+							${hit.text.endsWith('.jpg')
+								? `<img src="${hit.text}"/>`
+								: hit._highlightResult.text.value.split(' ').splice(0, 35).join(' ')}
+							</span>
+						</a>
+					</div>
+					<hr/>`
+			}
+        }
+    })
+);
+
+mainIndex.start();
+subIndex.start();
 
 $searchBoxInput = $('input.ais-search-box--input')
 $wrapper = $('#instantsearch-wrapper')
