@@ -95,6 +95,9 @@ The list will be updated from time to time as new issue occurs.
   - `echo '127.0.0.1 l' >> /etc/hosts`. `curl l:3000` is now equivalent to `curl localhost:3000`
 - Create alias for IP address of hostpot-providing device (Android)
   - `echo '192.168.43.1 android.local' >> /etc/hosts`. See: [stackoverflow](https://stackoverflow.com/questions/17302220/android-get-ip-address-of-a-hotspot-providing-device)
+- Generate fake data to fill web form
+  - [Form Filler](https://chrome.google.com/webstore/detail/form-filler/bnjjngeaknajbdcgpfkgnonkmififhfo/related?hl=en)
+
 </details>
 
 ## Workflow
