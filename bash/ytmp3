@@ -62,10 +62,14 @@ fi
 
 echo "Downloading: $FILENAME"
 ytdl --filter best-audio --output $OUTPUT_DIR{{.Title}}.{{.Ext}} $1
+if [ "$?" != "0" ]; then
+    rm "${OUTPUT_DIR}${FILENAME}.webm"
+    exit $?
+fi
 
 # ensure the video is downloaded
 video_file="${OUTPUT_DIR}${FILENAME}.webm"
-if [ ! -f "$video_file" ]; then
+if [ ! -f "${video_file}" ]; then
     echo "Error: Couldn't convert video to mp3. Video file doesn't exist."
     exit 4
 fi
