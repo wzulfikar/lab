@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ "$1" = "-h" ]; then
+    echo "rn is alias to 'react-native' command."
+    echo "to install the command, run:"
+    echo "npm install -g react-native-cli"
+    exit
+fi
+
+react-native $@
