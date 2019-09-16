@@ -1,10 +1,8 @@
 #!/bin/sh
 
 if [ "$1" = "-h" ]; then
-    echo "cra is alias to 'create-react-app' command."
-    echo "to install the command, run:"
-    echo "npm install -g create-react-app"
+    echo "cra is alias to 'npx create-react-app' command."
     exit
 fi
 
-create-react-app $@
+npx create-react-app $@
