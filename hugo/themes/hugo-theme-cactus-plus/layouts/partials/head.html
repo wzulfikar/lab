@@ -26,7 +26,13 @@
 		<!-- For iPhone 6+ downscaled for other devices -->
 		<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/favicons/favicon-180.png">
 
-		<link rel="stylesheet" href="/css/style.min.css">
+		{{ if eq (getenv "HUGO_LOCAL_DEV") "true" }}
+			{{ $style := resources.Get "css/style.css" }}
+			<link rel="stylesheet"  href="{{ $style.Permalink }}">
+		{{ else }}
+			{{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint "sha512" }}
+			<link rel="stylesheet"  href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+		{{ end }}
 
 		{{ if eq .Site.Params.iconFont "font-awesome" }}
 			{{ if .Site.Params.useCDN }}
@@ -59,4 +65,6 @@
 		{{ if .Site.Params.enableRSS }}
 		<link href="{{ .Site.RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
 		{{ end }}
+
+		<link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600&amp;display=swap" rel="stylesheet">
 	</head>
