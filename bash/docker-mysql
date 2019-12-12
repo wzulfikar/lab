@@ -44,7 +44,7 @@ if [ -z "$(docker ps -a | grep $container_name)" ]; then
     --name $container_name \
     -d \
     -e MYSQL_ROOT_PASSWORD=password123 \
-    -p 127.0.0.1:$port:3306 \
+    -p 0.0.0.0:$port:3306 \
     mysql:${mysql_version}
 elif [ -z "$(docker ps | grep $container_name)" ]; then
     echo "[INFO] container already exist. 'container_name' and 'port' will be ignored."
