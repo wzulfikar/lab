@@ -4,14 +4,6 @@ h2[id]:before {
 }
 */
 
-h1[id] a, h2[id] a, h3[id] a {
-    color: #555555;
-}
-
-#post-list h2 {
-	font: 400 17px/1.5em "Helvetica Neue", Helvetica, sans-serif;
-}
-
 .post h1 {
 	letter-spacing: normal;
 }
@@ -31,8 +23,8 @@ ul>li {
 
 .read-time {
 	font-weight: normal;
-	color: #c2c2c2;
-	font-size: 16px;
+	color: #808080;
+	font-size: 14px;
 	display: block;
 }
 

@@ -6,7 +6,7 @@ enableGitInfo = true
 publishDir = "../docs"
 assetDir = "static"
 
-title = "Wildan's Blog"
+title = "Wildan Zulfikar"
 theme = "hugo-theme-cactus-plus"
 
 # Set the value to true if your site include CJK (Chinese, Japanese, and Korean languages) characters
