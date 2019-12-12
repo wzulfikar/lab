@@ -3,7 +3,7 @@
 	<a class="twitter" href="https://twitter.com/intent/tweet?text={{ .Permalink }} - {{ .LinkTitle }} {{ with .Site.Params.twitter }}by @{{ . }}{{ end }}">
 		<span><i class="fa fa-twitter"></i>&nbsp;{{ .Site.Params.tweet | default "tweet" }}</span>
 	</a>
-	 ∙
+	•
 	<a class="facebook" href="#" onclick="
 	    window.open(
 	      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
@@ -11,6 +11,10 @@
 	      'width=626,height=436');
 	    return false;">
 	    <span><i class="fa fa-facebook-square"></i>&nbsp;{{ .Site.Params.share | default "share" }}</span>
+	</a>
+	•
+	<a href="https://github.com/wzulfikar/lab/blob/master/hugo/content/{{ .File.Path }}">
+		<span class="fa fa-github"></span>&nbsp;View on Github
 	</a>
 </span>
 	{{ if $.Page.GitInfo }}
