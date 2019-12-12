@@ -1,5 +1,5 @@
-serve:
-	./script/serve.sh
+dev:
+	./script/dev.sh
 
 snapshot:
 	hugo && git add -A && git commit -m "hugo snapshot" && git push
