@@ -868,6 +868,7 @@ a.symbol {
     color: #cdd4da;
     font-size: 2rem;
     text-decoration: none;
+    margin-right: 0.5rem;
 }
 
 a.symbol:hover {
