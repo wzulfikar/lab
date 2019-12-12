@@ -251,6 +251,11 @@ nav.main-nav a.cta {
 
 /*Accent color*/
 
+h1 > a, h2 > a, h3 > a, h4 > a {
+    text-decoration: none;
+    color: #222;
+}
+
 a, #title, #post-list a:hover, #title:hover {
     text-decoration: none;
     color: #5694f1;
@@ -304,7 +309,7 @@ ul>li {
 }
 
 b, strong {
-    font-weight: 500;
+    font-weight: bold;
     color: #1E2025;
 }
 
@@ -353,7 +358,7 @@ em, i {
 .post h2 {
     margin-top: 20px;
     margin-bottom: 10px;
-    font: 400 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: bold 24px/1.5 var(--font-2), Helvetica, Arial, sans-serif;
     color: #111;
 }
 
@@ -389,7 +394,7 @@ h3, h4, h5 {
 
 h3 {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: bold;
 }
 
 h4 {
@@ -808,6 +813,10 @@ h2.month {
     font-size: 16px;
 }
 
+.archive h3 {
+    font-weight: 400;
+}
+
 .archive .post-item {
     padding: 10px 0px;
     overflow-x: hidden;
@@ -859,7 +868,6 @@ a.symbol {
     color: #cdd4da;
     font-size: 2rem;
     text-decoration: none;
-    margin-right: 0.3rem;
 }
 
 a.symbol:hover {
