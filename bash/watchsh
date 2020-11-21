@@ -2,7 +2,7 @@
 
 # eg. `watch-sh '*.php' 'say ha'`
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     echo "watchsh –– watch directory and run command on change"
     echo "usage: watchsh <command> <pattern to watch>"
     echo ""

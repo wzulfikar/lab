@@ -1,0 +1,19 @@
+#!/bin/sh
+
+host=$1
+gateway=$2
+
+route delete -host $host -interface $gateway \
+    && route add -net $host -interface $gateway
+
+if [ "$?" != "0" ]; then
+    exit 1
+fi
+
+echo ''
+echo '[INFO] checking value of "route get"..'
+route get $host
+
+echo ''
+echo '[INFO] sending curl to host..'
+curl -Lk $host -I -v

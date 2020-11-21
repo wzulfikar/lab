@@ -24,9 +24,9 @@ echo "output file: $output_file"
 
 # adapted from https://rigor.com/blog/optimizing-animated-gifs-with-html5-video
 ffmpeg \
--i "$input_file" \
--loglevel panic -hide_banner -nostats \
--movflags faststart \
--pix_fmt yuv420p \
--vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
-"$output_file"
+  -hwaccel auto \
+  -i "$input_file" \
+  -movflags faststart \
+  -pix_fmt yuv420p \
+  -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+  "$output_file"

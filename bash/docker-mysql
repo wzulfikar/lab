@@ -42,6 +42,7 @@ if [ -z "$(docker ps -a | grep $container_name)" ]; then
     echo "running container.."
     docker run \
     --name $container_name \
+    --hostname $container_name \
     -d \
     -e MYSQL_ROOT_PASSWORD=password123 \
     -p 0.0.0.0:$port:3306 \

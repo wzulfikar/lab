@@ -19,7 +19,14 @@ func robfig() {
 
 	// robfig/cron's cron spec (cron expression)
 	// cronExpr := "0 0 8 * * *" // everyday at 8am
-	cronExpr := "0 0 0 */15 * *" // everyday at 8am
+	// cronExpr := "* */5 * * * *" // every multiple of 5 minutes (e.g. 5, 10, 15, 20, 25, etc.)
+	// cronExpr := "* */30 * * * *" // every multiple of 30 seconds
+	// cronExpr := "0 * * * * *" // every beginning of minutes
+	// cronExpr := "* 0 * * * *" // every hour
+	// cronExpr := "* 0 0 * * *" // daily at midnight
+	// cronExpr := "* 0 0 * * SUN" // sunday at midnight
+	cronExpr := "* 0 0 1 * *" // every first day of month at midnight
+	// cronExpr := "0 0 0 */15 * *" // 15th of current month (?)
 	// cronExpr := "0 0 */3 * * *" // everyday in 3hrs windows
 	// cronExpr := "0 0 8 * * 1" // 8am every monday
 

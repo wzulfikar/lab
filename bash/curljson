@@ -6,4 +6,4 @@ if [ "$1" = "-h" ]; then
     exit
 fi
 
-curl -H 'Content-Type: application/json' $@
+curl -H 'Content-Type: application/json' $@ | jq

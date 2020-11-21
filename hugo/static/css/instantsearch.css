@@ -68,7 +68,7 @@ div#instantsearch-wrapper #hits hr:last-child {
 div#instantsearch-wrapper #hits {
 	max-width: 300px;
 	max-height: 400px;
-	overflow: scroll;
+	overflow-y: scroll;
     text-align: left;
     position: absolute;
     right: 33px;
