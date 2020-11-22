@@ -10,6 +10,7 @@ echo "installing OBS for ubuntu.."
 
 apt update -y &&
     apt install libxkbcommon0 libxrandr2 libqt5core5a -y &&
+    apt-get install software-properties-common -y &&
     add-apt-repository ppa:obsproject/obs-studio -y &&
     apt update -y &&
     apt install screen sed -y &&
