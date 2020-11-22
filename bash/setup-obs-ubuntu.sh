@@ -23,7 +23,7 @@ apt update -y &&
     /opt/VirtualGL/bin/vglserver_config -config -s -f -t &&
     wget -O turbovnc_2.2.5_amd64.deb https://sourceforge.net/projects/turbovnc/files/2.2.5/turbovnc_2.2.5_amd64.deb/download &&
     dpkg -i turbovnc_*.deb &&
-    sed 's/$vncPort = 5900 + $displayNumber;/$vncPort = 5900 + $displayNumber;\nif(defined $ENV{'BASE_PORT'}) {\n  $vncPort = $ENV{'BASE_PORT'} + $displayNumber;\n}/' /opt/TurboVNC/bin/vncserver &&
+    sed -i 's/$vncPort = 5900 + $displayNumber;/$vncPort = 5900 + $displayNumber;\nif(defined $ENV{'BASE_PORT'}) {\n  $vncPort = $ENV{'BASE_PORT'} + $displayNumber;\n}/' /opt/TurboVNC/bin/vncserver &&
     BASE_PORT=6700 /opt/TurboVNC/bin/vncserver &&
     /usr/bin/screen -dmS obs /usr/bin/sh -c "DISPLAY=:1 /usr/bin/obs --studio-mode" &&
     echo '@reboot BASE_PORT=6700 /opt/TurboVNC/bin/vncserver' >/tmp/crontab-obs &&
