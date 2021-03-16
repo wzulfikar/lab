@@ -23,10 +23,11 @@ echo "[INFO] making mp4.."
 echo "output file: $output_file"
 
 # adapted from https://rigor.com/blog/optimizing-animated-gifs-with-html5-video
-ffmpeg \
+time ffmpeg \
   -hwaccel auto \
   -i "$input_file" \
   -movflags faststart \
   -pix_fmt yuv420p \
   -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+  -hide_banner -loglevel error \
   "$output_file"
