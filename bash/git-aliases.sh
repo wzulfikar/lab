@@ -1,4 +1,5 @@
 # aliases for common git operation
+alias clone="git clone"
 alias commit="git commit -m '$1'"
 alias add="git add"
 alias pull="git pull"
