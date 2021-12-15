@@ -10,6 +10,7 @@ alias co="git checkout"
 alias stash="git stash"
 alias rebase="git rebase"
 alias reset="git reset"
+alias merge="git merge"
 
 # quick commit
 alias qc="git add . && git commit -m"
