@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$1" = "-h" ]; then
-    echo "cra is alias to 'npx create-react-app' command."
-    exit
-fi
-
-npx create-react-app $@

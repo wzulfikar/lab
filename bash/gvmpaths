@@ -1,5 +1,0 @@
-#!/bin/sh
-
-GVM_GO_VERSION=$(go version | awk '{print $3}')
-echo "GOROOT=$HOME/.gvm/gos/$GVM_GO_VERSION"
-echo "GOPATH=$HOME/.gvm/pkgsets/$GVM_GO_VERSION/src"

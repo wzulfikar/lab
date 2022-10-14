@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$1" = "-h" ]; then
-    echo "rn is alias to 'npx react-native' command."
-    exit
-fi
-
-npx react-native $@

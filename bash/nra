@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$1" = "-h" ]; then
-    echo "nra is alias to 'npx nano-react-app' command."
-    exit
-fi
-
-npx nano-react-app $@
